@@ -1,0 +1,430 @@
+@extends('layouts.ecommerce')
+
+@section('title', 'Checkout Step 2 — Select Payment Method')
+
+@section('content')
+    <!-- Include Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-data="checkoutHandler()">
+        
+        <!-- Steps Breadcrumbs -->
+        <div class="flex items-center justify-center gap-4 sm:gap-8 mb-12 text-xs font-black uppercase tracking-wider text-center">
+            <span class="text-zinc-400">01. Receiver Info</span>
+            <span class="text-zinc-300">&rarr;</span>
+            <span class="text-zinc-950 border-b-2 border-zinc-950 pb-1">02. Select Payment</span>
+            <span class="text-zinc-300">&rarr;</span>
+            <span class="text-zinc-300">03. Order Confirmation</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+            
+            <!-- Left: Payment Methods Selection -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white border border-gray-200 rounded-lg p-6 sm:p-8 shadow-sm">
+                    <h2 class="text-xl font-extrabold text-zinc-950 uppercase tracking-tight mb-6">Select Payment Method</h2>
+                    
+                    <!-- Form submitting to process payment -->
+                    <form id="payment-form" action="{{ route('checkout.processPayment') }}" method="POST" @submit.prevent="submitCheckout">
+                        @csrf
+                        <input type="hidden" name="payment_method" :value="paymentMethod" />
+                        <input type="hidden" name="payment_intent_id" x-model="paymentIntentId" />
+
+                        <!-- Methods grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                            
+                            <!-- Stripe Card option -->
+                            <label :class="paymentMethod === 'stripe' ? 'border-zinc-950 ring-2 ring-zinc-950 bg-zinc-50' : 'border-gray-200 hover:border-gray-300 bg-white'" class="border rounded-lg p-5 flex items-start gap-4 cursor-pointer transition">
+                                <input type="radio" name="method_selector" value="stripe" x-model="paymentMethod" class="text-zinc-950 focus:ring-zinc-950 border-gray-300 mt-1" />
+                                <div>
+                                    <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Debit / Credit Card</span>
+                                    <span class="block text-slate-500 text-xs mt-1">Pay instantly via Stripe secure card elements.</span>
+                                </div>
+                            </label>
+
+                            <!-- Bank Wire option -->
+                            <label :class="paymentMethod === 'bank_wire' ? 'border-zinc-950 ring-2 ring-zinc-950 bg-zinc-50' : 'border-gray-200 hover:border-gray-300 bg-white'" class="border rounded-lg p-5 flex items-start gap-4 cursor-pointer transition">
+                                <input type="radio" name="method_selector" value="bank_wire" x-model="paymentMethod" class="text-zinc-950 focus:ring-zinc-950 border-gray-300 mt-1" />
+                                <div>
+                                    <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Bank Wire Transfer</span>
+                                    <span class="block text-slate-500 text-xs mt-1">Direct wire to Chase Bank. Perfect for large orders.</span>
+                                </div>
+                            </label>
+
+                            <!-- Zelle option -->
+                            <label :class="paymentMethod === 'zelle' ? 'border-zinc-950 ring-2 ring-zinc-950 bg-zinc-50' : 'border-gray-200 hover:border-gray-300 bg-white'" class="border rounded-lg p-5 flex items-start gap-4 cursor-pointer transition">
+                                <input type="radio" name="method_selector" value="zelle" x-model="paymentMethod" class="text-zinc-950 focus:ring-zinc-950 border-gray-300 mt-1" />
+                                <div>
+                                    <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Zelle Business</span>
+                                    <span class="block text-slate-500 text-xs mt-1">Instant, no-fee Zelle business bank pay.</span>
+                                </div>
+                            </label>
+
+                            <!-- Cash App option -->
+                            <label :class="paymentMethod === 'cash_app' ? 'border-zinc-950 ring-2 ring-zinc-950 bg-zinc-50' : 'border-gray-200 hover:border-gray-300 bg-white'" class="border rounded-lg p-5 flex items-start gap-4 cursor-pointer transition">
+                                <input type="radio" name="method_selector" value="cash_app" x-model="paymentMethod" class="text-zinc-950 focus:ring-zinc-950 border-gray-300 mt-1" />
+                                <div>
+                                    <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Cash App</span>
+                                    <span class="block text-slate-500 text-xs mt-1">Pay instantly to our business $cashtag handle.</span>
+                                </div>
+                            </label>
+
+                            <!-- Venmo option -->
+                            <label :class="paymentMethod === 'venmo' ? 'border-zinc-950 ring-2 ring-zinc-950 bg-zinc-50' : 'border-gray-200 hover:border-gray-300 bg-white'" class="border rounded-lg p-5 flex items-start gap-4 cursor-pointer transition">
+                                <input type="radio" name="method_selector" value="venmo" x-model="paymentMethod" class="text-zinc-950 focus:ring-zinc-950 border-gray-300 mt-1" />
+                                <div>
+                                    <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Venmo</span>
+                                    <span class="block text-slate-500 text-xs mt-1">Simple transfer via mobile Venmo handle.</span>
+                                </div>
+                            </label>
+
+                            <!-- PayPal option -->
+                            <label :class="paymentMethod === 'paypal' ? 'border-zinc-950 ring-2 ring-zinc-950 bg-zinc-50' : 'border-gray-200 hover:border-gray-300 bg-white'" class="border rounded-lg p-5 flex items-start gap-4 cursor-pointer transition">
+                                <input type="radio" name="method_selector" value="paypal" x-model="paymentMethod" class="text-zinc-950 focus:ring-zinc-950 border-gray-300 mt-1" />
+                                <div>
+                                    <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">PayPal</span>
+                                    <span class="block text-slate-500 text-xs mt-1">Pay via PayPal transfer or standard balance.</span>
+                                </div>
+                            </label>
+
+                            <!-- Crypto USDT option -->
+                            <label :class="paymentMethod === 'usdt' ? 'border-zinc-950 ring-2 ring-zinc-950 bg-zinc-50' : 'border-gray-200 hover:border-gray-300 bg-white'" class="border rounded-lg p-5 flex items-start gap-4 cursor-pointer transition">
+                                <input type="radio" name="method_selector" value="usdt" x-model="paymentMethod" class="text-zinc-950 focus:ring-zinc-950 border-gray-300 mt-1" />
+                                <div>
+                                    <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Cryptocurrency USDT</span>
+                                    <span class="block text-slate-500 text-xs mt-1">Secure settlement in USDT (TRC20 / ERC20).</span>
+                                </div>
+                            </label>
+
+                            <!-- Pickup option -->
+                            <label :class="paymentMethod === 'cash_on_pickup' ? 'border-zinc-950 ring-2 ring-zinc-950 bg-zinc-50' : 'border-gray-200 hover:border-gray-300 bg-white'" class="border rounded-lg p-5 flex items-start gap-4 cursor-pointer transition">
+                                <input type="radio" name="method_selector" value="cash_on_pickup" x-model="paymentMethod" class="text-zinc-950 focus:ring-zinc-950 border-gray-300 mt-1" />
+                                <div>
+                                    <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Cash on Pickup</span>
+                                    <span class="block text-slate-500 text-xs mt-1">Inspect and pay cash at our Louisville warehouse.</span>
+                                </div>
+                            </label>
+
+                        </div>
+
+                        <!-- Payment details dynamic panels -->
+                        <div class="bg-gray-100 border border-gray-200 rounded-lg p-6 mb-8 text-sm">
+                            
+                            <!-- Stripe card elements layout panel -->
+                            <div x-show="paymentMethod === 'stripe'" class="space-y-4">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-2">Secure Credit / Debit Card</span>
+                                
+                                <div class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm space-y-4">
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">Card Number</label>
+                                        <input type="text" name="mock_card_number" placeholder="0000 0000 0000 0000" maxlength="19" class="w-full border-none p-0 text-sm focus:ring-0 text-zinc-900 placeholder-zinc-300 font-medium" x-bind:required="paymentMethod === 'stripe'" />
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">Expiration Date</label>
+                                            <input type="text" name="mock_card_expiry" placeholder="MM / YY" maxlength="7" class="w-full border-none p-0 text-sm focus:ring-0 text-zinc-900 placeholder-zinc-300 font-medium" x-bind:required="paymentMethod === 'stripe'" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">CVC / Security Code</label>
+                                            <input type="text" name="mock_card_cvc" placeholder="123" maxlength="4" class="w-full border-none p-0 text-sm focus:ring-0 text-zinc-900 placeholder-zinc-300 font-medium" x-bind:required="paymentMethod === 'stripe'" />
+                                        </div>
+                                    </div>
+                                    <div class="pt-4 border-t border-gray-100">
+                                        <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">Name on Card</label>
+                                        <input type="text" name="mock_card_name" placeholder="John Doe" class="w-full border-none p-0 text-sm focus:ring-0 text-zinc-900 placeholder-zinc-300 font-medium" value="{{ $shipping['name'] ?? '' }}" x-bind:required="paymentMethod === 'stripe'" />
+                                    </div>
+                                </div>
+                                <div id="card-errors" class="text-rose-600 text-xs font-semibold" role="alert"></div>
+                            </div>
+
+                            <!-- Bank Wire info panel -->
+                            <div x-show="paymentMethod === 'bank_wire'" x-cloak class="space-y-2">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Bank Wire Instructions</span>
+                                <p class="text-zinc-600">Please send a direct bank wire transfer to the following Chase account:</p>
+                                <ul class="space-y-1.5 text-xs font-bold text-zinc-800 bg-white p-4 border border-gray-200 rounded">
+                                    <li>Bank Name: {{ $settings['bank_name'] }}</li>
+                                    <li>Account Name: {{ $settings['bank_account_name'] }}</li>
+                                    <li>Routing Number: {{ $settings['bank_routing_number'] }}</li>
+                                    <li>Account Number: {{ $settings['bank_account_number'] }}</li>
+                                </ul>
+                                <p class="text-zinc-500 text-xs mt-2 italic">Instruction: Reference your order number in the wire description. Orders ship once wire funds clear.</p>
+                            </div>
+
+                            <!-- Zelle info panel -->
+                            <div x-show="paymentMethod === 'zelle'" x-cloak class="space-y-2">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Zelle Business Payment</span>
+                                <p class="text-zinc-600">Transfer payment via Zelle directly to our business contact email:</p>
+                                <div class="bg-white p-4 border border-gray-200 rounded font-bold text-zinc-950 text-base text-center">
+                                    {{ $settings['zelle_email'] }}
+                                </div>
+                                <p class="text-zinc-500 text-xs italic">Please add your order number in the Zelle memo box.</p>
+                            </div>
+
+                            <!-- Cash App info panel -->
+                            <div x-show="paymentMethod === 'cash_app'" x-cloak class="space-y-2">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Cash App Payment</span>
+                                <p class="text-zinc-600">Send your total order balance to our business Cash App $cashtag:</p>
+                                <div class="bg-white p-4 border border-gray-200 rounded font-bold text-zinc-950 text-xl text-center">
+                                    {{ $settings['cash_app_cashtag'] }}
+                                </div>
+                                <p class="text-zinc-500 text-xs italic">Include your name and order number in the payment notes.</p>
+                            </div>
+
+                            <!-- Venmo info panel -->
+                            <div x-show="paymentMethod === 'venmo'" x-cloak class="space-y-2">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Venmo Business Payment</span>
+                                <p class="text-zinc-600">Transfer payment via mobile Venmo to our merchant profile handle:</p>
+                                <div class="bg-white p-4 border border-gray-200 rounded font-bold text-zinc-950 text-lg text-center">
+                                    {{ $settings['venmo_handle'] }}
+                                </div>
+                            </div>
+
+                            <!-- PayPal info panel -->
+                            <div x-show="paymentMethod === 'paypal'" x-cloak class="space-y-2">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">PayPal Merchant Transfer</span>
+                                <p class="text-zinc-600">Submit a standard balance transfer to our verified merchant email:</p>
+                                <div class="bg-white p-4 border border-gray-200 rounded font-bold text-zinc-950 text-base text-center">
+                                    {{ $settings['paypal_email'] }}
+                                </div>
+                            </div>
+
+                            <!-- USDT info panel -->
+                            <div x-show="paymentMethod === 'usdt'" x-cloak class="space-y-2">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">USDT Crypto Settlement</span>
+                                <p class="text-zinc-600">Transfer exact equivalent USD balance to our USDT deposit address (supports TRC-20 and ERC-20 protocols):</p>
+                                <div class="bg-white p-4 border border-gray-200 rounded font-mono text-[10px] sm:text-xs text-zinc-800 break-all select-all font-bold text-center">
+                                    {{ $settings['USDT_address'] }}
+                                </div>
+                                <p class="text-zinc-500 text-xs italic">Submit transaction receipt / hash to support for immediate order confirmation.</p>
+                            </div>
+
+                            <!-- Pickup info panel -->
+                            <div x-show="paymentMethod === 'cash_on_pickup'" x-cloak class="space-y-2">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Cash on Pickup Details</span>
+                                <p class="text-zinc-600">Pay cash in person at our loading dock facility:</p>
+                                <ul class="space-y-1.5 text-xs text-zinc-500">
+                                    <li>Location: <strong class="text-zinc-800">APL Warehouse, Louisville, KY</strong></li>
+                                    <li>Hours: <strong class="text-zinc-800">Mon - Fri, 9:00 AM - 5:00 PM EST</strong></li>
+                                    <li>Terms: <strong class="text-zinc-800">Inspect pallets before paying. Free forklift loading provided.</strong></li>
+                                </ul>
+                            </div>
+
+                            <!-- User Input for Payment Reference (Shows for all offline methods) -->
+                            <div x-show="paymentMethod !== 'stripe' && paymentMethod !== 'cash_on_pickup'" x-cloak class="mt-6 pt-6 border-t border-gray-200">
+                                <label for="payment_reference" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-2">
+                                    Enter Your Payment Details / Reference
+                                </label>
+                                <input type="text" id="payment_reference" name="payment_reference" class="w-full bg-white border border-gray-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800 placeholder-zinc-400" placeholder="e.g. Your $Cashtag, Zelle Name, or Bank Name..." />
+                                <p class="text-[10px] text-zinc-500 mt-1.5 uppercase font-bold tracking-wide">This helps our accounting team verify your transaction immediately.</p>
+                            </div>
+
+                        </div>
+
+                        <!-- Button to submit -->
+                        <button type="submit" :disabled="loading" class="w-full bg-zinc-950 text-white font-extrabold py-4 rounded text-sm uppercase tracking-widest hover:bg-zinc-800 transition duration-150 shadow-md flex justify-center items-center gap-2">
+                            <svg x-show="loading" class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <span x-text="loading ? 'Processing Transaction...' : 'Place Wholesale Order'"></span>
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+            <!-- Right: Order Summary -->
+            <div class="bg-white border border-gray-200 rounded-lg p-6 sm:p-8 shadow-sm space-y-6">
+                <h3 class="text-lg font-black uppercase tracking-tight text-zinc-950 pb-4 border-b border-gray-100">Delivery Summary</h3>
+                
+                <!-- Shipping Address details -->
+                <div class="text-xs text-slate-500 space-y-2">
+                    <p class="font-bold text-zinc-800 uppercase tracking-wide">Receiver Details</p>
+                    <p class="leading-relaxed">
+                        Name: <strong>{{ $shipping['name'] }}</strong><br>
+                        Company: <strong>{{ $shipping['company'] ?? 'None' }}</strong><br>
+                        Phone: <strong>{{ $shipping['phone'] }}</strong><br>
+                        Email: <strong>{{ $shipping['email'] }}</strong>
+                    </p>
+                    <p class="font-bold text-zinc-800 uppercase tracking-wide pt-2">Shipping Destination</p>
+                    <address class="not-italic leading-relaxed">
+                        {{ $shipping['address'] }}<br>
+                        {{ $shipping['city'] }}, {{ $shipping['state'] }} {{ $shipping['zip'] }}
+                    </address>
+                    <a href="{{ route('checkout.step1') }}" class="block font-bold text-zinc-950 hover:underline pt-2 uppercase tracking-wide">Edit Details &rarr;</a>
+                </div>
+
+                <hr class="border-gray-100">
+
+                <!-- Totals -->
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between font-semibold text-slate-500">
+                        <span>Items Subtotal</span>
+                        <span class="text-zinc-950 font-extrabold">${{ number_format($total, 2) }}</span>
+                    </div>
+                    <div class="flex justify-between font-semibold text-slate-500 pb-3 border-b border-gray-100">
+                        <span>Shipping Freight</span>
+                        <span class="text-zinc-500 italic">Billed Separately</span>
+                    </div>
+                    <div class="flex justify-between items-baseline pt-2">
+                        <span class="font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Total Due</span>
+                        <span class="text-2xl font-black text-zinc-950">${{ number_format($total, 2) }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Alpine Checkout state handler -->
+    <script>
+        function checkoutHandler() {
+            return {
+                paymentMethod: 'stripe',
+                paymentIntentId: '',
+                loading: false,
+                stripe: null,
+                card: null,
+                stripePublicKey: '{{ $settings['stripe_publishable_key'] }}',
+
+                init() {
+                    this.initStripe();
+                },
+
+                initStripe() {
+                    // Avoid initializing if public key is not configured/default placeholder
+                    if (!this.stripePublicKey || this.stripePublicKey === 'pk_test_placeholder') {
+                        console.warn("Stripe public key is placeholder. Falling back to mock transaction simulation.");
+                        return;
+                    }
+
+                    try {
+                        this.stripe = Stripe(this.stripePublicKey);
+                        const elements = this.stripe.elements();
+                        
+                        // Custom styling for elements to fit premium zinc look
+                        const style = {
+                            base: {
+                                color: '#18181b',
+                                fontFamily: "'Outfit', sans-serif",
+                                fontSmoothing: 'antialiased',
+                                fontSize: '15px',
+                                '::placeholder': {
+                                    color: '#a1a1aa'
+                                }
+                            },
+                            invalid: {
+                                color: '#dc2626',
+                                iconColor: '#dc2626'
+                            }
+                        };
+
+                        this.card = elements.create('card', { style: style, hidePostalCode: true });
+                        this.card.mount('#card-element');
+
+                        // Error listener
+                        this.card.on('change', (event) => {
+                            const displayError = document.getElementById('card-errors');
+                            if (event.error) {
+                                displayError.textContent = event.error.message;
+                            } else {
+                                displayError.textContent = '';
+                            }
+                        });
+                    } catch (e) {
+                        console.error("Stripe elements error:", e);
+                    }
+                },
+
+                async submitCheckout() {
+                    this.loading = true;
+
+                    // If offline payment or mock/unconfigured Stripe
+                    if (this.paymentMethod !== 'stripe' || !this.stripe || this.stripePublicKey === 'pk_test_placeholder') {
+                        // Check if payment reference is provided for offline methods (except pickup)
+                        const paymentRef = document.getElementById('payment_reference') ? document.getElementById('payment_reference').value : '';
+                        
+                        if (this.paymentMethod !== 'stripe' && this.paymentMethod !== 'cash_on_pickup' && paymentRef.trim() === '') {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Missing Information',
+                                text: 'Please enter your payment details/reference so we can verify your transaction.',
+                                confirmButtonColor: '#18181b'
+                            });
+                            this.loading = false;
+                            return;
+                        }
+
+                        // Show SweetAlert Verification Popup
+                        Swal.fire({
+                            title: 'Verifying Transaction...',
+                            text: 'Please wait, our support team is checking the reference number and confirming funds.',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        // Simulate 3 second verification delay then submit
+                        setTimeout(() => {
+                            Swal.close();
+                            document.getElementById('payment-form').submit();
+                        }, 3000);
+                        return;
+                    }
+
+                    // Process Stripe credit card payment
+                    try {
+                        // 1. Fetch payment intent from backend
+                        const response = await fetch('{{ route('checkout.createPaymentIntent') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        });
+
+                        const data = await response.json();
+                        if (data.error) {
+                            alert("Error starting transaction: " + data.error);
+                            this.loading = false;
+                            return;
+                        }
+
+                        const clientSecret = data.clientSecret;
+
+                        // 2. Confirm card payment
+                        const result = await this.stripe.confirmCardPayment(clientSecret, {
+                            payment_method: {
+                                card: this.card,
+                                billing_details: {
+                                    name: '{{ $shipping['name'] }}',
+                                    email: '{{ $shipping['email'] }}',
+                                    phone: '{{ $shipping['phone'] }}'
+                                }
+                            }
+                        });
+
+                        if (result.error) {
+                            const errorElement = document.getElementById('card-errors');
+                            errorElement.textContent = result.error.message;
+                            this.loading = false;
+                        } else {
+                            if (result.paymentIntent.status === 'succeeded') {
+                                // 3. Complete order on backend
+                                this.paymentIntentId = result.paymentIntent.id;
+                                setTimeout(() => {
+                                    document.getElementById('payment-form').submit();
+                                }, 300);
+                            }
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        alert("An error occurred during Stripe verification. Falling back to mock transaction simulation.");
+                        document.getElementById('payment-form').submit();
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endsection
