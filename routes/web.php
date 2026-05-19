@@ -41,15 +41,17 @@ Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('
 
 /*
 |--------------------------------------------------------------------------
-| Multi-Step Checkout Routes
+| Multi-Step Checkout Routes (Protected by auth)
 |--------------------------------------------------------------------------
 */
-Route::get('/checkout', [CheckoutController::class, 'showStep1'])->name('checkout.step1');
-Route::post('/checkout/step1', [CheckoutController::class, 'submitStep1'])->name('checkout.submitStep1');
-Route::get('/checkout/payment', [CheckoutController::class, 'showPayment'])->name('checkout.payment');
-Route::post('/checkout/pay', [CheckoutController::class, 'processPayment'])->name('checkout.processPayment');
-Route::post('/checkout/create-payment-intent', [CheckoutController::class, 'createPaymentIntent'])->name('checkout.createPaymentIntent');
-Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'showStep1'])->name('checkout.step1');
+    Route::post('/checkout/step1', [CheckoutController::class, 'submitStep1'])->name('checkout.submitStep1');
+    Route::get('/checkout/payment', [CheckoutController::class, 'showPayment'])->name('checkout.payment');
+    Route::post('/checkout/pay', [CheckoutController::class, 'processPayment'])->name('checkout.processPayment');
+    Route::post('/checkout/create-payment-intent', [CheckoutController::class, 'createPaymentIntent'])->name('checkout.createPaymentIntent');
+    Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +97,10 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     // General & Payment Settings
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
     Route::post('/settings', [AdminController::class, 'updateSettings'])->name('settings.update');
+
+    // Visitor Analytics Telemetry Logs
+    Route::get('/logs', [AdminController::class, 'visitLogs'])->name('logs');
+    Route::post('/logs/clear', [AdminController::class, 'clearVisitLogs'])->name('logs.clear');
 });
 
 require __DIR__.'/auth.php';

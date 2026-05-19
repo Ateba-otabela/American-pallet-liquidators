@@ -79,7 +79,7 @@ class AdminController extends Controller
             $images[] = 'https://placehold.co/600x600?text=' . urlencode($request->name);
         }
 
-        Product::create([
+        $product = Product::create([
             'name' => $request->name,
             'slug' => $slug,
             'description' => $request->description,
@@ -91,7 +91,21 @@ class AdminController extends Controller
             'images' => $images,
         ]);
 
-        return redirect()->route('admin.products')->with('success', 'Product created successfully!');
+        // Notify all subscribers about the new wholesale lot
+        try {
+            $subscribers = \App\Models\Subscriber::all();
+            foreach ($subscribers as $subscriber) {
+                try {
+                    \Illuminate\Support\Facades\Mail::to($subscriber->email)->send(new \App\Mail\NewProductNotificationMail($product));
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error('Failed to send product notification to subscriber ' . $subscriber->email . ': ' . $e->getMessage());
+                }
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to notify subscribers about new product: ' . $e->getMessage());
+        }
+
+        return redirect()->route('admin.products')->with('success', 'Product created successfully and subscribers notified!');
     }
 
     /**
@@ -263,5 +277,31 @@ class AdminController extends Controller
         }
 
         return back()->with('success', 'Settings updated successfully.');
+    }
+
+    /**
+     * Display visitor analytics telemetry logs.
+     */
+    public function visitLogs()
+    {
+        $logs = \App\Models\VisitLog::latest()->paginate(50);
+        
+        // Calculate simple metrics for dashboard blocks
+        $totalVisits = \App\Models\VisitLog::count();
+        $mobileVisits = \App\Models\VisitLog::where('device_type', 'Mobile')->count();
+        $tabletVisits = \App\Models\VisitLog::where('device_type', 'Tablet')->count();
+        $desktopVisits = \App\Models\VisitLog::where('device_type', 'Desktop')->count();
+        $uniqueIPs = \App\Models\VisitLog::distinct('ip_address')->count('ip_address');
+
+        return view('admin.logs.index', compact('logs', 'totalVisits', 'mobileVisits', 'tabletVisits', 'desktopVisits', 'uniqueIPs'));
+    }
+
+    /**
+     * Clear all visit logs from database.
+     */
+    public function clearVisitLogs()
+    {
+        \App\Models\VisitLog::truncate();
+        return back()->with('success', 'Visitor analytics logs cleared successfully.');
     }
 }
