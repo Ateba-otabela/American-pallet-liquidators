@@ -120,9 +120,26 @@
                         @if($order->payment_method === 'stripe')
                             <p class="break-all">Stripe Intent ID: <br><strong class="text-zinc-800 font-mono text-[9px]">{{ $order->payment_intent_id ?? 'None' }}</strong></p>
                         @else
-                            <p class="text-amber-600 mb-1">Pending verified offline transfer.</p>
-                            @if($order->payment_intent_id)
-                                <p class="bg-gray-50 border border-gray-200 p-2 rounded break-all">Customer Reference: <strong class="text-zinc-900 font-bold block mt-1">{{ str_replace('Offline Ref: ', '', $order->payment_intent_id) }}</strong></p>
+                            @if($order->transaction_screenshot)
+                                <div class="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded text-[11px] font-bold space-y-1 mb-2">
+                                    <span class="block text-[10px] font-black uppercase tracking-wider text-blue-500 mb-0.5">Payment Submitted for Review</span>
+                                    <p>Ref: <strong class="text-zinc-900 font-mono">{{ $order->transaction_reference }}</strong></p>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="block text-[10px] font-black uppercase tracking-wider text-zinc-400 mb-1">Receipt Screenshot Proof</span>
+                                    <a href="{{ $order->transaction_screenshot }}" target="_blank" class="block border border-gray-200 rounded overflow-hidden shadow-sm hover:opacity-90 transition">
+                                        <img src="{{ $order->transaction_screenshot }}" alt="Receipt Screenshot" class="object-cover w-full h-auto max-h-48" />
+                                    </a>
+                                    <span class="block text-[9px] text-zinc-400 italic text-center mt-1">Click image to view full screen</span>
+                                </div>
+                            @else
+                                <p class="text-amber-600 font-bold bg-amber-50 border border-amber-200 p-3 rounded text-[11px] flex flex-col gap-0.5">
+                                    <span class="text-[9px] font-black uppercase tracking-wider text-amber-500">Awaiting Proof</span>
+                                    Customer has not uploaded payment verification proof yet.
+                                </p>
+                                @if($order->payment_intent_id)
+                                    <p class="bg-gray-50 border border-gray-200 p-2 rounded break-all font-semibold">Checkout Checkout Reference: <strong class="text-zinc-900 font-bold block mt-1">{{ str_replace('Offline Ref: ', '', $order->payment_intent_id) }}</strong></p>
+                                @endif
                             @endif
                         @endif
                     </div>

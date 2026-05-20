@@ -19,6 +19,30 @@
         </form>
     </div>
 
+    <!-- Date Range Filter -->
+    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+        <form method="GET" action="{{ route('admin.logs') }}" class="flex flex-col md:flex-row items-end gap-4">
+            <div class="w-full md:w-1/3">
+                <label for="start_date" class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1.5">Start Date</label>
+                <input type="date" name="start_date" id="start_date" value="{{ $startDate }}" class="w-full text-xs font-semibold border-gray-300 rounded-lg shadow-sm focus:ring-zinc-950 focus:border-zinc-950 px-3 py-2 border">
+            </div>
+            <div class="w-full md:w-1/3">
+                <label for="end_date" class="block text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1.5">End Date</label>
+                <input type="date" name="end_date" id="end_date" value="{{ $endDate }}" class="w-full text-xs font-semibold border-gray-300 rounded-lg shadow-sm focus:ring-zinc-950 focus:border-zinc-950 px-3 py-2 border">
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <button type="submit" class="w-full md:w-auto bg-zinc-950 hover:bg-zinc-900 text-white font-bold text-xs uppercase px-5 py-2.5 rounded shadow transition duration-150">
+                    Apply Filter
+                </button>
+                @if(!empty($startDate) || !empty($endDate))
+                    <a href="{{ route('admin.logs') }}" class="w-full md:w-auto text-center bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-bold text-xs uppercase px-5 py-2.5 rounded transition duration-150">
+                        Clear Filter
+                    </a>
+                @endif
+            </div>
+        </form>
+    </div>
+
     <!-- Telemetry Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         

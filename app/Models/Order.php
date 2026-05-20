@@ -20,7 +20,9 @@ class Order extends Model
         'receiver_info',
         'payment_intent_id',
         'tracking_number',
-        'tracking_url'
+        'tracking_url',
+        'transaction_screenshot',
+        'transaction_reference'
     ];
 
     protected $casts = [

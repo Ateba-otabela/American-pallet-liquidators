@@ -282,18 +282,32 @@ class AdminController extends Controller
     /**
      * Display visitor analytics telemetry logs.
      */
-    public function visitLogs()
+    public function visitLogs(Request $request)
     {
-        $logs = \App\Models\VisitLog::latest()->paginate(50);
+        $query = \App\Models\VisitLog::query();
         
-        // Calculate simple metrics for dashboard blocks
-        $totalVisits = \App\Models\VisitLog::count();
-        $mobileVisits = \App\Models\VisitLog::where('device_type', 'Mobile')->count();
-        $tabletVisits = \App\Models\VisitLog::where('device_type', 'Tablet')->count();
-        $desktopVisits = \App\Models\VisitLog::where('device_type', 'Desktop')->count();
-        $uniqueIPs = \App\Models\VisitLog::distinct('ip_address')->count('ip_address');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        
+        if (!empty($startDate)) {
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+        
+        if (!empty($endDate)) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+        
+        // Paginate logs and preserve query string parameters
+        $logs = (clone $query)->latest()->paginate(50)->withQueryString();
+        
+        // Calculate metrics dynamically based on the filtered results!
+        $totalVisits = (clone $query)->count();
+        $mobileVisits = (clone $query)->where('device_type', 'Mobile')->count();
+        $tabletVisits = (clone $query)->where('device_type', 'Tablet')->count();
+        $desktopVisits = (clone $query)->where('device_type', 'Desktop')->count();
+        $uniqueIPs = (clone $query)->distinct('ip_address')->count('ip_address');
 
-        return view('admin.logs.index', compact('logs', 'totalVisits', 'mobileVisits', 'tabletVisits', 'desktopVisits', 'uniqueIPs'));
+        return view('admin.logs.index', compact('logs', 'totalVisits', 'mobileVisits', 'tabletVisits', 'desktopVisits', 'uniqueIPs', 'startDate', 'endDate'));
     }
 
     /**
