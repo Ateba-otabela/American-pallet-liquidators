@@ -23,7 +23,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-gray-50 text-slate-800 antialiased min-h-screen flex flex-col overflow-x-hidden">
 
     <!-- Announcement Bar -->
     <div class="bg-zinc-950 text-white py-2.5 px-4 text-center text-xs font-semibold tracking-wider uppercase border-b border-zinc-800">
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Main Navigation Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm" x-data="{ open: false }">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm" x-data="{ open: false }" x-init="$watch('open', value => document.body.style.overflow = value ? 'hidden' : '')" @keydown.escape.window="open = false">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 
@@ -41,8 +41,8 @@
                     <a href="{{ route('home') }}" class="flex items-center gap-2 group">
                         <span class="bg-zinc-950 text-white px-3 py-1.5 rounded font-black text-xl tracking-tight shadow-md group-hover:scale-105 transition-transform duration-200">APL</span>
                         <div class="flex flex-col">
-                            <span class="text-zinc-900 font-extrabold text-lg leading-none tracking-tight">AMERICAN PALLET</span>
-                            <span class="text-zinc-500 font-bold text-xs uppercase tracking-widest leading-none mt-0.5">LIQUIDATORS</span>
+                            <span class="text-zinc-900 font-extrabold text-sm sm:text-lg leading-none tracking-tight">AMERICAN PALLET</span>
+                            <span class="text-zinc-500 font-bold text-[10px] sm:text-xs uppercase tracking-widest leading-none mt-0.5">LIQUIDATORS</span>
                         </div>
                     </a>
                 </div>
@@ -59,7 +59,7 @@
                 </nav>
 
                 <!-- Header Actions -->
-                <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-3 sm:space-x-6">
                     
                     <!-- Search Icon Button -->
                     <a href="{{ route('catalog') }}" class="text-zinc-500 hover:text-zinc-950 transition-colors duration-150 hidden sm:block">
@@ -89,7 +89,7 @@
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="text-sm font-semibold tracking-wide text-zinc-600 hover:text-zinc-950 transition duration-150">SIGN IN</a>
+                        <a href="{{ route('login') }}" class="text-sm font-semibold tracking-wide text-zinc-600 hover:text-zinc-950 transition duration-150 hidden sm:block">SIGN IN</a>
                     @endauth
 
                     <!-- Cart Icon with badge count -->
@@ -121,16 +121,56 @@
             </div>
         </div>
 
-        <!-- Mobile Navigation Menu -->
-        <div x-show="open" class="md:hidden border-t border-gray-200 bg-white" x-cloak>
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="{{ route('catalog') }}" class="block px-3 py-2 rounded-md text-base font-semibold text-zinc-700 hover:bg-gray-100">SHOP ALL</a>
-                <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="block px-3 py-2 rounded-md text-base font-semibold text-zinc-700 hover:bg-gray-100">PALLETS</a>
-                <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="block px-3 py-2 rounded-md text-base font-semibold text-zinc-700 hover:bg-gray-100">TRUCKLOADS</a>
-                <a href="{{ route('how-it-works') }}" class="block px-3 py-2 rounded-md text-base font-semibold text-zinc-700 hover:bg-gray-100">HOW IT WORKS</a>
-                <a href="{{ route('sell-to-us') }}" class="block px-3 py-2 rounded-md text-base font-semibold text-zinc-700 hover:bg-gray-100">SELL TO US</a>
-                <a href="{{ route('faq') }}" class="block px-3 py-2 rounded-md text-base font-semibold text-zinc-700 hover:bg-gray-100">FAQ</a>
-                <a href="{{ route('contact') }}" class="block px-3 py-2 rounded-md text-base font-semibold text-zinc-700 hover:bg-gray-100">CONTACT</a>
+        <!-- Mobile Navigation Menu Backdrop -->
+        <div x-show="open" 
+             x-transition:enter="transition-opacity ease-linear duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition-opacity ease-linear duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed top-20 left-0 w-full bottom-0 bg-zinc-950/60 z-40 md:hidden" 
+             @click="open = false"
+             x-cloak></div>
+
+        <!-- Mobile Navigation Menu Panel -->
+        <div x-show="open" 
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="-translate-y-full"
+             x-transition:enter-end="translate-y-0"
+             x-transition:leave="transition ease-in duration-200 transform"
+             x-transition:leave-start="translate-y-0"
+             x-transition:leave-end="-translate-y-full"
+             class="absolute top-full left-0 w-full bg-white border-t border-gray-200 shadow-xl z-50 md:hidden flex flex-col" 
+             x-cloak>
+            <div class="px-4 py-4 space-y-2 overflow-y-auto max-h-[70vh]">
+                <a href="{{ route('catalog') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">SHOP ALL</a>
+                <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">PALLETS</a>
+                <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">TRUCKLOADS</a>
+                <a href="{{ route('how-it-works') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">HOW IT WORKS</a>
+                <a href="{{ route('sell-to-us') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">SELL TO US</a>
+                <a href="{{ route('faq') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">FAQ</a>
+                <a href="{{ route('contact') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">CONTACT</a>
+                
+                <hr class="border-gray-200 my-2">
+                
+                @auth
+                    <div class="px-3 py-2">
+                        <span class="text-xs font-bold text-zinc-500 uppercase tracking-widest">Account</span>
+                    </div>
+                    @if(auth()->user()->is_admin)
+                        <a href="{{ route('admin.dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 transition-colors">Admin Panel</a>
+                    @else
+                        <a href="{{ route('dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 transition-colors">My Dashboard</a>
+                    @endif
+                    <a href="{{ route('profile.edit') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 transition-colors">Profile Settings</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="block w-full text-left px-3 py-3 rounded-md text-base font-bold text-red-600 hover:bg-gray-100 transition-colors">Sign Out</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">SIGN IN</a>
+                @endauth
             </div>
         </div>
     </header>

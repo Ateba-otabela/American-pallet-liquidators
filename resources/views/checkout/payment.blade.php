@@ -137,86 +137,7 @@
                                 <div id="card-errors" class="text-rose-600 text-xs font-semibold" role="alert"></div>
                             </div>
 
-                            <!-- Bank Wire info panel -->
-                            <div x-show="paymentMethod === 'bank_wire'" x-cloak class="space-y-2">
-                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Bank Wire Instructions</span>
-                                <p class="text-zinc-600">Please send a direct bank wire transfer to the following Chase account:</p>
-                                <ul class="space-y-1.5 text-xs font-bold text-zinc-800 bg-white p-4 border border-gray-200 rounded">
-                                    <li>Bank Name: {{ $settings['bank_name'] }}</li>
-                                    <li>Account Name: {{ $settings['bank_account_name'] }}</li>
-                                    <li>Routing Number: {{ $settings['bank_routing_number'] }}</li>
-                                    <li>Account Number: {{ $settings['bank_account_number'] }}</li>
-                                </ul>
-                                <p class="text-zinc-500 text-xs mt-2 italic">Instruction: Reference your order number in the wire description. Orders ship once wire funds clear.</p>
-                            </div>
-
-                            <!-- Zelle info panel -->
-                            <div x-show="paymentMethod === 'zelle'" x-cloak class="space-y-2">
-                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Zelle Business Payment</span>
-                                <p class="text-zinc-600">Transfer payment via Zelle directly to our business contact email:</p>
-                                <div class="bg-white p-4 border border-gray-200 rounded font-bold text-zinc-950 text-base text-center">
-                                    {{ $settings['zelle_email'] }}
-                                </div>
-                                <p class="text-zinc-500 text-xs italic">Please add your order number in the Zelle memo box.</p>
-                            </div>
-
-                            <!-- Cash App info panel -->
-                            <div x-show="paymentMethod === 'cash_app'" x-cloak class="space-y-2">
-                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Cash App Payment</span>
-                                <p class="text-zinc-600">Send your total order balance to our business Cash App $cashtag:</p>
-                                <div class="bg-white p-4 border border-gray-200 rounded font-bold text-zinc-950 text-xl text-center">
-                                    {{ $settings['cash_app_cashtag'] }}
-                                </div>
-                                <p class="text-zinc-500 text-xs italic">Include your name and order number in the payment notes.</p>
-                            </div>
-
-                            <!-- Venmo info panel -->
-                            <div x-show="paymentMethod === 'venmo'" x-cloak class="space-y-2">
-                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Venmo Business Payment</span>
-                                <p class="text-zinc-600">Transfer payment via mobile Venmo to our merchant profile handle:</p>
-                                <div class="bg-white p-4 border border-gray-200 rounded font-bold text-zinc-950 text-lg text-center">
-                                    {{ $settings['venmo_handle'] }}
-                                </div>
-                            </div>
-
-                            <!-- PayPal info panel -->
-                            <div x-show="paymentMethod === 'paypal'" x-cloak class="space-y-2">
-                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">PayPal Merchant Transfer</span>
-                                <p class="text-zinc-600">Submit a standard balance transfer to our verified merchant email:</p>
-                                <div class="bg-white p-4 border border-gray-200 rounded font-bold text-zinc-950 text-base text-center">
-                                    {{ $settings['paypal_email'] }}
-                                </div>
-                            </div>
-
-                            <!-- USDT info panel -->
-                            <div x-show="paymentMethod === 'usdt'" x-cloak class="space-y-2">
-                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">USDT Crypto Settlement</span>
-                                <p class="text-zinc-600">Transfer exact equivalent USD balance to our USDT deposit address (supports TRC-20 and ERC-20 protocols):</p>
-                                <div class="bg-white p-4 border border-gray-200 rounded font-mono text-[10px] sm:text-xs text-zinc-800 break-all select-all font-bold text-center">
-                                    {{ $settings['USDT_address'] }}
-                                </div>
-                                <p class="text-zinc-500 text-xs italic">Submit transaction receipt / hash to support for immediate order confirmation.</p>
-                            </div>
-
-                            <!-- Pickup info panel -->
-                            <div x-show="paymentMethod === 'cash_on_pickup'" x-cloak class="space-y-2">
-                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-3">Cash on Pickup Details</span>
-                                <p class="text-zinc-600">Pay cash in person at our loading dock facility:</p>
-                                <ul class="space-y-1.5 text-xs text-zinc-500">
-                                    <li>Location: <strong class="text-zinc-800">APL Warehouse, Louisville, KY</strong></li>
-                                    <li>Hours: <strong class="text-zinc-800">Mon - Fri, 9:00 AM - 5:00 PM EST</strong></li>
-                                    <li>Terms: <strong class="text-zinc-800">Inspect pallets before paying. Free forklift loading provided.</strong></li>
-                                </ul>
-                            </div>
-
-                            <!-- User Input for Payment Reference (Shows for all offline methods) -->
-                            <div x-show="paymentMethod !== 'stripe' && paymentMethod !== 'cash_on_pickup'" x-cloak class="mt-6 pt-6 border-t border-gray-200">
-                                <label for="payment_reference" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-2">
-                                    Enter Your Payment Details / Reference
-                                </label>
-                                <input type="text" id="payment_reference" name="payment_reference" class="w-full bg-white border border-gray-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800 placeholder-zinc-400" placeholder="e.g. Your $Cashtag, Zelle Name, or Bank Name..." />
-                                <p class="text-[10px] text-zinc-500 mt-1.5 uppercase font-bold tracking-wide">This helps our accounting team verify your transaction immediately.</p>
-                            </div>
+                            <!-- Offline payment info has been moved to the user dashboard -->
 
                         </div>
 
@@ -338,37 +259,8 @@
 
                     // If offline payment or mock/unconfigured Stripe
                     if (this.paymentMethod !== 'stripe' || !this.stripe || this.stripePublicKey === 'pk_test_placeholder') {
-                        // Check if payment reference is provided for offline methods (except pickup)
-                        const paymentRef = document.getElementById('payment_reference') ? document.getElementById('payment_reference').value : '';
-                        
-                        if (this.paymentMethod !== 'stripe' && this.paymentMethod !== 'cash_on_pickup' && paymentRef.trim() === '') {
-                            Swal.fire({
-                                icon: 'warning',
-                                title: 'Missing Information',
-                                text: 'Please enter your payment details/reference so we can verify your transaction.',
-                                confirmButtonColor: '#18181b'
-                            });
-                            this.loading = false;
-                            return;
-                        }
-
-                        // Show SweetAlert Verification Popup
-                        Swal.fire({
-                            title: 'Verifying Transaction...',
-                            text: 'Please wait, our support team is checking the reference number and confirming funds.',
-                            icon: 'info',
-                            allowOutsideClick: false,
-                            showConfirmButton: false,
-                            didOpen: () => {
-                                Swal.showLoading();
-                            }
-                        });
-
-                        // Simulate 3 second verification delay then submit
-                        setTimeout(() => {
-                            Swal.close();
-                            document.getElementById('payment-form').submit();
-                        }, 3000);
+                        // Submit immediately to create the order
+                        document.getElementById('payment-form').submit();
                         return;
                     }
 

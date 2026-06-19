@@ -27,17 +27,56 @@
         <!-- Main Product Block -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white border border-gray-200 rounded-xl p-6 sm:p-8 shadow-sm">
             
-            <!-- Left Column: Product Image -->
-            <div class="flex flex-col space-y-4">
-                <div class="relative aspect-square bg-gray-50 border border-gray-200 rounded-lg overflow-hidden flex items-center justify-center p-8">
+            <!-- Left Column: Product Image Gallery -->
+            <div class="flex flex-col space-y-3" x-data="{ activeImg: 0, images: {{ json_encode($product->images ?? [$product->first_image_url]) }} }">
+
+                <!-- Main Image Display -->
+                <div class="relative aspect-square bg-gray-50 border border-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
                     @if($product->badge == 'sold_out')
                         <span class="absolute top-4 left-4 bg-zinc-950 text-white text-xs font-black uppercase tracking-widest px-3 py-1.5 rounded z-10">Sold Out</span>
                     @elseif($product->badge == 'sale')
                         <span class="absolute top-4 left-4 bg-red-600 text-white text-xs font-black uppercase tracking-widest px-3 py-1.5 rounded z-10 shadow">On Sale</span>
                     @endif
 
-                    <img src="{{ $product->first_image_url }}" alt="{{ $product->name }}" class="object-cover max-h-full max-w-full" />
+                    <!-- Image count badge -->
+                    <span class="absolute bottom-3 right-3 bg-zinc-950/70 text-white text-[10px] font-black px-2.5 py-1 rounded-full z-10 backdrop-blur-sm" x-text="(activeImg + 1) + ' / ' + images.length"></span>
+
+                    <template x-for="(img, i) in images" :key="i">
+                        <img :src="img" :alt="'Product image ' + (i+1)"
+                             x-show="activeImg === i"
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             class="object-contain max-h-full max-w-full absolute inset-0 m-auto" />
+                    </template>
+
+                    <!-- Arrow nav (only show if more than 1 image) -->
+                    <template x-if="images.length > 1">
+                        <div>
+                            <button @click="activeImg = (activeImg - 1 + images.length) % images.length"
+                                    class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-md rounded-full h-9 w-9 flex items-center justify-center z-20 transition">
+                                <svg class="h-4 w-4 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                            </button>
+                            <button @click="activeImg = (activeImg + 1) % images.length"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-md rounded-full h-9 w-9 flex items-center justify-center z-20 transition">
+                                <svg class="h-4 w-4 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </template>
                 </div>
+
+                <!-- Thumbnail Strip — scrollable left to right -->
+                <template x-if="images.length > 1">
+                    <div class="flex gap-2 overflow-x-auto pb-1 scroll-smooth" style="scrollbar-width: thin;">
+                        <template x-for="(img, i) in images" :key="i">
+                            <button @click="activeImg = i"
+                                    :class="activeImg === i ? 'border-zinc-950 ring-2 ring-zinc-950' : 'border-gray-200 hover:border-zinc-400'"
+                                    class="flex-shrink-0 h-16 w-16 rounded-md overflow-hidden border-2 transition-all duration-150">
+                                <img :src="img" class="h-full w-full object-cover" />
+                            </button>
+                        </template>
+                    </div>
+                </template>
             </div>
 
             <!-- Right Column: Product Actions & Description -->

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Your Order has been Processed</title>
+    <title>Order Status Update</title>
     <style>
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f4f5; margin: 0; padding: 20px; color: #18181b; }
         .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
@@ -29,9 +29,9 @@
         </div>
         
         <div class="content">
-            <h2>Order Processed!</h2>
+            <h2>Order Status Update</h2>
             <p>Hello <strong>{{ $order->receiver_info['name'] }}</strong>,</p>
-            <p>Great news! Your order <strong>{{ $order->order_number }}</strong> has been processed and is preparing for shipment. Below are your tracking details and order summary.</p>
+            <p>Great news! The status of your order <strong>{{ $order->order_number }}</strong> has been updated to: <strong style="text-transform: uppercase;">{{ str_replace('_', ' ', $order->status) }}</strong>.</p>
 
             @if($order->tracking_number)
             <div class="tracking-box">

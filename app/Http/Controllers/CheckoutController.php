@@ -202,7 +202,7 @@ class CheckoutController extends Controller
 
         // Send email notification to Admin
         try {
-            $adminEmail = Setting::get('contact_email', 'Brett@bidonpallets.com');
+            $adminEmail = 'americanpalletliquidators0@gmail.com';
             \Illuminate\Support\Facades\Mail::to($adminEmail)->send(new \App\Mail\AdminNewOrderMail($order));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Failed to send admin order notification: ' . $e->getMessage());

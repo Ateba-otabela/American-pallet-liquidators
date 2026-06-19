@@ -98,6 +98,9 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     // Visitor Analytics Telemetry Logs
     Route::get('/logs', [AdminController::class, 'visitLogs'])->name('logs');
     Route::post('/logs/clear', [AdminController::class, 'clearVisitLogs'])->name('logs.clear');
+
+    // Users Management
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
 });
 
 require __DIR__.'/auth.php';

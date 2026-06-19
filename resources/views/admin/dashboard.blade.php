@@ -40,6 +40,12 @@
                     {{ $lowStockProducts->count() }} Lot(s)
                 </span>
             </div>
+
+            <!-- Registered Users Count -->
+            <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                <span class="block text-xs font-black uppercase tracking-wider text-zinc-400 mb-2">Registered Users</span>
+                <a href="{{ route('admin.users') }}" class="block text-2xl font-black text-zinc-950 hover:text-zinc-600 transition">{{ $usersCount }}</a>
+            </div>
         </div>
 
         <!-- Main section grid -->

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -19,6 +20,7 @@ class AdminController extends Controller
         $totalSales = Order::where('status', '!=', 'cancelled')->sum('total');
         $ordersCount = Order::count();
         $productsCount = Product::count();
+        $usersCount = User::where('is_admin', false)->count();
         $lowStockProducts = Product::where('stock', '<=', 3)->get();
         
         $recentOrders = Order::with('user')
@@ -26,7 +28,7 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact('totalSales', 'ordersCount', 'productsCount', 'lowStockProducts', 'recentOrders'));
+        return view('admin.dashboard', compact('totalSales', 'ordersCount', 'productsCount', 'usersCount', 'lowStockProducts', 'recentOrders'));
     }
 
     /**
@@ -58,10 +60,29 @@ class AdminController extends Controller
             'price' => 'required|numeric|min:0',
             'original_price' => 'nullable|numeric|min:0',
             'badge' => 'nullable|string|in:sale,sold_out',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required',
+            'new_category_name' => 'required_if:category_id,new|string|max:255|nullable',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|max:5120',
+            'images.*' => 'nullable|image|max:5120',
         ]);
+
+        $categoryId = $request->category_id;
+        if ($categoryId === 'new') {
+            $catSlug = Str::slug($request->new_category_name);
+            $origCatSlug = $catSlug;
+            $catCount = 1;
+            while (Category::where('slug', $catSlug)->exists()) {
+                $catSlug = $origCatSlug . '-' . $catCount++;
+            }
+            $category = Category::create([
+                'name' => $request->new_category_name,
+                'slug' => $catSlug,
+                'description' => $request->new_category_name,
+            ]);
+            $categoryId = $category->id;
+        } else {
+            $request->validate(['category_id' => 'exists:categories,id']);
+        }
 
         $slug = Str::slug($request->name);
         // Ensure slug is unique
@@ -72,10 +93,13 @@ class AdminController extends Controller
         }
 
         $images = [];
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $images[] = '/storage/' . $path;
-        } else {
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('products', 'public');
+                $images[] = '/storage/' . $path;
+            }
+        }
+        if (empty($images)) {
             $images[] = 'https://placehold.co/600x600?text=' . urlencode($request->name);
         }
 
@@ -86,26 +110,47 @@ class AdminController extends Controller
             'price' => $request->price,
             'original_price' => $request->original_price,
             'badge' => $request->badge,
-            'category_id' => $request->category_id,
+            'category_id' => $categoryId,
             'stock' => $request->stock,
             'images' => $images,
         ]);
 
-        // Notify all subscribers about the new wholesale lot
+        // Notify all registered users about the new wholesale lot
+        $notified = [];
+        try {
+            $users = User::all();
+            foreach ($users as $user) {
+                if (!in_array($user->email, $notified)) {
+                    try {
+                        \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\NewProductNotificationMail($product));
+                        $notified[] = $user->email;
+                    } catch (\Exception $e) {
+                        \Illuminate\Support\Facades\Log::error('Failed to send product notification to user ' . $user->email . ': ' . $e->getMessage());
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to notify users about new product: ' . $e->getMessage());
+        }
+
+        // Also notify email subscribers who are not already registered users
         try {
             $subscribers = \App\Models\Subscriber::all();
             foreach ($subscribers as $subscriber) {
-                try {
-                    \Illuminate\Support\Facades\Mail::to($subscriber->email)->send(new \App\Mail\NewProductNotificationMail($product));
-                } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::error('Failed to send product notification to subscriber ' . $subscriber->email . ': ' . $e->getMessage());
+                if (!in_array($subscriber->email, $notified)) {
+                    try {
+                        \Illuminate\Support\Facades\Mail::to($subscriber->email)->send(new \App\Mail\NewProductNotificationMail($product));
+                        $notified[] = $subscriber->email;
+                    } catch (\Exception $e) {
+                        \Illuminate\Support\Facades\Log::error('Failed to send product notification to subscriber ' . $subscriber->email . ': ' . $e->getMessage());
+                    }
                 }
             }
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Failed to notify subscribers about new product: ' . $e->getMessage());
         }
 
-        return redirect()->route('admin.products')->with('success', 'Product created successfully and subscribers notified!');
+        return redirect()->route('admin.products')->with('success', 'Product created successfully! Notifications sent to all users and subscribers.');
     }
 
     /**
@@ -128,15 +173,50 @@ class AdminController extends Controller
             'price' => 'required|numeric|min:0',
             'original_price' => 'nullable|numeric|min:0',
             'badge' => 'nullable|string|in:sale,sold_out',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required',
+            'new_category_name' => 'required_if:category_id,new|string|max:255|nullable',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|max:5120',
+            'images.*' => 'nullable|image|max:5120',
         ]);
 
-        $images = $product->images;
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $images = ['/storage/' . $path];
+        $categoryId = $request->category_id;
+        if ($categoryId === 'new') {
+            $catSlug = Str::slug($request->new_category_name);
+            $origCatSlug = $catSlug;
+            $catCount = 1;
+            while (Category::where('slug', $catSlug)->exists()) {
+                $catSlug = $origCatSlug . '-' . $catCount++;
+            }
+            $category = Category::create([
+                'name' => $request->new_category_name,
+                'slug' => $catSlug,
+                'description' => $request->new_category_name,
+            ]);
+            $categoryId = $category->id;
+        } else {
+            $request->validate(['category_id' => 'exists:categories,id']);
+        }
+
+        // Start with existing images, remove checked ones
+        $images = $product->images ?? [];
+        $toRemove = $request->input('remove_images', []);
+        if (!empty($toRemove)) {
+            foreach ($toRemove as $idx) {
+                unset($images[$idx]);
+            }
+            $images = array_values($images);
+        }
+
+        // Append newly uploaded images
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('products', 'public');
+                $images[] = '/storage/' . $path;
+            }
+        }
+
+        if (empty($images)) {
+            $images[] = 'https://placehold.co/600x600?text=' . urlencode($request->name);
         }
 
         $product->update([
@@ -145,7 +225,7 @@ class AdminController extends Controller
             'price' => $request->price,
             'original_price' => $request->original_price,
             'badge' => $request->badge,
-            'category_id' => $request->category_id,
+            'category_id' => $categoryId,
             'stock' => $request->stock,
             'images' => $images,
         ]);
@@ -222,7 +302,7 @@ class AdminController extends Controller
         $statusChanged = $originalStatus !== $newStatus;
         $trackingUpdated = $order->wasChanged('tracking_number') && !empty($order->tracking_number);
 
-        if (($statusChanged || $trackingUpdated) && in_array($newStatus, ['processing', 'shipped'])) {
+        if ($statusChanged || $trackingUpdated) {
             try {
                 \Illuminate\Support\Facades\Mail::to($order->receiver_info['email'])->send(new \App\Mail\OrderProcessedMail($order));
             } catch (\Exception $e) {
@@ -317,5 +397,17 @@ class AdminController extends Controller
     {
         \App\Models\VisitLog::truncate();
         return back()->with('success', 'Visitor analytics logs cleared successfully.');
+    }
+
+    /**
+     * List all registered users.
+     */
+    public function users()
+    {
+        $users = User::withCount('orders')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+        $usersCount = User::where('is_admin', false)->count();
+        return view('admin.users', compact('users', 'usersCount'));
     }
 }

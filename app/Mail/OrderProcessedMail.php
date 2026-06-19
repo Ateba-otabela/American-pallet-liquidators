@@ -30,7 +30,7 @@ class OrderProcessedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Your Order has been Processed! - ' . $this->order->order_number,
+            subject: 'Order Status Update: ' . ucwords(str_replace('_', ' ', $this->order->status)) . ' - ' . $this->order->order_number,
         );
     }
 

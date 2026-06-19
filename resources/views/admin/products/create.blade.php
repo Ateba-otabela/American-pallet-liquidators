@@ -17,15 +17,22 @@
                     <input type="text" id="name" name="name" required value="{{ old('name') }}" placeholder="Target General Merchandise Truckload" class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
                     @error('name') <p class="text-rose-500 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
                 </div>
-                <div>
+                <div x-data="{ isNew: {{ old('category_id') === 'new' ? 'true' : 'false' }} }">
                     <label for="category_id" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-1.5">Category *</label>
-                    <select id="category_id" name="category_id" required class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800 font-semibold">
-                        <option value="" disabled selected>Select Category...</option>
+                    <select id="category_id" name="category_id" x-on:change="isNew = $event.target.value === 'new'" required class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800 font-semibold">
+                        <option value="" disabled {{ old('category_id') ? '' : 'selected' }}>Select Category...</option>
+                        <option value="new" {{ old('category_id') === 'new' ? 'selected' : '' }} class="font-bold text-zinc-950 bg-gray-100">+ Create New Category</option>
                         @foreach($categories as $cat)
                             <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
                         @endforeach
                     </select>
                     @error('category_id') <p class="text-rose-500 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
+
+                    <div x-show="isNew" x-cloak class="mt-3">
+                        <label for="new_category_name" class="block text-[10px] font-black uppercase tracking-wider text-zinc-600 mb-1">New Category Name *</label>
+                        <input type="text" id="new_category_name" name="new_category_name" value="{{ old('new_category_name') }}" placeholder="e.g. Health & Beauty" class="w-full bg-white border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
+                        @error('new_category_name') <p class="text-rose-500 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
+                    </div>
                 </div>
             </div>
 
@@ -57,10 +64,16 @@
                     </select>
                     @error('badge') <p class="text-rose-500 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
                 </div>
-                <div>
-                    <label for="image" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-1.5">Product Image (Upload)</label>
-                    <input type="file" id="image" name="image" accept="image/*" class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
-                    @error('image') <p class="text-rose-500 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
+                <div class="sm:col-span-2">
+                    <label for="images" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-1.5">Product Images — Upload Multiple</label>
+                    <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-zinc-500 transition cursor-pointer" onclick="document.getElementById('images').click()">
+                        <svg class="h-8 w-8 text-zinc-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <p class="text-xs font-bold text-zinc-500">Click to select images or drag & drop</p>
+                        <p class="text-[10px] text-zinc-400 mt-1">PNG, JPG, WEBP — Max 5MB each — Multiple allowed</p>
+                        <input type="file" id="images" name="images[]" accept="image/*" multiple class="hidden" onchange="previewImages(this)" />
+                    </div>
+                    <div id="image-preview" class="flex gap-3 mt-3 flex-wrap"></div>
+                    @error('images.*') <p class="text-rose-500 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
                 </div>
             </div>
 
@@ -76,4 +89,21 @@
         </form>
 
     </div>
+
+    <script>
+        function previewImages(input) {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = '';
+            Array.from(input.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const div = document.createElement('div');
+                    div.className = 'relative h-20 w-20 rounded-lg overflow-hidden border-2 border-gray-200 flex-shrink-0';
+                    div.innerHTML = `<img src="${e.target.result}" class="h-full w-full object-cover" />`;
+                    preview.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
 @endsection

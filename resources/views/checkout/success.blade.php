@@ -25,41 +25,15 @@
                         Thank you! Your credit card payment has been successfully processed. Our warehouse logistics team is starting to process your wholesale order. We will reach out to schedule loading dock pickups or arrange nationwide freight transit.
                     </p>
                 @else
-                    <span class="block font-black uppercase tracking-wider text-xs mb-1.5 text-amber-950">Order Received — Verifying Payment</span>
+                    <span class="block font-black uppercase tracking-wider text-xs mb-1.5 text-amber-950">Order Placed — Payment Required</span>
                     <p class="leading-relaxed text-xs mb-4">
-                        We have successfully captured your transaction reference! Our support team is currently verifying your payment. <br><br>
-                        <strong>Please be aware that this verification process may take a little bit of time.</strong> Once the funds are confirmed and your order is processed, you will automatically receive an email confirmation containing your shipping and tracking details.
+                        We have successfully received your wholesale order! However, it is currently pending payment. <br><br>
+                        <strong>Please go to your account dashboard to view the payment credentials for your selected method, complete the transaction, and submit your payment screenshot and ID.</strong> Once verified, your order will be shipped.
                     </p>
                     
-                    <!-- Specific details -->
-                    <div class="bg-white p-4 rounded border border-gray-200 text-zinc-800 text-xs font-bold space-y-2">
-                        @if($order->payment_method === 'bank_wire')
-                            <p class="uppercase tracking-wider text-[10px] text-zinc-400">Bank Wire Details</p>
-                            <p>Bank Name: {{ $settings['bank_name'] }}</p>
-                            <p>Account Name: {{ $settings['bank_account_name'] }}</p>
-                            <p>Routing: {{ $settings['bank_routing_number'] }}</p>
-                            <p>Account: {{ $settings['bank_account_number'] }}</p>
-                        @elseif($order->payment_method === 'zelle')
-                            <p class="uppercase tracking-wider text-[10px] text-zinc-400">Zelle Business Contact</p>
-                            <p class="text-zinc-950 text-sm">{{ $settings['zelle_email'] }}</p>
-                        @elseif($order->payment_method === 'cash_app')
-                            <p class="uppercase tracking-wider text-[10px] text-zinc-400">Business $cashtag</p>
-                            <p class="text-zinc-950 text-base">{{ $settings['cash_app_cashtag'] }}</p>
-                        @elseif($order->payment_method === 'venmo')
-                            <p class="uppercase tracking-wider text-[10px] text-zinc-400">Venmo Profile Handle</p>
-                            <p class="text-zinc-950 text-base">{{ $settings['venmo_handle'] }}</p>
-                        @elseif($order->payment_method === 'paypal')
-                            <p class="uppercase tracking-wider text-[10px] text-zinc-400">PayPal Merchant Email</p>
-                            <p class="text-zinc-950">{{ $settings['paypal_email'] }}</p>
-                        @elseif($order->payment_method === 'usdt')
-                            <p class="uppercase tracking-wider text-[10px] text-zinc-400">USDT Deposit Address</p>
-                            <p class="font-mono break-all text-[10px] select-all bg-gray-50 p-2 rounded">{{ $settings['USDT_address'] }}</p>
-                        @elseif($order->payment_method === 'cash_on_pickup')
-                            <p class="uppercase tracking-wider text-[10px] text-zinc-400">Louisville Warehouse Pickup</p>
-                            <p>Address: APL Warehouse, Louisville, KY</p>
-                            <p>Instructions: Pay cash in person at loading dock after inspecting pallets.</p>
-                        @endif
-                    </div>
+                    <a href="{{ route('dashboard') }}" class="inline-block bg-zinc-950 text-white font-bold px-6 py-2.5 rounded text-xs uppercase tracking-widest hover:bg-zinc-800 transition shadow">
+                        Go to My Dashboard
+                    </a>
                 @endif
             </div>
 
@@ -102,4 +76,24 @@
         </div>
 
     </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if($order->payment_method !== 'stripe')
+            Swal.fire({
+                icon: 'success',
+                title: 'Order Placed Successfully!',
+                text: 'Please go to your orders to view your payment credentials, complete the payment, and submit your transaction screenshot and ID.',
+                confirmButtonText: 'Go to Dashboard',
+                confirmButtonColor: '#18181b',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "{{ route('dashboard') }}";
+                }
+            });
+            @endif
+        });
+    </script>
 @endsection
