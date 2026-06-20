@@ -88,7 +88,7 @@
 
                                 <!-- Joined Date -->
                                 <td class="px-5 py-4 text-zinc-500 font-semibold text-xs">
-                                    {{ $user->created_at->format('M d, Y') }}
+                                    {{ optional($user->created_at)->format('M d, Y') ?: 'N/A' }}
                                 </td>
 
                                 <!-- Email Verified -->

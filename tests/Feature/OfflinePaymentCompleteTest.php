@@ -164,7 +164,7 @@ class OfflinePaymentCompleteTest extends TestCase
         // Assert email notification is sent to admin
         Mail::assertSent(AdminPaymentSubmittedMail::class, function ($mail) use ($order) {
             return $mail->order->id === $order->id &&
-                   $mail->hasTo('Brett@bidonpallets.com');
+                   $mail->hasTo('americanpalletliquidators0@gmail.com');
         });
     }
 

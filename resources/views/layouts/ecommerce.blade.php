@@ -28,7 +28,7 @@
     <!-- Announcement Bar -->
     <div class="bg-zinc-950 text-white py-2.5 px-4 text-center text-xs font-semibold tracking-wider uppercase border-b border-zinc-800">
         <span>America's Most Trusted Supplier of Liquidated Merchandise — Call us today: </span>
-        <a href="tel:5022081035" class="underline hover:text-zinc-300 transition duration-150">(502) 208-1035</a>
+        <a href="tel:+447882769759" class="underline hover:text-zinc-300 transition duration-150">+44 7882 769759</a>
     </div>
 
     <!-- Main Navigation Header -->
@@ -248,11 +248,11 @@
                 <ul class="space-y-3 text-sm">
                     <li class="flex items-center gap-2">
                         <svg class="h-4 w-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                        <a href="tel:5022081035" class="text-zinc-300 hover:text-white transition">(502) 208-1035</a>
+                        <a href="tel:+447882769759" class="text-zinc-300 hover:text-white transition">+44 7882 769759</a>
                     </li>
                     <li class="flex items-center gap-2">
                         <svg class="h-4 w-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        <a href="mailto:Brett@bidonpallets.com" class="text-zinc-300 hover:text-white transition">Brett@bidonpallets.com</a>
+                        <a href="mailto:americanpalletliquidators0@gmail.com" class="text-zinc-300 hover:text-white transition">americanpalletliquidators0@gmail.com</a>
                     </li>
                 </ul>
             </div>

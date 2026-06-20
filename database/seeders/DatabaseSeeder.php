@@ -148,8 +148,8 @@ class DatabaseSeeder extends Seeder
         // Seed settings
         $settings = [
             'site_name' => 'American Pallet Liquidators',
-            'contact_email' => 'Brett@bidonpallets.com',
-            'contact_phone' => '(502) 208-1035',
+            'contact_email' => 'americanpalletliquidators0@gmail.com',
+            'contact_phone' => '+44 7882 769759',
             'bank_name' => 'Chase Bank',
             'bank_account_name' => 'American Pallet Liquidators LLC',
             'bank_routing_number' => '123456789',

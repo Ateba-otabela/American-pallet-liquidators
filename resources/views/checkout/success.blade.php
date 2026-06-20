@@ -42,7 +42,7 @@
                 <a href="{{ route('catalog') }}" class="bg-zinc-950 text-white font-extrabold px-8 py-3.5 rounded text-xs uppercase tracking-widest hover:bg-zinc-800 transition duration-150 shadow">
                     Continue Shopping
                 </a>
-                <a href="tel:5022081035" class="bg-white border border-gray-300 text-zinc-950 font-extrabold px-8 py-3.5 rounded text-xs uppercase tracking-widest hover:bg-gray-100 transition duration-150">
+                <a href="tel:+447882769759" class="bg-white border border-gray-300 text-zinc-950 font-extrabold px-8 py-3.5 rounded text-xs uppercase tracking-widest hover:bg-gray-100 transition duration-150">
                     Call Logistics Support
                 </a>
             </div>

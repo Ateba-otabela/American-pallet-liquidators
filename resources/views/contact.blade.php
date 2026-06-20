@@ -27,7 +27,7 @@
                             </span>
                             <div>
                                 <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">Phone Call / SMS Support</span>
-                                <a href="tel:5022081035" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline">(502) 208-1035</a>
+                                <a href="tel:+447882769759" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline">+44 7882 769759</a>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
@@ -36,7 +36,7 @@
                             </span>
                             <div>
                                 <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">General &amp; Sales Email</span>
-                                <a href="mailto:Brett@bidonpallets.com" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline">Brett@bidonpallets.com</a>
+                                <a href="mailto:americanpalletliquidators0@gmail.com" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline">americanpalletliquidators0@gmail.com</a>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
