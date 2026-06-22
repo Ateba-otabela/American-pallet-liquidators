@@ -39,7 +39,7 @@
                 <div class="w-full md:w-1/2 order-2 md:order-1 bg-white border border-gray-200 rounded-lg p-6 sm:p-8 shadow-sm">
                     <span class="text-zinc-400 text-[10px] font-bold uppercase tracking-widest block mb-1">Step Two</span>
                     <h3 class="text-xl font-extrabold text-zinc-950 uppercase tracking-tight mb-3">Add to Cart &amp; Checkout</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">Add the selected lots to your shopping cart. Fill in your billing and shipping/receiver details in Step 1 of checkout. Our checkout securely handles high-value wholesale transactions and protects your customer data.</p>
+                    <p class="text-slate-500 text-sm leading-relaxed">Add your selected lots to the cart and proceed to checkout. Fill in your shipping details, select your preferred offline payment method, and place your order.</p>
                 </div>
             </div>
 
@@ -50,8 +50,8 @@
                 </div>
                 <div class="w-full md:w-1/2 bg-white border border-gray-200 rounded-lg p-6 sm:p-8 shadow-sm">
                     <span class="text-zinc-400 text-[10px] font-bold uppercase tracking-widest block mb-1">Step Three</span>
-                    <h3 class="text-xl font-extrabold text-zinc-950 uppercase tracking-tight mb-3">Choose Your Payment Method</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">We support 8 flexible payment methods. Select Zelle, Wire Transfer, Venmo, Cash App, PayPal, USDT crypto, or pay with your debit/credit card via secure Stripe Elements. You can also select "Cash on Pickup" to pay cash in person when you pick up at our warehouse.</p>
+                    <h3 class="text-xl font-extrabold text-zinc-950 uppercase tracking-tight mb-3">Receive Payment Details</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Once you place an order, you will receive an email containing your order confirmation along with our payment details.</p>
                 </div>
             </div>
 
@@ -62,8 +62,8 @@
                 </div>
                 <div class="w-full md:w-1/2 order-2 md:order-1 bg-white border border-gray-200 rounded-lg p-6 sm:p-8 shadow-sm">
                     <span class="text-zinc-400 text-[10px] font-bold uppercase tracking-widest block mb-1">Step Four</span>
-                    <h3 class="text-xl font-extrabold text-zinc-950 uppercase tracking-tight mb-3">Schedule Warehouse Pickup or Ship</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">Once payment is completed or order is submitted, contact us to schedule free dock loading at our Louisville, KY warehouse. If you need freight shipping, we will arrange commercial carrier transit and bill freight shipping rates separately to save you money.</p>
+                    <h3 class="text-xl font-extrabold text-zinc-950 uppercase tracking-tight mb-3">Make Payment &amp; Submit Proof</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Make the payment offline using the provided details. Then, go to your order page, click on "Complete Order", and submit a screenshot of the payment along with the payment reference to verify your transaction.</p>
                 </div>
             </div>
 
@@ -74,8 +74,8 @@
                 </div>
                 <div class="w-full md:w-1/2 bg-white border border-gray-200 rounded-lg p-6 sm:p-8 shadow-sm">
                     <span class="text-zinc-400 text-[10px] font-bold uppercase tracking-widest block mb-1">Step Five</span>
-                    <h3 class="text-xl font-extrabold text-zinc-950 uppercase tracking-tight mb-3">Process, List, &amp; Profit</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">This is where the magic happens! Process your pallet. Sort items by category. List smaller products on eBay, Amazon, Poshmark, or Mercari. Sell bulk goods in your physical bin store or flea market stall. Resellers routinely multiply their initial wholesale pallet investment!</p>
+                    <h3 class="text-xl font-extrabold text-zinc-950 uppercase tracking-tight mb-3">Schedule Logistics &amp; Profit</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Once your payment is verified, contact us to schedule free dock loading or let us arrange commercial freight shipping. Process your pallet, list your items, and start profiting!</p>
                 </div>
             </div>
 
