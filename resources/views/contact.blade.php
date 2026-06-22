@@ -81,35 +81,45 @@
                     </div>
                 @endif
 
-                <form action="{{ route('contact.submit') }}" method="POST" class="space-y-4">
-                    @csrf
+                <script>
+                    function sendToWhatsapp(event) {
+                        event.preventDefault();
+                        const name = document.getElementById('name').value;
+                        const email = document.getElementById('email').value;
+                        const phone = document.getElementById('phone').value;
+                        const message = document.getElementById('message').value;
+
+                        const whatsappMessage = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage: ${message}`);
+                        const whatsappUrl = `https://wa.me/447882769759?text=${whatsappMessage}`;
+                        
+                        window.open(whatsappUrl, '_blank');
+                    }
+                </script>
+
+                <form onsubmit="sendToWhatsapp(event)" class="space-y-4">
                     <div>
                         <label for="name" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-1.5">Full Name</label>
                         <input type="text" id="name" name="name" required class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
-                        @error('name') <p class="text-rose-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="email" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-1.5">Email Address</label>
                             <input type="email" id="email" name="email" required class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
-                            @error('email') <p class="text-rose-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                         <div>
                             <label for="phone" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-1.5">Phone Number</label>
                             <input type="text" id="phone" name="phone" class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
-                            @error('phone') <p class="text-rose-500 text-xs mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
                     <div>
                         <label for="message" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-1.5">Your Message / Inquiry</label>
                         <textarea id="message" name="message" rows="5" required placeholder="Describe the pallets or truckloads you are interested in..." class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800"></textarea>
-                        @error('message') <p class="text-rose-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <button type="submit" class="w-full bg-zinc-950 text-white font-extrabold py-3.5 rounded text-xs uppercase tracking-widest hover:bg-zinc-800 transition duration-150 shadow-md">
-                        Submit Inquiry
+                        Submit Inquiry via WhatsApp
                     </button>
                 </form>
             </div>
