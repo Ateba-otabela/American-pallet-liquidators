@@ -145,11 +145,10 @@
                     </div>
                 </div>
 
-                @if($order->payment_method !== 'stripe')
                 <!-- Send Payment Details Email Card -->
                 <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm space-y-4">
                     <h3 class="text-sm font-black uppercase tracking-wider text-zinc-900 border-b border-gray-100 pb-3">Send Payment Details Email</h3>
-                    <p class="text-xs text-slate-500 font-semibold mb-2">Send an email to the customer with your <strong class="text-zinc-900 uppercase tracking-wide">{{ str_replace('_', ' ', $order->payment_method) }}</strong> credentials.</p>
+                    <p class="text-xs text-slate-500 font-semibold mb-2">Send an email to the customer with your payment credentials (Zelle, CashApp, Wire, etc.).</p>
                     <form action="{{ route('admin.orders.send-payment-details', $order) }}" method="POST" class="space-y-3">
                         @csrf
                         <div>
@@ -160,7 +159,6 @@
                         </button>
                     </form>
                 </div>
-                @endif
             </div>
 
         </div>

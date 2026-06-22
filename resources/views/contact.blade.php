@@ -60,13 +60,16 @@
                     <p class="text-sm text-slate-500">Saturday &amp; Sunday: Closed (Loading dock pickup by pre-approved appointment only)</p>
                 </div>
 
-                <!-- Google Maps Placeholder -->
-                <div class="aspect-[16/9] w-full bg-gray-100 border border-gray-200 rounded overflow-hidden relative">
-                    <div class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-                        <svg class="h-10 w-10 text-zinc-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                        <span class="font-extrabold text-zinc-950 uppercase tracking-tight text-sm">Interactive Warehouse Map</span>
-                        <span class="text-xs text-zinc-400 mt-1">APL Direct Dock &amp; Warehouse — Louisville, KY</span>
-                    </div>
+                <!-- Google Maps -->
+                <div class="aspect-[16/9] w-full bg-gray-100 border border-gray-200 rounded overflow-hidden relative shadow-inner">
+                    <iframe 
+                        class="absolute inset-0 w-full h-full"
+                        style="border:0;" 
+                        loading="lazy" 
+                        allowfullscreen 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://maps.google.com/maps?q=Louisville,%20KY&t=&z=11&ie=UTF8&iwloc=&output=embed">
+                    </iframe>
                 </div>
             </div>
 
