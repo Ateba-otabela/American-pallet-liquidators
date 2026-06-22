@@ -316,6 +316,29 @@ class AdminController extends Controller
     }
 
     /**
+     * Send offline payment details email to the customer.
+     */
+    public function sendPaymentDetails(Request $request, Order $order)
+    {
+        $request->validate([
+            'payment_credentials' => 'required|string',
+        ]);
+
+        if (!isset($order->receiver_info['email'])) {
+            return back()->with('error', 'No email address found for this order.');
+        }
+
+        try {
+            \Illuminate\Support\Facades\Mail::to($order->receiver_info['email'])->send(new \App\Mail\PaymentDetailsMail($order, $request->payment_credentials));
+            return back()->with('success', 'Payment details email sent successfully to ' . $order->receiver_info['email']);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to send payment details email: ' . $e->getMessage());
+            return back()->with('error', 'Failed to send email: ' . $e->getMessage());
+        }
+    }
+
+
+    /**
      * Show general and payment settings form.
      */
     public function settings()

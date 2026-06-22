@@ -144,6 +144,23 @@
                         @endif
                     </div>
                 </div>
+
+                @if($order->payment_method !== 'stripe')
+                <!-- Send Payment Details Email Card -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm space-y-4">
+                    <h3 class="text-sm font-black uppercase tracking-wider text-zinc-900 border-b border-gray-100 pb-3">Send Payment Details Email</h3>
+                    <p class="text-xs text-slate-500 font-semibold mb-2">Send an email to the customer with your <strong class="text-zinc-900 uppercase tracking-wide">{{ str_replace('_', ' ', $order->payment_method) }}</strong> credentials.</p>
+                    <form action="{{ route('admin.orders.send-payment-details', $order) }}" method="POST" class="space-y-3">
+                        @csrf
+                        <div>
+                            <textarea name="payment_credentials" rows="3" required placeholder="Enter Zelle email, CashApp tag, Wire details, etc..." class="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-xs font-bold text-zinc-800 focus:outline-none focus:border-zinc-500"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-extrabold py-2.5 rounded text-xs uppercase tracking-widest hover:bg-blue-700 transition shadow-sm">
+                            Send Email
+                        </button>
+                    </form>
+                </div>
+                @endif
             </div>
 
         </div>

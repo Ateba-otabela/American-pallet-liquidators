@@ -90,6 +90,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
     Route::get('/orders/{order}', [AdminController::class, 'showOrder'])->name('orders.show');
     Route::post('/orders/{order}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.status');
+    Route::post('/orders/{order}/send-payment-details', [AdminController::class, 'sendPaymentDetails'])->name('orders.send-payment-details');
 
     // General & Payment Settings
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
