@@ -86,6 +86,13 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     Route::put('/products/{product}', [AdminController::class, 'updateProduct'])->name('products.update');
     Route::delete('/products/{product}', [AdminController::class, 'destroyProduct'])->name('products.destroy');
 
+    // Categories Management
+    Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
+    Route::post('/categories', [AdminController::class, 'storeCategory'])->name('categories.store');
+    Route::get('/categories/{category}/edit', [AdminController::class, 'editCategory'])->name('categories.edit');
+    Route::put('/categories/{category}', [AdminController::class, 'updateCategory'])->name('categories.update');
+    Route::delete('/categories/{category}', [AdminController::class, 'destroyCategory'])->name('categories.destroy');
+
     // Orders Management
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
     Route::get('/orders/{order}', [AdminController::class, 'showOrder'])->name('orders.show');

@@ -63,6 +63,12 @@
                     <span>Inventory (Products)</span>
                 </a>
 
+                <a href="{{ route('admin.categories') }}" class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-150
+                    {{ request()->routeIs('admin.categories*') ? 'bg-zinc-900 text-white' : 'hover:bg-zinc-900 hover:text-white' }}">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"/></svg>
+                    <span>Categories</span>
+                </a>
+
                 <a href="{{ route('admin.orders') }}" class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-150
                     {{ request()->routeIs('admin.orders*') ? 'bg-zinc-900 text-white' : 'hover:bg-zinc-900 hover:text-white' }}">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>

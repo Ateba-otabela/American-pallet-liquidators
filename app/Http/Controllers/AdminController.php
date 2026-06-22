@@ -243,6 +243,77 @@ class AdminController extends Controller
     }
 
     /**
+     * List all categories and show create form.
+     */
+    public function categories()
+    {
+        $categories = Category::withCount('products')->orderBy('name')->paginate(20);
+        return view('admin.categories.index', compact('categories'));
+    }
+
+    /**
+     * Store a new category.
+     */
+    public function storeCategory(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        
+        $slug = Str::slug($request->name);
+        if (Category::where('slug', $slug)->exists()) {
+            $slug = $slug . '-' . time();
+        }
+
+        Category::create([
+            'name' => $request->name,
+            'slug' => $slug,
+        ]);
+
+        return redirect()->route('admin.categories')->with('success', 'Category created successfully!');
+    }
+
+    /**
+     * Show edit form for a category.
+     */
+    public function editCategory(Category $category)
+    {
+        return view('admin.categories.edit', compact('category'));
+    }
+
+    /**
+     * Update an existing category.
+     */
+    public function updateCategory(Request $request, Category $category)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $slug = Str::slug($request->name);
+        if (Category::where('slug', $slug)->where('id', '!=', $category->id)->exists()) {
+            $slug = $slug . '-' . time();
+        }
+
+        $category->update([
+            'name' => $request->name,
+            'slug' => $slug,
+        ]);
+
+        return redirect()->route('admin.categories')->with('success', 'Category updated successfully!');
+    }
+
+    /**
+     * Delete a category.
+     */
+    public function destroyCategory(Category $category)
+    {
+        $category->delete();
+        return redirect()->route('admin.categories')->with('success', 'Category deleted successfully!');
+    }
+
+
+    /**
      * List all orders.
      */
     public function orders()
