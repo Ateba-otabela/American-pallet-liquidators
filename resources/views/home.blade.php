@@ -66,6 +66,62 @@
         </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section class="bg-white border-b border-gray-200 py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto text-center mb-12">
+            <span class="text-zinc-500 text-xs font-extrabold uppercase tracking-widest block mb-2">Customer Success Stories</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-zinc-950 uppercase tracking-tight">Trusted by Resellers Nationwide</h2>
+            <p class="text-slate-500 text-sm sm:text-base leading-relaxed mt-4">Real feedback from buyers who trust our liquidation inventory, pricing, and service for resale, online stores, and local markets.</p>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-3">
+            <article class="bg-zinc-950 text-white rounded-3xl p-6 shadow-xl border border-zinc-900/70">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Marcus Allen" class="h-16 w-16 rounded-full object-cover border-2 border-white shadow-inner">
+                    <div>
+                        <p class="text-sm font-bold uppercase tracking-widest text-zinc-300">Marcus Allen</p>
+                        <p class="text-xs text-zinc-400 uppercase tracking-wider">Owner, Midwest Resale Co.</p>
+                    </div>
+                </div>
+                <p class="text-sm leading-relaxed text-zinc-100 mb-6">“We’ve purchased over 150 pallets from APL, and every shipment has been exactly as described. The pricing is unbeatable and the turnaround time on fulfillment is fast. Our profit margins are better than ever.”</p>
+                <div class="flex items-center gap-1 text-xs uppercase tracking-widest text-amber-300 font-black">
+                    <span>★★★★★</span>
+                    <span class="text-zinc-400">Verified Buyer</span>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-3xl p-6 shadow-md border border-gray-200">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" alt="Samantha Park" class="h-16 w-16 rounded-full object-cover border border-gray-200 shadow-sm">
+                    <div>
+                        <p class="text-sm font-bold uppercase tracking-widest text-zinc-950">Samantha Park</p>
+                        <p class="text-xs text-zinc-500 uppercase tracking-wider">Flea Market Buyer</p>
+                    </div>
+                </div>
+                <p class="text-sm leading-relaxed text-zinc-700 mb-6">“The trucks arrive loaded with premium liquidation stock. The customer support team helps me select the best pallets for my market, and I’ve doubled my weekly sales since switching to APL.”</p>
+                <div class="flex items-center gap-1 text-xs uppercase tracking-widest text-emerald-600 font-black">
+                    <span>★★★★★</span>
+                    <span class="text-zinc-400">Satisfied Merchant</span>
+                </div>
+            </article>
+
+            <article class="bg-zinc-950 text-white rounded-3xl p-6 shadow-xl border border-zinc-900/70">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Diego Ramos" class="h-16 w-16 rounded-full object-cover border-2 border-white shadow-inner">
+                    <div>
+                        <p class="text-sm font-bold uppercase tracking-widest text-zinc-300">Diego Ramos</p>
+                        <p class="text-xs text-zinc-400 uppercase tracking-wider">eCommerce & Mobile Resale</p>
+                    </div>
+                </div>
+                <p class="text-sm leading-relaxed text-zinc-100 mb-6">“Shipping was seamless, and the quality was exceptional. I stock my online store with their liquidation pallets and sell out quickly. The images and product descriptions are honest and reliable.”</p>
+                <div class="flex items-center gap-1 text-xs uppercase tracking-widest text-cyan-300 font-black">
+                    <span>★★★★★</span>
+                    <span class="text-zinc-400">Repeat Customer</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
     <!-- Category Banner Cards -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">

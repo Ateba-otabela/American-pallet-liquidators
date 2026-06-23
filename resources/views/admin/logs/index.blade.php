@@ -113,8 +113,8 @@
             <span class="bg-zinc-900 text-white text-[10px] font-black uppercase px-2 py-0.5 rounded-full">Live Tracker</span>
         </div>
         
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+        <div class="hidden md:block overflow-x-auto">
+            <table class="w-full text-left border-collapse table-auto">
                 <thead>
                     <tr class="bg-zinc-50 border-b border-gray-200 text-zinc-600 text-[10px] font-black uppercase tracking-wider">
                         <th class="px-6 py-3.5">Timestamp</th>
@@ -167,15 +167,15 @@
                         </td>
 
                         <!-- Visited URL -->
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="bg-zinc-100 text-zinc-800 font-mono text-[11px] px-2.5 py-1 rounded border border-zinc-200">
+                        <td class="px-6 py-4 break-words max-w-[220px]">
+                            <span class="bg-zinc-100 text-zinc-800 font-mono text-[11px] px-2.5 py-1 rounded border border-zinc-200 break-words block">
                                 {{ $log->path }}
                             </span>
                         </td>
 
                         <!-- OS & Browser Details -->
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 flex-wrap">
                                 <span class="bg-slate-100 text-slate-800 text-[10px] font-black uppercase px-2 py-0.5 rounded">
                                     {{ $log->browser }}
                                 </span>
@@ -194,6 +194,55 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <div class="md:hidden space-y-4">
+            @forelse($logs as $log)
+            <article class="bg-white rounded-3xl border border-gray-200 shadow-sm p-5">
+                <div class="flex flex-col gap-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        <div>
+                            <p class="text-[11px] uppercase tracking-widest text-zinc-400 font-black">Timestamp</p>
+                            <p class="text-xs text-zinc-800 font-semibold mt-1">
+                                {{ $log->created_at->setTimezone('America/New_York')->format('M d, Y — h:i:s A') }} EST
+                            </p>
+                        </div>
+                        <span class="inline-flex items-center gap-2 rounded-full bg-zinc-100 text-zinc-700 px-3 py-1 text-[10px] font-bold uppercase tracking-widest">
+                            {{ $log->device_type }}
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-3">
+                        <div class="space-y-1">
+                            <p class="text-[11px] uppercase tracking-widest text-zinc-400 font-black">Device & User Agent</p>
+                            <p class="text-xs text-zinc-900 font-semibold break-words">{{ $log->user_agent }}</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-[11px] uppercase tracking-widest text-zinc-400 font-black">Visited URL</p>
+                            <p class="text-xs text-zinc-900 font-semibold break-words">{{ $log->path }}</p>
+                        </div>
+                        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                            <div class="space-y-1">
+                                <p class="text-[11px] uppercase tracking-widest text-zinc-400 font-black">Location</p>
+                                <p class="text-xs text-zinc-900 font-semibold">{{ $log->location }}</p>
+                                <p class="text-[10px] text-zinc-500">{{ $log->ip_address }}</p>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-[11px] uppercase tracking-widest text-zinc-400 font-black">Browser & OS</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-slate-100 text-slate-800 text-[10px] font-black uppercase px-2 py-0.5 rounded">{{ $log->browser }}</span>
+                                    <span class="bg-blue-50 text-blue-800 text-[10px] font-black uppercase px-2 py-0.5 rounded">{{ $log->os }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            @empty
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 text-center text-zinc-400 font-bold">
+                No logs registered yet. Visit the live storefront to populate telemetry feeds!
+            </div>
+            @endforelse
         </div>
         
         <!-- Pagination -->
