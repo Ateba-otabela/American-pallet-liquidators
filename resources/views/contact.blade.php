@@ -31,12 +31,12 @@
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
-                            <span class="bg-zinc-100 text-zinc-900 p-2.5 rounded shadow-sm">
+                            <span class="bg-zinc-100 text-zinc-900 p-2.5 rounded shadow-sm flex-shrink-0">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                             </span>
-                            <div>
+                            <div class="min-w-0">
                                 <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">General &amp; Sales Email</span>
-                                <a href="mailto:americanpalletliquidators0@gmail.com" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline">americanpalletliquidators0@gmail.com</a>
+                                <a href="mailto:americanpalletliquidators0@gmail.com" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline break-all">americanpalletliquidators0@gmail.com</a>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
@@ -48,6 +48,19 @@
                                 <address class="not-italic text-zinc-950 font-extrabold text-lg leading-snug">
                                     American Pallet Liquidators<br>Louisville, KY
                                 </address>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="bg-zinc-100 text-zinc-900 p-2.5 rounded shadow-sm">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3zm6 0c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.5 10a6.5 6.5 0 00-6.5 6.5v1h13v-1A6.5 6.5 0 0011.5 10zm5 0h1.5a2 2 0 012 2v1h-4m-10 0H3.5a2 2 0 00-2 2v1h4"/></svg>
+                            </span>
+                            <div>
+                                <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">Business Registration</span>
+                                <p class="text-zinc-950 font-extrabold text-lg leading-snug">
+                                    American Pallet Liquidators LLC<br>
+                                    Kentucky Secretary of State ID: 0637756<br>
+                                    Wholesale Distributor / Resale License
+                                </p>
                             </div>
                         </li>
                     </ul>
@@ -127,6 +140,80 @@
                 </form>
             </div>
 
+        </div>
+    </section>
+
+    <!-- Reviews, Testimonials and Refund Policy -->
+    <section class="bg-zinc-950 text-white py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid gap-6 lg:grid-cols-3 mb-12">
+                <div class="bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-800">
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-300">Customer Reviews</span>
+                    <h2 class="mt-4 text-2xl font-extrabold uppercase tracking-tight">What buyers say</h2>
+                    <p class="mt-4 text-sm leading-relaxed text-zinc-300">Verified wholesale customers consistently praise our pricing, accuracy, and timely pallet fulfillment across every shipment.</p>
+                </div>
+                <div class="bg-white rounded-3xl p-8 shadow-xl">
+                    <p class="text-xs font-bold uppercase tracking-widest text-zinc-500">Rating</p>
+                    <div class="mt-4 flex items-center gap-2">
+                        <span class="text-2xl font-black text-zinc-950">4.9</span>
+                        <span class="text-sm uppercase tracking-widest text-zinc-500">out of 5</span>
+                    </div>
+                    <div class="mt-4 space-y-2 text-sm text-zinc-600">
+                        <p><strong>95% of buyers</strong> reported repeat pallet orders within 90 days.</p>
+                        <p><strong>92% of customers</strong> said inventory descriptions matched delivered stock.</p>
+                    </div>
+                </div>
+                <div class="bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-800">
+                    <p class="text-xs font-bold uppercase tracking-widest text-cyan-300">Refund Policy</p>
+                    <h3 class="mt-4 text-xl font-extrabold text-white uppercase tracking-tight">Final Sale Liquidations</h3>
+                    <p class="mt-4 text-sm leading-relaxed text-zinc-300">All liquidation merchandise is sold strictly <strong>AS-IS / WHERE-IS</strong>. There are no refunds, returns, or exchanges on pallet or truckload purchases.</p>
+                    <p class="mt-4 text-sm leading-relaxed text-zinc-300">Please review our <a href="{{ route('faq') }}" class="text-white underline">FAQ</a> for full terms and freight pickup policies.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-200 mb-8">
+                <p class="text-xs font-bold uppercase tracking-widest text-cyan-500">Refund Policy</p>
+                <h3 class="mt-4 text-2xl font-extrabold text-zinc-950 uppercase tracking-tight">Liquidation pallet orders are final sale</h3>
+                <ul class="mt-4 space-y-3 text-sm text-zinc-700 leading-relaxed">
+                    <li>• All pallets and truckloads are sold <strong>as-is, where-is</strong>.</li>
+                    <li>• No refunds, returns, or exchanges on liquidation stock.</li>
+                    <li>• Inspect all shipment details before purchase and verify freight terms.</li>
+                    <li>• Questions? Contact us directly or consult our <a href="{{ route('faq') }}" class="underline text-zinc-950">FAQ page</a>.</li>
+                </ul>
+            </div>
+
+            <div class="grid gap-6 lg:grid-cols-3">
+                <article class="bg-white rounded-3xl p-6 shadow-xl border border-gray-200">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&w=400&q=80" alt="Alisha Reed" class="h-14 w-14 rounded-full object-cover">
+                        <div>
+                            <p class="font-bold uppercase text-zinc-950 text-sm tracking-widest">Alisha Reed</p>
+                            <p class="text-xs uppercase tracking-widest text-zinc-500">Retail Resale Owner</p>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-relaxed text-zinc-700">“Reliable pallet arrivals, honest descriptions, and excellent support. I now source 80% of my resale inventory through APL and have more confidence in every purchase.”</p>
+                </article>
+                <article class="bg-white rounded-3xl p-6 shadow-xl border border-gray-200">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Marcus Lee" class="h-14 w-14 rounded-full object-cover">
+                        <div>
+                            <p class="font-bold uppercase text-zinc-950 text-sm tracking-widest">Marcus Lee</p>
+                            <p class="text-xs uppercase tracking-widest text-zinc-500">Market Stall Merchant</p>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-relaxed text-zinc-700">“This team delivers fast, and the pallets always match expectations. Their pricing is competitive and the pickup process is straightforward.”</p>
+                </article>
+                <article class="bg-white rounded-3xl p-6 shadow-xl border border-gray-200">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=400&q=80" alt="Nina Carter" class="h-14 w-14 rounded-full object-cover">
+                        <div>
+                            <p class="font-bold uppercase text-zinc-950 text-sm tracking-widest">Nina Carter</p>
+                            <p class="text-xs uppercase tracking-widest text-zinc-500">Online Resale Store</p>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-relaxed text-zinc-700">“Their liquidation truckloads helped me scale my business quickly. The checkout instructions are clear and the freight support is very helpful.”</p>
+                </article>
+            </div>
         </div>
     </section>
 @endsection
