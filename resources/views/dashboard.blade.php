@@ -186,12 +186,20 @@
                                     <!-- Action Button -->
                                     <td class="p-4 sm:p-5 text-right whitespace-nowrap">
                                         @if($order->status === 'pending_payment' && !$order->transaction_screenshot)
-                                            <button 
-                                                onclick="openPaymentModal('{{ $order->id }}', '{{ $order->order_number }}', '{{ str_replace('_', ' ', $order->payment_method) }}')" 
-                                                class="bg-zinc-950 hover:bg-zinc-800 text-white font-extrabold text-[9px] uppercase tracking-widest px-3.5 py-2 rounded transition shadow-sm leading-none"
-                                            >
-                                                Complete Order
-                                            </button>
+                                            <div class="flex flex-col sm:flex-row gap-2 items-end sm:items-center justify-end">
+                                                <form action="{{ route('orders.request-payment-email', $order) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    <button type="submit" title="Resend payment details email" class="bg-gray-500 hover:bg-gray-600 text-white font-extrabold text-[9px] uppercase tracking-widest px-2.5 py-2 rounded transition shadow-sm leading-none">
+                                                        Email
+                                                    </button>
+                                                </form>
+                                                <button 
+                                                    onclick="openPaymentModal('{{ $order->id }}', '{{ $order->order_number }}', '{{ str_replace('_', ' ', $order->payment_method) }}')" 
+                                                    class="bg-zinc-950 hover:bg-zinc-800 text-white font-extrabold text-[9px] uppercase tracking-widest px-3.5 py-2 rounded transition shadow-sm leading-none"
+                                                >
+                                                    Complete Order
+                                                </button>
+                                            </div>
                                         @elseif($order->status === 'pending_payment' && $order->transaction_screenshot)
                                             <button 
                                                 disabled

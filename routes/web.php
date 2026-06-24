@@ -63,6 +63,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/complete-payment', [DashboardController::class, 'completePayment'])->name('orders.complete-payment');
+    Route::post('/orders/{order}/request-payment-email', [DashboardController::class, 'requestPaymentEmail'])->name('orders.request-payment-email');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

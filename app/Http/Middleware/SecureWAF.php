@@ -9,10 +9,29 @@ use Symfony\Component\HttpFoundation\Response;
 class SecureWAF
 {
     /**
+     * Blocked IP addresses — known malicious scanners / bots.
+     * Add any IP you want permanently banned here.
+     */
+    protected array $blockedIps = [
+        '13.220.25.25', // Automated scanner bot detected Jun 23, 2026 (Ashburn, VA / AWS)
+    ];
+
+    /**
      * Handle an incoming request.
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // 0. IP Blocklist — immediately ban known malicious IPs
+        if (in_array($request->ip(), $this->blockedIps, true)) {
+            \Illuminate\Support\Facades\Log::warning('🚫 WAF IP BLOCK: Request from banned IP address.', [
+                'ip'         => $request->ip(),
+                'url'        => $request->fullUrl(),
+                'method'     => $request->method(),
+                'user_agent' => $request->header('User-Agent'),
+            ]);
+            return new Response($this->getSecurityBlockHtml($request), 403, ['Content-Type' => 'text/html']);
+        }
+
         if ($this->isMalicious($request)) {
             // Log the security breach attempt
             \Illuminate\Support\Facades\Log::warning('🚨 SECURITY SHIELD WAF BLOCK: Suspicious request intercepted!', [
@@ -58,7 +77,12 @@ class SecureWAF
             '/php:\/\/(input|filter)/i', // PHP wrappers
             '/\.env/i', '/\.git/i', // Hardened configuration scanner protection
             '/wp-(login|config|admin|content)/i', // Block typical WordPress scanner bots
-            '/xanger/i', '/composer\.json/i', '/package\.json/i'
+            '/xanger/i', '/composer\.json/i', '/package\.json/i',
+            '/(phpinfo|info|php-info|phpversion|_phpinfo)\.php/i', // PHP info disclosure probe
+            '/\/(phpinfo|php-info|info)\.php/i',                    // Root-level info file probes
+            '/(server-status|server-info)\.php/i',                  // Apache server status probes
+            '/(_environment|_profiler|p\/_environment)/i',          // Environment/profiler disclosure
+            '/\/(cpanel|hosting|webmail|smtp|staging|beta|uat|old|tmp|dev|mail)\/phpinfo/i', // Subdirectory phpinfo probes
         ];
         foreach ($maliciousPaths as $pattern) {
             if (preg_match($pattern, $path)) {
