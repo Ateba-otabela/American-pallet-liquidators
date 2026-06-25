@@ -110,6 +110,10 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
 
     // Users Management
     Route::get('/users', [AdminController::class, 'users'])->name('users');
+
+    // Email Subscribers Management
+    Route::get('/subscribers', [AdminController::class, 'subscribers'])->name('subscribers');
+    Route::delete('/subscribers/{subscriber}', [AdminController::class, 'destroySubscriber'])->name('subscribers.destroy');
 });
 
 require __DIR__.'/auth.php';

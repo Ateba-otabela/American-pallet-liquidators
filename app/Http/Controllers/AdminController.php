@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Setting;
+use App\Models\Subscriber;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -503,5 +504,24 @@ class AdminController extends Controller
             ->paginate(15);
         $usersCount = User::where('is_admin', false)->count();
         return view('admin.users', compact('users', 'usersCount'));
+    }
+
+    /**
+     * List all email newsletter subscribers.
+     */
+    public function subscribers()
+    {
+        $subscribers = Subscriber::orderBy('created_at', 'desc')->paginate(25);
+        $subscribersCount = Subscriber::count();
+        return view('admin.subscribers', compact('subscribers', 'subscribersCount'));
+    }
+
+    /**
+     * Delete a subscriber.
+     */
+    public function destroySubscriber(Subscriber $subscriber)
+    {
+        $subscriber->delete();
+        return back()->with('success', 'Subscriber removed successfully.');
     }
 }
