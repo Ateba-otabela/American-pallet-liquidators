@@ -20,7 +20,10 @@ class DashboardController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        $orders = Order::where('user_id', auth()->id())
+        $orders = Order::where(function ($query) {
+                $query->where('user_id', auth()->id())
+                      ->orWhere('email', auth()->user()->email);
+            })
             ->with('items.product')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -34,7 +37,7 @@ class DashboardController extends Controller
     public function completePayment(Request $request, Order $order)
     {
         // Security check: Make sure this order belongs to the logged-in user!
-        if ($order->user_id !== auth()->id()) {
+        if ($order->user_id !== auth()->id() && $order->email !== auth()->user()->email) {
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json(['error' => 'Unauthorized action.'], 403);
             }
@@ -81,7 +84,7 @@ class DashboardController extends Controller
     public function requestPaymentEmail(Request $request, Order $order)
     {
         // Security check: Make sure this order belongs to the logged-in user!
-        if ($order->user_id !== auth()->id()) {
+        if ($order->user_id !== auth()->id() && $order->email !== auth()->user()->email) {
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json(['error' => 'Unauthorized action.'], 403);
             }

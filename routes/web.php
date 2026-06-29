@@ -45,14 +45,12 @@ Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('
 | Multi-Step Checkout Routes (Protected by auth)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth')->group(function () {
-    Route::get('/checkout', [CheckoutController::class, 'showStep1'])->name('checkout.step1');
-    Route::post('/checkout/step1', [CheckoutController::class, 'submitStep1'])->name('checkout.submitStep1');
-    Route::get('/checkout/payment', [CheckoutController::class, 'showPayment'])->name('checkout.payment');
-    Route::post('/checkout/pay', [CheckoutController::class, 'processPayment'])->name('checkout.processPayment');
-    Route::post('/checkout/create-payment-intent', [CheckoutController::class, 'createPaymentIntent'])->name('checkout.createPaymentIntent');
-    Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
-});
+Route::get('/checkout', [CheckoutController::class, 'showStep1'])->name('checkout.step1');
+Route::post('/checkout/step1', [CheckoutController::class, 'submitStep1'])->name('checkout.submitStep1');
+Route::get('/checkout/payment', [CheckoutController::class, 'showPayment'])->name('checkout.payment');
+Route::post('/checkout/pay', [CheckoutController::class, 'processPayment'])->name('checkout.processPayment');
+Route::post('/checkout/create-payment-intent', [CheckoutController::class, 'createPaymentIntent'])->name('checkout.createPaymentIntent');
+Route::get('/checkout/success/{order_number}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 /*
 |--------------------------------------------------------------------------

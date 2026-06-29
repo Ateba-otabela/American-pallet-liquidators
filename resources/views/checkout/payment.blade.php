@@ -5,6 +5,9 @@
 @section('content')
     <!-- Include Stripe.js -->
     <script src="https://js.stripe.com/v3/"></script>
+    
+    <!-- Include PayPal JS SDK (using a placeholder client-id if none is set in env) -->
+    <script src="https://www.paypal.com/sdk/js?client-id={{ config('services.paypal.client_id', 'test') }}&currency=USD"></script>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" x-data="checkoutHandler()">
         
@@ -115,26 +118,28 @@
                                 <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-2">Secure Credit / Debit Card</span>
                                 
                                 <div class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm space-y-4">
-                                    <div>
-                                        <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">Card Number</label>
-                                        <input type="text" name="mock_card_number" placeholder="0000 0000 0000 0000" maxlength="19" class="w-full border-none p-0 text-sm focus:ring-0 text-zinc-900 placeholder-zinc-300 font-medium" x-bind:required="paymentMethod === 'stripe'" />
+                                    <div id="payment-request-button" class="mb-4 hidden">
+                                        <!-- A Stripe Element will be inserted here for Apple Pay / Google Pay. -->
                                     </div>
-                                    <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-                                        <div>
-                                            <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">Expiration Date</label>
-                                            <input type="text" name="mock_card_expiry" placeholder="MM / YY" maxlength="7" class="w-full border-none p-0 text-sm focus:ring-0 text-zinc-900 placeholder-zinc-300 font-medium" x-bind:required="paymentMethod === 'stripe'" />
-                                        </div>
-                                        <div>
-                                            <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">CVC / Security Code</label>
-                                            <input type="text" name="mock_card_cvc" placeholder="123" maxlength="4" class="w-full border-none p-0 text-sm focus:ring-0 text-zinc-900 placeholder-zinc-300 font-medium" x-bind:required="paymentMethod === 'stripe'" />
-                                        </div>
+                                    <div id="prb-divider" class="relative flex items-center gap-3 my-4 hidden">
+                                        <div class="flex-grow border-t border-gray-200"></div>
+                                        <span class="text-[10px] font-bold uppercase tracking-widest text-zinc-400">or pay with card</span>
+                                        <div class="flex-grow border-t border-gray-200"></div>
                                     </div>
-                                    <div class="pt-4 border-t border-gray-100">
-                                        <label class="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1">Name on Card</label>
-                                        <input type="text" name="mock_card_name" placeholder="John Doe" class="w-full border-none p-0 text-sm focus:ring-0 text-zinc-900 placeholder-zinc-300 font-medium" value="{{ $shipping['name'] ?? '' }}" x-bind:required="paymentMethod === 'stripe'" />
+                                    <div class="pt-2">
+                                        <div id="card-element" class="w-full p-2.5 border border-gray-200 rounded text-sm bg-gray-50"></div>
                                     </div>
                                 </div>
                                 <div id="card-errors" class="text-rose-600 text-xs font-semibold" role="alert"></div>
+                            </div>
+
+                            <!-- PayPal Smart Buttons container -->
+                            <div x-show="paymentMethod === 'paypal'" class="space-y-4" style="display: none;">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs mb-2">PayPal Checkout</span>
+                                <div class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm">
+                                    <!-- This container is where the PayPal buttons will render -->
+                                    <div id="paypal-button-container" class="w-full relative z-0"></div>
+                                </div>
                             </div>
 
                             <!-- Offline payment info has been moved to the user dashboard -->
@@ -207,9 +212,10 @@
 
                 init() {
                     this.initStripe();
+                    this.initPayPal();
                 },
 
-                initStripe() {
+                async initStripe() {
                     // Avoid initializing if public key is not configured/default placeholder
                     if (!this.stripePublicKey || this.stripePublicKey === 'pk_test_placeholder') {
                         console.warn("Stripe public key is placeholder. Falling back to mock transaction simulation.");
@@ -249,6 +255,87 @@
                                 displayError.textContent = '';
                             }
                         });
+
+                        // ----------------------------------------------------
+                        // Payment Request Button (Apple Pay / Google Pay)
+                        // ----------------------------------------------------
+                        const paymentRequest = this.stripe.paymentRequest({
+                            country: 'US',
+                            currency: 'usd',
+                            total: {
+                                label: 'Total',
+                                amount: parseInt('{{ $total * 100 }}'), // amount in cents
+                            },
+                            requestPayerName: true,
+                            requestPayerEmail: true,
+                        });
+
+                        const prButton = elements.create('paymentRequestButton', {
+                            paymentRequest: paymentRequest,
+                            style: {
+                                paymentRequestButton: {
+                                    type: 'default',
+                                    theme: 'dark', // 'dark' | 'light' | 'light-outline'
+                                    height: '44px',
+                                },
+                            },
+                        });
+
+                        // Check the availability of the Payment Request API
+                        paymentRequest.canMakePayment().then((result) => {
+                            if (result) {
+                                document.getElementById('payment-request-button').classList.remove('hidden');
+                                document.getElementById('prb-divider').classList.remove('hidden');
+                                prButton.mount('#payment-request-button');
+                            }
+                        });
+
+                        paymentRequest.on('paymentmethod', async (ev) => {
+                            this.loading = true;
+                            // Fetch payment intent from backend
+                            const response = await fetch('{{ route('checkout.createPaymentIntent') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                }
+                            });
+                            
+                            const data = await response.json();
+                            if (data.error) {
+                                ev.complete('fail');
+                                alert("Error starting transaction: " + data.error);
+                                this.loading = false;
+                                return;
+                            }
+
+                            // Confirm the PaymentIntent with the payment method
+                            const {paymentIntent, error: confirmError} = await this.stripe.confirmCardPayment(
+                                data.clientSecret,
+                                {payment_method: ev.paymentMethod.id},
+                                {handleActions: false}
+                            );
+
+                            if (confirmError) {
+                                ev.complete('fail');
+                                document.getElementById('card-errors').textContent = confirmError.message;
+                                this.loading = false;
+                            } else {
+                                ev.complete('success');
+                                if (paymentIntent.status === "requires_action") {
+                                    const {error} = await this.stripe.confirmCardPayment(data.clientSecret);
+                                    if (error) {
+                                        document.getElementById('card-errors').textContent = error.message;
+                                        this.loading = false;
+                                    } else {
+                                        this.submitFinalStripeOrder(paymentIntent.id);
+                                    }
+                                } else {
+                                    this.submitFinalStripeOrder(paymentIntent.id);
+                                }
+                            }
+                        });
+
                     } catch (e) {
                         console.error("Stripe elements error:", e);
                     }
@@ -264,7 +351,7 @@
                         return;
                     }
 
-                    // Process Stripe credit card payment
+                    // Process Stripe credit card payment manually
                     try {
                         // 1. Fetch payment intent from backend
                         const response = await fetch('{{ route('checkout.createPaymentIntent') }}', {
@@ -302,17 +389,57 @@
                             this.loading = false;
                         } else {
                             if (result.paymentIntent.status === 'succeeded') {
-                                // 3. Complete order on backend
-                                this.paymentIntentId = result.paymentIntent.id;
-                                setTimeout(() => {
-                                    document.getElementById('payment-form').submit();
-                                }, 300);
+                                this.submitFinalStripeOrder(result.paymentIntent.id);
                             }
                         }
                     } catch (e) {
                         console.error(e);
                         alert("An error occurred during Stripe verification. Falling back to mock transaction simulation.");
                         document.getElementById('payment-form').submit();
+                    }
+                },
+
+                submitFinalStripeOrder(intentId) {
+                    this.paymentIntentId = intentId;
+                    this.paymentMethod = 'stripe'; // Ensure method is stripe if prb triggered it while viewing another tab
+                    setTimeout(() => {
+                        document.getElementById('payment-form').submit();
+                    }, 300);
+                },
+
+                initPayPal() {
+                    try {
+                        if (typeof paypal !== 'undefined') {
+                            paypal.Buttons({
+                                // Set up the transaction
+                                createOrder: (data, actions) => {
+                                    return actions.order.create({
+                                        purchase_units: [{
+                                            amount: {
+                                                value: '{{ number_format($total, 2, '.', '') }}'
+                                            }
+                                        }]
+                                    });
+                                },
+                                // Finalize the transaction
+                                onApprove: (data, actions) => {
+                                    return actions.order.capture().then((details) => {
+                                        // The transaction was successful!
+                                        this.paymentIntentId = details.id; // Store PayPal transaction ID
+                                        this.paymentMethod = 'paypal'; // Explicitly set method
+                                        
+                                        // Submit the main form
+                                        document.getElementById('payment-form').submit();
+                                    });
+                                },
+                                onError: (err) => {
+                                    console.error('PayPal Checkout onError', err);
+                                    alert("An error occurred during PayPal checkout. Please try again or choose another payment method.");
+                                }
+                            }).render('#paypal-button-container');
+                        }
+                    } catch (e) {
+                        console.error("PayPal elements error:", e);
                     }
                 }
             }

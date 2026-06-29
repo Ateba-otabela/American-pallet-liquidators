@@ -14,12 +14,12 @@ class GoogleController extends Controller
 {
     public function redirect(): RedirectResponse
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
     public function callback(Request $request): RedirectResponse
     {
-        $socialUser = Socialite::driver('google')->user();
+        $socialUser = Socialite::driver('google')->stateless()->user();
 
         $user = User::where('email', $socialUser->getEmail())->first();
 

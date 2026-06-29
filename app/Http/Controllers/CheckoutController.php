@@ -173,6 +173,7 @@ class CheckoutController extends Controller
         $order = Order::create([
             'order_number' => $orderNumber,
             'user_id' => auth()->check() ? auth()->id() : null,
+            'email' => $shipping['email'],
             'status' => ($paymentMethod === 'stripe') ? 'processing' : 'pending_payment',
             'payment_method' => $paymentMethod,
             'total' => $total,
@@ -206,6 +207,15 @@ class CheckoutController extends Controller
             \Illuminate\Support\Facades\Mail::to($adminEmail)->send(new \App\Mail\AdminNewOrderMail($order));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Failed to send admin order notification: ' . $e->getMessage());
+        }
+
+        // Send email notification to Customer
+        try {
+            if (!empty($shipping['email'])) {
+                \Illuminate\Support\Facades\Mail::to($shipping['email'])->send(new \App\Mail\CustomerOrderConfirmationMail($order));
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to send customer order notification: ' . $e->getMessage());
         }
 
         // Clear checkout session data
