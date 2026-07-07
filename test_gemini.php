@@ -24,3 +24,7 @@ $gemini = new GeminiService();
 echo "Testing Gemini...\n";
 $response = $gemini->generateReply($conv, "Hello, do you have any electronics pallets?");
 echo "Response: " . $response . "\n";
+
+// Clean up
+$conv->delete();
+

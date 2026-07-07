@@ -7,6 +7,7 @@ use App\Models\ChatMessage;
 use App\Events\MessageSent;
 use App\Events\ConversationUpdated;
 use App\Services\OpenRouterService;
+use App\Services\GeminiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -35,7 +36,7 @@ class ChatController extends Controller
         ])->cookie('chat_session_id', $sessionId, 60 * 24 * 30); // 30 days
     }
 
-    public function sendMessage(Request $request, OpenRouterService $gemini)
+    public function sendMessage(Request $request)
     {
         $request->validate([
             'session_id' => 'required|string',
@@ -44,6 +45,11 @@ class ChatController extends Controller
 
         $conversation = ChatConversation::where('session_id', $request->session_id)->firstOrFail();
         
+        $provider = config('ai.provider', 'gemini');
+        $aiService = ($provider === 'openrouter')
+            ? app(OpenRouterService::class)
+            : app(GeminiService::class);
+
         // Save customer message
         $customerMessage = ChatMessage::create([
             'chat_conversation_id' => $conversation->id,
@@ -54,11 +60,15 @@ class ChatController extends Controller
 
         $conversation->update(['last_activity' => now()]);
 
-        broadcast(new MessageSent($customerMessage))->toOthers();
-        broadcast(new ConversationUpdated($conversation))->toOthers();
+        try {
+            broadcast(new MessageSent($customerMessage))->toOthers();
+            broadcast(new ConversationUpdated($conversation))->toOthers();
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('Broadcasting failed: ' . $e->getMessage());
+        }
 
         // Check for handover triggers
-        if ($conversation->ai_active && $gemini->shouldHandover($request->message)) {
+        if ($conversation->ai_active && $aiService->shouldHandover($request->message)) {
             $conversation->update(['ai_active' => false, 'needs_admin' => true, 'status' => 'Waiting']);
             
             $handoverMsg = ChatMessage::create([
@@ -66,15 +76,23 @@ class ChatController extends Controller
                 'sender_type' => 'ai',
                 'message' => "Let me give you a moment while I pull up that information for you. Please hold on.",
             ]);
-            broadcast(new MessageSent($handoverMsg));
-            broadcast(new ConversationUpdated($conversation));
+
+            try {
+                broadcast(new MessageSent($handoverMsg));
+                broadcast(new ConversationUpdated($conversation));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::warning('Broadcasting failed: ' . $e->getMessage());
+            }
             
-            return response()->json(['status' => 'handover']);
+            return response()->json([
+                'status' => 'handover',
+                'message' => $handoverMsg
+            ]);
         }
 
         // If AI is active, generate reply
         if ($conversation->ai_active) {
-            $aiReply = $gemini->generateReply($conversation, $request->message);
+            $aiReply = $aiService->generateReply($conversation, $request->message);
             
             $aiMessage = ChatMessage::create([
                 'chat_conversation_id' => $conversation->id,
@@ -82,12 +100,27 @@ class ChatController extends Controller
                 'message' => $aiReply,
             ]);
 
-            broadcast(new MessageSent($aiMessage));
+            try {
+                broadcast(new MessageSent($aiMessage));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::warning('Broadcasting failed: ' . $e->getMessage());
+            }
+
+            return response()->json([
+                'status' => 'replied',
+                'message' => $aiMessage
+            ]);
         } else {
             $conversation->update(['needs_admin' => true, 'status' => 'Waiting']);
-            broadcast(new ConversationUpdated($conversation));
+            try {
+                broadcast(new ConversationUpdated($conversation));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::warning('Broadcasting failed: ' . $e->getMessage());
+            }
+            
+            return response()->json([
+                'status' => 'waiting'
+            ]);
         }
-
-        return response()->json(['status' => 'sent']);
     }
 }

@@ -391,14 +391,29 @@
                         this.sessionId = data.session_id;
                         this.messages = data.conversation.messages || [];
                         this.aiActive = data.conversation.ai_active;
+                        
+                        // If no messages exist yet, add a friendly AI greeting
+                        if (this.messages.length === 0) {
+                            this.messages.push({
+                                id: 'welcome',
+                                sender_type: 'ai',
+                                message: "Hello! Welcome to American Pallet Liquidators. How can I help you today? Ask me about our liquidation pallets, warehouse locations, shipping rates, or return policies!",
+                                created_at: new Date().toISOString(),
+                                is_seen: true
+                            });
+                        }
+                        
                         this.scrollToBottom();
                         
                         // Setup Echo Listeners if Echo is available
                         if (window.Echo) {
                             window.Echo.channel('chat.' + this.sessionId)
                                 .listen('MessageSent', (e) => {
-                                    this.messages.push(e.message);
-                                    this.scrollToBottom();
+                                    const exists = this.messages.some(msg => msg.id === e.message.id);
+                                    if (!exists) {
+                                        this.messages.push(e.message);
+                                        this.scrollToBottom();
+                                    }
                                     this.isTyping = false;
                                 })
                                 .listen('ConversationUpdated', (e) => {
@@ -450,9 +465,19 @@
                     .then(res => res.json())
                     .then(data => {
                         this.sending = false;
-                        // The actual response will come through websockets, or we wait for it
-                        // Since we aren't fully waiting on the response if broadcasting fails,
-                        // this is handled mostly by the Echo listener.
+                        this.isTyping = false;
+                        
+                        // Handle direct JSON reply/handover response (when Echo isn't running)
+                        if (data.status === 'replied' || data.status === 'handover') {
+                            const exists = this.messages.some(msg => msg.id === data.message.id);
+                            if (!exists) {
+                                // If the optimistic message is still there, we keep it, and add the AI's response
+                                this.messages.push(data.message);
+                                this.scrollToBottom();
+                            }
+                        } else if (data.status === 'waiting') {
+                            this.aiActive = false;
+                        }
                     })
                     .catch(() => {
                         this.sending = false;
