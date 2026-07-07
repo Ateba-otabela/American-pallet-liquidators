@@ -98,6 +98,7 @@
                     <div class="text-xs text-slate-500 space-y-2 font-semibold">
                         <p class="text-zinc-900 font-extrabold uppercase text-[10px] tracking-wide">Contact Details</p>
                         <p>
+                            Customer Type: <strong class="text-zinc-800">{{ $order->customer_type }}</strong><br>
                             Name: <strong class="text-zinc-800">{{ $order->receiver_info['name'] }}</strong><br>
                             Company: <strong class="text-zinc-800">{{ $order->receiver_info['company'] ?? 'None' }}</strong><br>
                             Phone: <strong class="text-zinc-800">{{ $order->receiver_info['phone'] }}</strong><br>

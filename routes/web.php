@@ -112,6 +112,17 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     // Email Subscribers Management
     Route::get('/subscribers', [AdminController::class, 'subscribers'])->name('subscribers');
     Route::delete('/subscribers/{subscriber}', [AdminController::class, 'destroySubscriber'])->name('subscribers.destroy');
+
+    // Support Center
+    Route::get('/support', [\App\Http\Controllers\AdminSupportController::class, 'index'])->name('support.index');
+    Route::get('/support/{conversation}', [\App\Http\Controllers\AdminSupportController::class, 'show'])->name('support.show');
+    Route::post('/support/{conversation}/take-over', [\App\Http\Controllers\AdminSupportController::class, 'takeOver'])->name('support.takeOver');
+    Route::post('/support/{conversation}/resume-ai', [\App\Http\Controllers\AdminSupportController::class, 'resumeAi'])->name('support.resumeAi');
+    Route::post('/support/{conversation}/reply', [\App\Http\Controllers\AdminSupportController::class, 'reply'])->name('support.reply');
 });
+
+// Chat API Routes
+Route::post('/chat/init', [\App\Http\Controllers\ChatController::class, 'initConversation'])->name('chat.init');
+Route::post('/chat/send', [\App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.send');
 
 require __DIR__.'/auth.php';

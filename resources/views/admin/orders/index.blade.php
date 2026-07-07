@@ -38,6 +38,7 @@
                                 <td class="p-4">
                                     <span class="block text-zinc-950">{{ $order->receiver_info['name'] }}</span>
                                     <span class="block text-zinc-400 text-[10px]">{{ $order->receiver_info['email'] }}</span>
+                                    <span class="inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase {{ $order->customer_type === 'Guest' ? 'bg-zinc-100 text-zinc-500' : 'bg-blue-50 text-blue-600' }}">{{ $order->customer_type }}</span>
                                 </td>
                                 <td class="p-4 uppercase text-[10px] text-zinc-500">{{ str_replace('_', ' ', $order->payment_method) }}</td>
                                 <td class="p-4 font-black text-zinc-950">${{ number_format($order->total, 2) }}</td>

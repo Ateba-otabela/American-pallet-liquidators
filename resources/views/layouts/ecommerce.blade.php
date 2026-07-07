@@ -278,5 +278,202 @@
         </div>
     </footer>
 
+    <!-- AI Customer Support Chat Widget -->
+    <div x-data="chatWidget()" x-init="initChat()" class="fixed bottom-6 right-6 z-50 font-sans">
+        <!-- Chat Button -->
+        <button @click="toggleChat()" x-show="!isOpen" x-transition class="bg-zinc-950 text-white p-4 rounded-full shadow-2xl hover:scale-105 transition-transform flex items-center justify-center focus:outline-none">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        </button>
+
+        <!-- Chat Window -->
+        <div x-show="isOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-10 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 translate-y-10 scale-95" class="bg-white w-full sm:w-96 rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-200 fixed sm:absolute bottom-0 sm:bottom-0 right-0 sm:right-0 top-0 sm:top-auto sm:h-[600px] max-h-screen z-50" x-cloak>
+            
+            <!-- Header -->
+            <div class="bg-zinc-950 text-white p-4 flex justify-between items-center shadow-md z-10 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-700">
+                        <span class="font-black text-xs uppercase">APL</span>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-sm uppercase tracking-tight">Support Specialist</h4>
+                        <p class="text-[10px] text-zinc-400 font-bold flex items-center gap-1.5 mt-0.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>Online</span>
+                        </p>
+                    </div>
+                </div>
+                <button @click="toggleChat()" class="text-zinc-400 hover:text-white transition focus:outline-none p-1">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Messages Area -->
+            <div id="chatMessagesArea" class="flex-grow p-4 overflow-y-auto bg-gray-50 flex flex-col gap-4">
+                <template x-for="msg in messages" :key="msg.id">
+                    <div class="flex w-full" :class="msg.sender_type === 'customer' ? 'justify-end' : 'justify-start'">
+                        <div class="max-w-[85%] rounded-2xl p-3 shadow-sm relative text-sm"
+                             :class="msg.sender_type === 'customer' ? 'bg-zinc-950 text-white rounded-tr-sm' : 'bg-white border border-gray-200 text-zinc-800 rounded-tl-sm'">
+                            
+                            <template x-if="msg.sender_type === 'ai' || msg.sender_type === 'admin'">
+                                <span class="text-[9px] text-blue-600 font-extrabold block mb-1 uppercase tracking-wider">Support Specialist</span>
+                            </template>
+
+                            <div x-html="msg.message.replace(/\n/g, '<br>')"></div>
+                            
+                            <div class="flex items-center justify-end gap-1 mt-1 text-[9px] opacity-70">
+                                <span x-text="new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})"></span>
+                                <template x-if="msg.sender_type === 'customer' && msg.is_seen">
+                                    <svg class="w-3 h-3 text-emerald-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                
+                <div x-show="isTyping" class="flex justify-start">
+                    <div class="bg-white border border-gray-200 text-zinc-800 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm w-16 flex items-center justify-center gap-1">
+                        <span class="w-1.5 h-1.5 bg-zinc-400 rounded-full animate-bounce" style="animation-delay: 0ms"></span>
+                        <span class="w-1.5 h-1.5 bg-zinc-400 rounded-full animate-bounce" style="animation-delay: 150ms"></span>
+                        <span class="w-1.5 h-1.5 bg-zinc-400 rounded-full animate-bounce" style="animation-delay: 300ms"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-3 bg-white border-t border-gray-200 shrink-0">
+                <form @submit.prevent="sendMessage" class="flex items-end gap-2 relative">
+                    <div class="flex-grow bg-gray-50 border border-gray-300 rounded-xl flex items-center px-2 py-1 focus-within:border-zinc-500 focus-within:ring-1 focus-within:ring-zinc-500 transition-shadow">
+                        <!-- Attachment Button (Stub) -->
+                        <button type="button" class="p-2 text-zinc-400 hover:text-zinc-600 transition focus:outline-none">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                        </button>
+                        
+                        <textarea x-model="newMessage" @keydown.enter.prevent="sendMessage" @input="resizeInput($event.target)" rows="1" placeholder="Type your message..." class="flex-grow bg-transparent border-none text-sm px-2 py-2 focus:ring-0 resize-none max-h-32 text-zinc-800"></textarea>
+                        
+                        <!-- Emoji Button (Stub) -->
+                        <button type="button" class="p-2 text-zinc-400 hover:text-zinc-600 transition focus:outline-none">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </button>
+                    </div>
+                    
+                    <button type="submit" :disabled="!newMessage.trim() || sending" class="bg-zinc-950 text-white p-3 rounded-xl hover:bg-zinc-800 transition disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none flex-shrink-0">
+                        <svg x-show="!sending" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                        <svg x-show="sending" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function chatWidget() {
+            return {
+                isOpen: false,
+                sessionId: null,
+                messages: [],
+                newMessage: '',
+                sending: false,
+                isTyping: false,
+                aiActive: true,
+
+                initChat() {
+                    // Try to init conversation with backend
+                    fetch('{{ route('chat.init') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        this.sessionId = data.session_id;
+                        this.messages = data.conversation.messages || [];
+                        this.aiActive = data.conversation.ai_active;
+                        this.scrollToBottom();
+                        
+                        // Setup Echo Listeners if Echo is available
+                        if (window.Echo) {
+                            window.Echo.channel('chat.' + this.sessionId)
+                                .listen('MessageSent', (e) => {
+                                    this.messages.push(e.message);
+                                    this.scrollToBottom();
+                                    this.isTyping = false;
+                                })
+                                .listen('ConversationUpdated', (e) => {
+                                    this.aiActive = e.conversation.ai_active;
+                                });
+                        }
+                    });
+                },
+
+                toggleChat() {
+                    this.isOpen = !this.isOpen;
+                    if (this.isOpen) {
+                        setTimeout(() => this.scrollToBottom(), 100);
+                    }
+                },
+
+                sendMessage() {
+                    if (!this.newMessage.trim() || this.sending) return;
+
+                    const msgText = this.newMessage;
+                    this.newMessage = '';
+                    this.sending = true;
+                    
+                    // Optimistic update
+                    const tempId = Date.now();
+                    this.messages.push({
+                        id: tempId,
+                        sender_type: 'customer',
+                        message: msgText,
+                        created_at: new Date().toISOString(),
+                        is_seen: false
+                    });
+                    
+                    this.scrollToBottom();
+                    this.isTyping = true; // Show typing indicator while waiting for AI
+
+                    fetch('{{ route('chat.send') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            session_id: this.sessionId,
+                            message: msgText
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        this.sending = false;
+                        // The actual response will come through websockets, or we wait for it
+                        // Since we aren't fully waiting on the response if broadcasting fails,
+                        // this is handled mostly by the Echo listener.
+                    })
+                    .catch(() => {
+                        this.sending = false;
+                        this.isTyping = false;
+                    });
+                },
+
+                scrollToBottom() {
+                    setTimeout(() => {
+                        const container = document.getElementById('chatMessagesArea');
+                        if (container) container.scrollTop = container.scrollHeight;
+                    }, 50);
+                },
+
+                resizeInput(el) {
+                    el.style.height = 'auto';
+                    el.style.height = (el.scrollHeight < 120 ? el.scrollHeight : 120) + 'px';
+                }
+            }
+        }
+    </script>
+
 </body>
 </html>

@@ -173,6 +173,7 @@ class CheckoutController extends Controller
         $order = Order::create([
             'order_number' => $orderNumber,
             'user_id' => auth()->check() ? auth()->id() : null,
+            'customer_type' => auth()->check() ? 'Registered User' : 'Guest',
             'email' => $shipping['email'],
             'status' => ($paymentMethod === 'stripe') ? 'processing' : 'pending_payment',
             'payment_method' => $paymentMethod,
