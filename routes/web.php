@@ -7,6 +7,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Models\ChatConversation;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -116,6 +117,9 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     // Support Center
     Route::get('/support', [\App\Http\Controllers\AdminSupportController::class, 'index'])->name('support.index');
     Route::get('/support/{conversation}', [\App\Http\Controllers\AdminSupportController::class, 'show'])->name('support.show');
+    Route::get('/support/{conversation}/take-over', function (\App\Models\ChatConversation $conversation) {
+        return redirect()->route('admin.support.show', $conversation);
+    })->name('support.takeOver.redirect');
     Route::post('/support/{conversation}/take-over', [\App\Http\Controllers\AdminSupportController::class, 'takeOver'])->name('support.takeOver');
     Route::post('/support/{conversation}/resume-ai', [\App\Http\Controllers\AdminSupportController::class, 'resumeAi'])->name('support.resumeAi');
     Route::post('/support/{conversation}/reply', [\App\Http\Controllers\AdminSupportController::class, 'reply'])->name('support.reply');

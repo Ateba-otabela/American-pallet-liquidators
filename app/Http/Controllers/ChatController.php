@@ -8,6 +8,7 @@ use App\Events\MessageSent;
 use App\Events\ConversationUpdated;
 use App\Services\OpenRouterService;
 use App\Services\GeminiService;
+use App\Services\AiContextBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -58,6 +59,18 @@ class ChatController extends Controller
             'message' => $request->message,
         ]);
 
+        // Track chat question in visitor logs when available
+        if ($request->session_id && $request->filled('message')) {
+            \App\Models\VisitLog::where('chat_session_id', $request->session_id)
+                ->orWhere(function ($query) use ($request) {
+                    $query->whereNull('chat_session_id')
+                          ->where('ip_address', request()->ip());
+                })
+                ->latest()
+                ->limit(1)
+                ->update(['chat_session_id' => $request->session_id, 'chat_question' => $request->message]);
+        }
+
         $conversation->update(['last_activity' => now()]);
 
         try {
@@ -92,7 +105,14 @@ class ChatController extends Controller
 
         // If AI is active, generate reply
         if ($conversation->ai_active) {
-            $aiReply = $aiService->generateReply($conversation, $request->message);
+            $contextBuilder = app(AiContextBuilder::class);
+            $websiteContext = $contextBuilder->buildWebsiteContext(
+                $conversation,
+                $request->input('page_url'),
+                $request->input('page_title')
+            );
+
+            $aiReply = $aiService->generateReply($conversation, $request->message, $websiteContext);
             
             $aiMessage = ChatMessage::create([
                 'chat_conversation_id' => $conversation->id,

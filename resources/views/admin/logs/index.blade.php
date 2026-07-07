@@ -122,6 +122,7 @@
                         <th class="px-6 py-3.5">Location (IP)</th>
                         <th class="px-6 py-3.5">Visited URL</th>
                         <th class="px-6 py-3.5">Browser & OS</th>
+                        <th class="px-6 py-3.5">Chat Question</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 text-sm">
@@ -171,6 +172,11 @@
                             <span class="bg-zinc-100 text-zinc-800 font-mono text-[11px] px-2.5 py-1 rounded border border-zinc-200 break-words block">
                                 {{ $log->path }}
                             </span>
+                        </td>
+
+                        <!-- Chat Question -->
+                        <td class="px-6 py-4 break-words max-w-[240px] text-sm text-zinc-700">
+                            {{ $log->chat_question ?? '—' }}
                         </td>
 
                         <!-- OS & Browser Details -->

@@ -166,7 +166,8 @@ class LogVisitor
                 'os' => $os,
                 'browser' => $browser,
                 'path' => '/' . $path,
-                'location' => $location
+                'location' => $location,
+                'chat_session_id' => $request->cookie('chat_session_id') ?? null,
             ]);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Failed to save visit log: ' . $e->getMessage());

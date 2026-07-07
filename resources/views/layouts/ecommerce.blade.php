@@ -459,7 +459,9 @@
                         },
                         body: JSON.stringify({
                             session_id: this.sessionId,
-                            message: msgText
+                            message: msgText,
+                            page_url: window.location.href,
+                            page_title: document.title
                         })
                     })
                     .then(res => res.json())

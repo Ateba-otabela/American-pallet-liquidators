@@ -37,7 +37,11 @@ class AdminSupportController extends Controller
             'status' => 'Open'
         ]);
 
-        broadcast(new ConversationUpdated($conversation));
+        try {
+            broadcast(new ConversationUpdated($conversation));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('Broadcasting failed in AdminSupportController::takeOver: ' . $e->getMessage());
+        }
 
         return back()->with('success', 'You have taken over the conversation.');
     }
@@ -50,7 +54,11 @@ class AdminSupportController extends Controller
             'status' => 'Open'
         ]);
 
-        broadcast(new ConversationUpdated($conversation));
+        try {
+            broadcast(new ConversationUpdated($conversation));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('Broadcasting failed in AdminSupportController::resumeAi: ' . $e->getMessage());
+        }
 
         return back()->with('success', 'AI has resumed the conversation.');
     }
@@ -68,8 +76,12 @@ class AdminSupportController extends Controller
 
         $conversation->update(['last_activity' => now(), 'status' => 'Waiting']);
 
-        broadcast(new MessageSent($message))->toOthers();
-        broadcast(new ConversationUpdated($conversation));
+        try {
+            broadcast(new MessageSent($message))->toOthers();
+            broadcast(new ConversationUpdated($conversation));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('Broadcasting failed in AdminSupportController::reply: ' . $e->getMessage());
+        }
 
         return back();
     }

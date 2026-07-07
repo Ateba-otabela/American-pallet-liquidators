@@ -16,6 +16,8 @@ class VisitLog extends Model
         'os',
         'browser',
         'path',
-        'location'
+        'location',
+        'chat_session_id',
+        'chat_question'
     ];
 }
