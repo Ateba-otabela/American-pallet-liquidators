@@ -380,13 +380,17 @@
                     // Try to init conversation with backend
                     fetch('{{ route('chat.init') }}', {
                         method: 'POST',
+                        credentials: 'same-origin',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             'Accept': 'application/json'
                         }
                     })
-                    .then(res => res.json())
+                    .then(res => {
+                        if (!res.ok) throw new Error('Init request failed: ' + res.status);
+                        return res.json();
+                    })
                     .then(data => {
                         this.sessionId = data.session_id;
                         this.messages = data.conversation.messages || [];
@@ -452,6 +456,7 @@
 
                     fetch('{{ route('chat.send') }}', {
                         method: 'POST',
+                        credentials: 'same-origin',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -464,7 +469,10 @@
                             page_title: document.title
                         })
                     })
-                    .then(res => res.json())
+                    .then(res => {
+                        if (!res.ok) throw new Error('Send request failed: ' + res.status);
+                        return res.json();
+                    })
                     .then(data => {
                         this.sending = false;
                         this.isTyping = false;
