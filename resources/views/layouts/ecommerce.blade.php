@@ -378,7 +378,7 @@
 
                 initChat() {
                     // Try to init conversation with backend
-                    fetch('{{ route('chat.init') }}', {
+                    fetch('{{ url('/chat/init') }}', {
                         method: 'POST',
                         credentials: 'same-origin',
                         headers: {
@@ -454,7 +454,7 @@
                     this.scrollToBottom();
                     this.isTyping = true; // Show typing indicator while waiting for AI
 
-                    fetch('{{ route('chat.send') }}', {
+                    fetch('{{ url('/chat/send') }}', {
                         method: 'POST',
                         credentials: 'same-origin',
                         headers: {
