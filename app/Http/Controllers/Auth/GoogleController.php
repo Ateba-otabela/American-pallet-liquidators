@@ -12,13 +12,19 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
 {
+    
     public function redirect(): RedirectResponse
     {
-        return Socialite::driver('google')->stateless()->redirect();
+     
+        $this->ensureGoogleConfig();
+
+         Socialite::driver('google')->stateless()->redirect();
     }
 
     public function callback(Request $request): RedirectResponse
     {
+        $this->ensureGoogleConfig();
+
         $socialUser = Socialite::driver('google')->stateless()->user();
 
         $user = User::where('email', $socialUser->getEmail())->first();
@@ -41,5 +47,16 @@ class GoogleController extends Controller
         Auth::login($user, true);
 
         return redirect()->intended(route('home', absolute: false));
+    }
+
+    protected function ensureGoogleConfig(): void
+    {
+        $clientId = config('services.google.client_id');
+        $clientSecret = config('services.google.client_secret');
+        $redirect = config('services.google.redirect');
+
+        if (empty($clientId) || empty($clientSecret) || empty($redirect)) {
+            abort(500, 'Google OAuth is not configured correctly. Please check GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REDIRECT in your .env.');
+        }
     }
 }

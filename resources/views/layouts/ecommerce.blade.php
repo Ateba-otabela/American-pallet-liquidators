@@ -341,26 +341,40 @@
 
             <!-- Input Area -->
             <div class="p-3 bg-white border-t border-gray-200 shrink-0">
-                <form @submit.prevent="sendMessage" class="flex items-end gap-2 relative">
-                    <div class="flex-grow bg-gray-50 border border-gray-300 rounded-xl flex items-center px-2 py-1 focus-within:border-zinc-500 focus-within:ring-1 focus-within:ring-zinc-500 transition-shadow">
-                        <!-- Attachment Button (Stub) -->
-                        <button type="button" class="p-2 text-zinc-400 hover:text-zinc-600 transition focus:outline-none">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
-                        </button>
-                        
-                        <textarea x-model="newMessage" @keydown.enter.prevent="sendMessage" @input="resizeInput($event.target)" rows="1" placeholder="Type your message..." class="flex-grow bg-transparent border-none text-sm px-2 py-2 focus:ring-0 resize-none max-h-32 text-zinc-800"></textarea>
-                        
-                        <!-- Emoji Button (Stub) -->
-                        <button type="button" class="p-2 text-zinc-400 hover:text-zinc-600 transition focus:outline-none">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        </button>
+                <template x-if="showProfileForm">
+                    <div class="space-y-3 mb-3">
+                        <div class="text-sm font-semibold">Please share your name and email so we can help you better.</div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500">Name</label>
+                            <input x-model="name" type="text" class="mt-1 w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" placeholder="Your name">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-500">Email</label>
+                            <input x-model="email" type="email" class="mt-1 w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" placeholder="you@example.com">
+                        </div>
+                        <div class="flex justify-end gap-2">
+                            <button type="button" @click="submitProfile()" :disabled="!name.trim() || !email.trim()" class="bg-zinc-950 text-white px-4 py-2 rounded-xl hover:bg-zinc-800 transition disabled:opacity-50">Continue</button>
+                        </div>
                     </div>
-                    
-                    <button type="submit" :disabled="!newMessage.trim() || sending" class="bg-zinc-950 text-white p-3 rounded-xl hover:bg-zinc-800 transition disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none flex-shrink-0">
-                        <svg x-show="!sending" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-                        <svg x-show="sending" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    </button>
-                </form>
+                </template>
+                <template x-if="!showProfileForm">
+                    <form @submit.prevent="sendMessage" class="flex items-end gap-2 relative">
+                        <div class="flex-grow bg-gray-50 border border-gray-300 rounded-xl flex items-center px-2 py-1 focus-within:border-zinc-500 focus-within:ring-1 focus-within:ring-zinc-500 transition-shadow">
+                            <!-- Attachment Button (Stub) -->
+                            <button type="button" class="p-2 text-zinc-400 hover:text-zinc-600 transition focus:outline-none">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                            </button>
+                            <textarea x-model="newMessage" @keydown.enter.prevent="sendMessage" @input="resizeInput($event.target)" rows="1" placeholder="Type your message..." class="flex-grow bg-transparent border-none text-sm px-2 py-2 focus:ring-0 resize-none max-h-32 text-zinc-800"></textarea>
+                            <button type="button" class="p-2 text-zinc-400 hover:text-zinc-600 transition focus:outline-none">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </button>
+                        </div>
+                        <button type="submit" :disabled="!newMessage.trim() || sending" class="bg-zinc-950 text-white p-3 rounded-xl hover:bg-zinc-800 transition disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none flex-shrink-0">
+                            <svg x-show="!sending" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                            <svg x-show="sending" class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        </button>
+                    </form>
+                </template>
             </div>
         </div>
     </div>
@@ -372,9 +386,15 @@
                 sessionId: null,
                 messages: [],
                 newMessage: '',
+                pendingMessage: '',
+                name: '',
+                email: '',
+                showProfileForm: false,
+                profileSubmitted: false,
                 sending: false,
                 isTyping: false,
                 aiActive: true,
+                requiresProfile: false,
 
                 initChat() {
                     // Try to init conversation with backend
@@ -395,6 +415,12 @@
                         this.sessionId = data.session_id;
                         this.messages = data.conversation.messages || [];
                         this.aiActive = data.conversation.ai_active;
+                        this.requiresProfile = !data.conversation.customer_email || !data.conversation.customer_name || data.conversation.customer_name === 'Guest';
+                        
+                        if (this.requiresProfile) {
+                            this.name = data.conversation.customer_name && data.conversation.customer_name !== 'Guest' ? data.conversation.customer_name : '';
+                            this.email = data.conversation.customer_email || '';
+                        }
                         
                         // If no messages exist yet, add a friendly AI greeting
                         if (this.messages.length === 0) {
@@ -434,11 +460,25 @@
                     }
                 },
 
+                submitProfile() {
+                    if (!this.name.trim() || !this.email.trim()) return;
+                    this.showProfileForm = false;
+                    this.profileSubmitted = true;
+                },
+
                 sendMessage() {
                     if (!this.newMessage.trim() || this.sending) return;
 
-                    const msgText = this.newMessage;
+                    if (this.requiresProfile && !this.profileSubmitted) {
+                        this.showProfileForm = true;
+                        this.pendingMessage = this.newMessage;
+                        this.newMessage = '';
+                        return;
+                    }
+
+                    const msgText = this.newMessage || this.pendingMessage;
                     this.newMessage = '';
+                    this.pendingMessage = '';
                     this.sending = true;
                     
                     // Optimistic update
@@ -465,6 +505,8 @@
                         body: JSON.stringify({
                             session_id: this.sessionId,
                             message: msgText,
+                            customer_name: this.name,
+                            customer_email: this.email,
                             page_url: window.location.href,
                             page_title: document.title
                         })

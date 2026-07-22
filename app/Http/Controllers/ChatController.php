@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\ChatConversation;
 use App\Models\ChatMessage;
+use App\Models\User;
 use App\Events\MessageSent;
 use App\Events\ConversationUpdated;
 use App\Services\OpenRouterService;
 use App\Services\GeminiService;
 use App\Services\AiContextBuilder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class ChatController extends Controller
@@ -51,6 +53,14 @@ class ChatController extends Controller
             ? app(OpenRouterService::class)
             : app(GeminiService::class);
 
+        // Update conversation customer info if provided
+        if ($request->filled('customer_name') || $request->filled('customer_email')) {
+            $conversation->update([
+                'customer_name' => $request->input('customer_name', $conversation->customer_name),
+                'customer_email' => $request->input('customer_email', $conversation->customer_email),
+            ]);
+        }
+
         // Save customer message
         $customerMessage = ChatMessage::create([
             'chat_conversation_id' => $conversation->id,
@@ -58,6 +68,27 @@ class ChatController extends Controller
             'sender_id' => auth()->check() ? auth()->id() : null,
             'message' => $request->message,
         ]);
+
+        $adminEmails = User::where('is_admin', true)
+            ->pluck('email')
+            ->filter()
+            ->unique()
+            ->toArray();
+
+        if (empty($adminEmails)) {
+            $adminEmails = [config('mail.from.address')];
+        }
+
+        try {
+            Mail::to($adminEmails)->send(new \App\Mail\ChatMessageNotificationMail(
+                $customerMessage,
+                $conversation,
+                $request->input('page_url'),
+                $request->input('page_title')
+            ));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('Chat notification email failed: ' . $e->getMessage());
+        }
 
         // Track chat question in visitor logs when available
         if ($request->session_id && $request->filled('message')) {
