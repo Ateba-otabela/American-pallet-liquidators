@@ -37,7 +37,8 @@
                 <h3>Pay via {{ str_replace('_', ' ', $order->payment_method) }}</h3>
                 <p>Please send the exact amount of <strong>${{ number_format($order->total, 2) }}</strong> to the following details:</p>
                 <div class="credentials">{{ $paymentCredentials }}</div>
-                <p style="margin-top: 15px; font-size: 13px;"><em>Once you have completed the payment, please log into your account, go to your order, and submit a screenshot of your payment receipt.</em></p>
+                <p style="margin-top: 15px; font-size: 13px;"><em>Once you have completed the payment, please send your proof of payment by replying directly to this email and attaching a screenshot or copy of your payment receipt. We will verify your payment and process your order as soon as it is confirmed.
+</em></p>
                 <div style="text-align: center;">
                     <a href="{{ route('dashboard') }}" class="btn" style="color: #ffffff;">Upload Proof of Payment</a>
                 </div>
