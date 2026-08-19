@@ -45,7 +45,7 @@
                     <svg class="h-5 w-5 text-zinc-400 transform transition-transform duration-200" :class="active === 3 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="active === 3" x-collapse class="border-t border-gray-100 p-6 text-sm text-slate-500 leading-relaxed" x-cloak>
-                    Our main liquidation warehouse is located in Louisville, Kentucky. Wholesale merchants and local resellers are welcome to inspect inventory and pick up their purchases in person! Forklift dock loading is always provided free of charge at our warehouse. Select "Cash on Pickup" at checkout or pay online, then contact us to schedule your loading dock reservation.
+                    Our main liquidation warehouse is located at 251 A St, Jeffersonville, IN 47130 (directly across the river from Louisville, KY). Wholesale merchants and local resellers are welcome to inspect inventory and pick up their purchases in person! Forklift dock loading is always provided free of charge at our warehouse. Select "Cash on Pickup" at checkout or pay online, then schedule your loading dock reservation.
                 </div>
             </div>
 

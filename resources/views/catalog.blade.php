@@ -77,7 +77,7 @@
                 <!-- Info bar -->
                 <div class="flex justify-between items-center mb-6 bg-white border border-gray-200 rounded-lg px-6 py-4 shadow-sm text-sm">
                     <span class="font-semibold text-slate-500">Showing <span class="text-zinc-950 font-bold">{{ $products->firstItem() ?? 0 }}-{{ $products->lastItem() ?? 0 }}</span> of <span class="text-zinc-950 font-bold">{{ $products->total() }}</span> results</span>
-                    <span class="hidden sm:inline font-semibold text-slate-500">Louisville, KY Direct Contract Loads</span>
+                    <span class="hidden sm:inline font-semibold text-slate-500">Jeffersonville, IN Direct Contract Loads</span>
                 </div>
 
                 @if($products->count() === 0)

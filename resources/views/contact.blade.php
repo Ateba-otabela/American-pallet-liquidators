@@ -22,21 +22,12 @@
                     <h2 class="text-xl font-extrabold text-zinc-950 uppercase tracking-tight mb-4">Warehouse Contact Details</h2>
                     <ul class="space-y-4">
                         <li class="flex items-start gap-4">
-                            <span class="bg-zinc-100 text-zinc-900 p-2.5 rounded shadow-sm">
-                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                            </span>
-                            <div>
-                                <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">Phone Call / SMS Support</span>
-                                <a href="tel:+447882769759" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline">+44 7882 769759</a>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-4">
                             <span class="bg-zinc-100 text-zinc-900 p-2.5 rounded shadow-sm flex-shrink-0">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                             </span>
                             <div class="min-w-0">
                                 <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">General &amp; Sales Email</span>
-                                <a href="mailto:americanpalletliquidators0@gmail.com" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline break-all">americanpalletliquidators0@gmail.com</a>
+                                <a href="mailto:sales@americanpalletliquidators.shop" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline break-all">sales@americanpalletliquidators.shop</a>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
@@ -44,9 +35,9 @@
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </span>
                             <div>
-                                <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">Louisville Warehouse Facility</span>
+                                <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">Jeffersonville Warehouse Facility</span>
                                 <address class="not-italic text-zinc-950 font-extrabold text-lg leading-snug">
-                                    American Pallet Liquidators<br>Louisville, KY
+                                    American Pallet Liquidators<br>251 A St, Jeffersonville, IN 47130
                                 </address>
                             </div>
                         </li>
@@ -81,7 +72,7 @@
                         loading="lazy" 
                         allowfullscreen 
                         referrerpolicy="no-referrer-when-downgrade"
-                        src="https://maps.google.com/maps?q=Louisville,%20KY&t=&z=11&ie=UTF8&iwloc=&output=embed">
+                        src="https://maps.google.com/maps?q=251%20A%20St,%20Jeffersonville,%20IN%2047130&t=&z=14&ie=UTF8&iwloc=&output=embed">
                     </iframe>
                 </div>
             </div>
@@ -97,22 +88,8 @@
                     </div>
                 @endif
 
-                <script>
-                    function sendToWhatsapp(event) {
-                        event.preventDefault();
-                        const name = document.getElementById('name').value;
-                        const email = document.getElementById('email').value;
-                        const phone = document.getElementById('phone').value;
-                        const message = document.getElementById('message').value;
-
-                        const whatsappMessage = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage: ${message}`);
-                        const whatsappUrl = `https://wa.me/447882769759?text=${whatsappMessage}`;
-                        
-                        window.open(whatsappUrl, '_blank');
-                    }
-                </script>
-
-                <form onsubmit="sendToWhatsapp(event)" class="space-y-4">
+                <form action="{{ route('contact.submit') }}" method="POST" class="space-y-4">
+                    @csrf
                     <div>
                         <label for="name" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-1.5">Full Name</label>
                         <input type="text" id="name" name="name" required class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
@@ -135,33 +112,29 @@
                     </div>
 
                     <button type="submit" class="w-full bg-zinc-950 text-white font-extrabold py-3.5 rounded text-xs uppercase tracking-widest hover:bg-zinc-800 transition duration-150 shadow-md">
-                        Submit Inquiry via WhatsApp
+                        Submit Inquiry
                     </button>
                 </form>
+
             </div>
 
         </div>
     </section>
 
-    <!-- Reviews, Testimonials and Refund Policy -->
+    <!-- Refund Policy & Shipping Info -->
     <section class="bg-zinc-950 text-white py-16 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
             <div class="grid gap-6 lg:grid-cols-3 mb-12">
                 <div class="bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-800">
-                    <span class="text-xs font-bold uppercase tracking-widest text-amber-300">Customer Reviews</span>
-                    <h2 class="mt-4 text-2xl font-extrabold uppercase tracking-tight">What buyers say</h2>
-                    <p class="mt-4 text-sm leading-relaxed text-zinc-300">Verified wholesale customers consistently praise our pricing, accuracy, and timely pallet fulfillment across every shipment.</p>
+                    <span class="text-xs font-bold uppercase tracking-widest text-amber-300">Warehouse Pickup</span>
+                    <h2 class="mt-4 text-2xl font-extrabold uppercase tracking-tight">In-Person Inspections</h2>
+                    <p class="mt-4 text-sm leading-relaxed text-zinc-300">Buyers are welcome to visit our Jeffersonville, IN warehouse to inspect any lot before purchasing. Schedule a dock appointment by email and walk the aisles with our team.</p>
                 </div>
                 <div class="bg-white rounded-3xl p-8 shadow-xl">
-                    <p class="text-xs font-bold uppercase tracking-widest text-zinc-500">Rating</p>
-                    <div class="mt-4 flex items-center gap-2">
-                        <span class="text-2xl font-black text-zinc-950">4.9</span>
-                        <span class="text-sm uppercase tracking-widest text-zinc-500">out of 5</span>
-                    </div>
-                    <div class="mt-4 space-y-2 text-sm text-zinc-600">
-                        <p><strong>95% of buyers</strong> reported repeat pallet orders within 90 days.</p>
-                        <p><strong>92% of customers</strong> said inventory descriptions matched delivered stock.</p>
-                    </div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-zinc-500">Shipping</p>
+                    <h3 class="mt-4 text-xl font-extrabold text-zinc-950 uppercase tracking-tight">Nationwide Freight</h3>
+                    <p class="mt-4 text-sm text-zinc-600 leading-relaxed">We coordinate LTL and full truckload carriers to ship pallets anywhere in the continental US. Freight costs are quoted separately based on your ZIP code and lot weight.</p>
+                    <a href="{{ route('freight-quote.show') }}" class="inline-block mt-4 text-xs font-black uppercase tracking-widest text-zinc-950 border-b-2 border-zinc-950 pb-0.5 hover:text-zinc-500 hover:border-zinc-300 transition">Request a Quote</a>
                 </div>
                 <div class="bg-zinc-900 rounded-3xl p-8 shadow-xl border border-zinc-800">
                     <p class="text-xs font-bold uppercase tracking-widest text-cyan-300">Refund Policy</p>
@@ -171,8 +144,8 @@
                 </div>
             </div>
 
-            <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-200 mb-8">
-                <p class="text-xs font-bold uppercase tracking-widest text-cyan-500">Refund Policy</p>
+            <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-200">
+                <p class="text-xs font-bold uppercase tracking-widest text-cyan-500">Policy Summary</p>
                 <h3 class="mt-4 text-2xl font-extrabold text-zinc-950 uppercase tracking-tight">Liquidation pallet orders are final sale</h3>
                 <ul class="mt-4 space-y-3 text-sm text-zinc-700 leading-relaxed">
                     <li>• All pallets and truckloads are sold <strong>as-is, where-is</strong>.</li>
@@ -181,39 +154,7 @@
                     <li>• Questions? Contact us directly or consult our <a href="{{ route('faq') }}" class="underline text-zinc-950">FAQ page</a>.</li>
                 </ul>
             </div>
-
-            <div class="grid gap-6 lg:grid-cols-3">
-                <article class="bg-white rounded-3xl p-6 shadow-xl border border-gray-200">
-                    <div class="flex items-center gap-4 mb-6">
-                        <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&w=400&q=80" alt="Alisha Reed" class="h-14 w-14 rounded-full object-cover">
-                        <div>
-                            <p class="font-bold uppercase text-zinc-950 text-sm tracking-widest">Alisha Reed</p>
-                            <p class="text-xs uppercase tracking-widest text-zinc-500">Retail Resale Owner</p>
-                        </div>
-                    </div>
-                    <p class="text-sm leading-relaxed text-zinc-700">“Reliable pallet arrivals, honest descriptions, and excellent support. I now source 80% of my resale inventory through APL and have more confidence in every purchase.”</p>
-                </article>
-                <article class="bg-white rounded-3xl p-6 shadow-xl border border-gray-200">
-                    <div class="flex items-center gap-4 mb-6">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Marcus Lee" class="h-14 w-14 rounded-full object-cover">
-                        <div>
-                            <p class="font-bold uppercase text-zinc-950 text-sm tracking-widest">Marcus Lee</p>
-                            <p class="text-xs uppercase tracking-widest text-zinc-500">Market Stall Merchant</p>
-                        </div>
-                    </div>
-                    <p class="text-sm leading-relaxed text-zinc-700">“This team delivers fast, and the pallets always match expectations. Their pricing is competitive and the pickup process is straightforward.”</p>
-                </article>
-                <article class="bg-white rounded-3xl p-6 shadow-xl border border-gray-200">
-                    <div class="flex items-center gap-4 mb-6">
-                        <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=400&q=80" alt="Nina Carter" class="h-14 w-14 rounded-full object-cover">
-                        <div>
-                            <p class="font-bold uppercase text-zinc-950 text-sm tracking-widest">Nina Carter</p>
-                            <p class="text-xs uppercase tracking-widest text-zinc-500">Online Resale Store</p>
-                        </div>
-                    </div>
-                    <p class="text-sm leading-relaxed text-zinc-700">“Their liquidation truckloads helped me scale my business quickly. The checkout instructions are clear and the freight support is very helpful.”</p>
-                </article>
-            </div>
         </div>
     </section>
+@endsectionsection>
 @endsection

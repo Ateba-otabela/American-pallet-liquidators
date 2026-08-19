@@ -23,6 +23,10 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'submitContact'])->name('contact.submit');
 Route::post('/subscribe', [HomeController::class, 'subscribe'])->name('subscribe');
 
+// Freight Quote System Routes
+Route::get('/freight-quote', [\App\Http\Controllers\FreightQuoteController::class, 'showForm'])->name('freight-quote.show');
+Route::post('/freight-quote', [\App\Http\Controllers\FreightQuoteController::class, 'submitForm'])->name('freight-quote.submit');
+
 /*
 |--------------------------------------------------------------------------
 | E-Commerce Catalog & Product Routes

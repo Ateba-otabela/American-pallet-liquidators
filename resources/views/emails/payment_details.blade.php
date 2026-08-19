@@ -75,7 +75,7 @@
 
         <div class="footer">
             &copy; {{ date('Y') }} American Pallet Liquidators. All rights reserved.<br>
-            Louisville, KY Facility
+            Jeffersonville, IN Facility
         </div>
     </div>
 </body>

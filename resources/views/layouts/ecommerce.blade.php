@@ -27,8 +27,7 @@
 
     <!-- Announcement Bar -->
     <div class="bg-zinc-950 text-white py-2.5 px-4 text-center text-xs font-semibold tracking-wider uppercase border-b border-zinc-800">
-        <span>America's Most Trusted Supplier of Liquidated Merchandise — Call us today: </span>
-        <a href="tel:+447882769759" class="underline hover:text-zinc-300 transition duration-150">+44 7882 769759</a>
+        <span>America's Most Trusted Supplier of Liquidated Merchandise</span>
     </div>
 
     <!-- Main Navigation Header -->
@@ -53,7 +52,7 @@
                     <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->filled('category') && request()->category == 'pallets' ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">PALLETS</a>
                     <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->filled('category') && request()->category == 'truckloads' ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">TRUCKLOADS</a>
                     <a href="{{ route('how-it-works') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('how-it-works') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">HOW IT WORKS</a>
-                    <a href="{{ route('sell-to-us') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('sell-to-us') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">SELL TO US</a>
+                    <a href="{{ route('freight-quote.show') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('freight-quote.show') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">FREIGHT QUOTE</a>
                     <a href="{{ route('faq') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('faq') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">FAQ</a>
                     <a href="{{ route('contact') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('contact') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">CONTACT</a>
                 </nav>
@@ -150,7 +149,7 @@
                 <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">PALLETS</a>
                 <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">TRUCKLOADS</a>
                 <a href="{{ route('how-it-works') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">HOW IT WORKS</a>
-                <a href="{{ route('sell-to-us') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">SELL TO US</a>
+                <a href="{{ route('freight-quote.show') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">FREIGHT QUOTE</a>
                 <a href="{{ route('faq') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">FAQ</a>
                 <a href="{{ route('contact') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">CONTACT</a>
                 
@@ -218,7 +217,7 @@
                 <p class="text-xs leading-relaxed text-zinc-500">America's premier high-volume wholesale liquidation supplier. Providing resellers, store owners, and discount merchants with unmatched return loads, overstock pallets, and bulk liquidations.</p>
                 <div class="text-xs text-zinc-500 font-semibold">
                     <span>Warehouse Address:</span>
-                    <address class="not-italic text-zinc-400 mt-1">APL Warehouse, Louisville, KY</address>
+                    <address class="not-italic text-zinc-400 mt-1">251 A St, Jeffersonville, IN 47130</address>
                 </div>
             </div>
 
@@ -229,7 +228,7 @@
                     <li><a href="{{ route('catalog') }}" class="hover:text-white transition">Shop All Merchandise</a></li>
                     <li><a href="{{ route('catalog', ['category' => 'pallets']) }}" class="hover:text-white transition">Liquidation Pallets</a></li>
                     <li><a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="hover:text-white transition">Retail Store Truckloads</a></li>
-                    <li><a href="{{ route('sell-to-us') }}" class="hover:text-white transition">Sell Excess Stock to Us</a></li>
+                    <li><a href="{{ route('freight-quote.show') }}" class="hover:text-white transition">Request Freight Quote</a></li>
                 </ul>
             </div>
 
@@ -249,12 +248,8 @@
                 <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-4">Contact Information</h4>
                 <ul class="space-y-3 text-sm">
                     <li class="flex items-center gap-2">
-                        <svg class="h-4 w-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                        <a href="tel:+447882769759" class="text-zinc-300 hover:text-white transition">+44 7882 769759</a>
-                    </li>
-                    <li class="flex items-center gap-2">
                         <svg class="h-4 w-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        <a href="mailto:americanpalletliquidators0@gmail.com" class="text-zinc-300 hover:text-white transition">americanpalletliquidators0@gmail.com</a>
+                        <a href="mailto:sales@americanpalletliquidators.shop" class="text-zinc-300 hover:text-white transition">sales@americanpalletliquidators.shop</a>
                     </li>
                 </ul>
             </div>

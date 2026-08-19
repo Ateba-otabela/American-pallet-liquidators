@@ -44,81 +44,51 @@
         </div>
     </section>
 
-    <!-- Stats Bar -->
+    <!-- Trust Banner & Location Info -->
     <section class="bg-gray-100 border-b border-gray-200 py-10 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-                <span class="block text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">20,000+</span>
-                <span class="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mt-1 block">Pallets Sold</span>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left items-center">
+            <div class="flex flex-col items-center md:items-start">
+                <span class="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-1">Warehouse Location</span>
+                <span class="text-zinc-950 font-black text-lg">Jeffersonville, Indiana</span>
+                <p class="text-xs text-slate-500 mt-1 max-w-xs">Located at 251 A St, Jeffersonville, IN 47130 (directly across the river from Louisville, KY).</p>
             </div>
-            <div>
-                <span class="block text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">10+ Years</span>
-                <span class="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mt-1 block">In Business</span>
+            <div class="flex flex-col items-center md:items-start">
+                <span class="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-1">In-Person Inspections Welcome</span>
+                <span class="text-zinc-950 font-black text-lg">Inspect Before You Buy</span>
+                <p class="text-xs text-slate-500 mt-1 max-w-xs">We believe in absolute transparency. Buyers are welcome to schedule warehouse visits to inspect any liquidation lot in person.</p>
             </div>
-            <div>
-                <span class="block text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">5-Star</span>
-                <span class="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mt-1 block">Merchant Rating</span>
-            </div>
-            <div>
-                <span class="block text-3xl sm:text-4xl font-extrabold text-zinc-950 tracking-tight">Direct</span>
-                <span class="text-xs sm:text-sm font-bold text-zinc-500 uppercase tracking-widest mt-1 block">Contract Pricing</span>
+            <div class="flex flex-col items-center md:items-start">
+                <span class="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-1">Freight Shipping</span>
+                <span class="text-zinc-950 font-black text-lg">Nationwide LTL & Truckloads</span>
+                <p class="text-xs text-slate-500 mt-1 max-w-xs">We work directly with freight carriers to coordinate low-cost shipping. Exact freight is calculated and billed separately after order placement.</p>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
+    <!-- How It Works / ordering process -->
     <section class="bg-white border-b border-gray-200 py-16 px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl mx-auto text-center mb-12">
-            <span class="text-zinc-500 text-xs font-extrabold uppercase tracking-widest block mb-2">Customer Success Stories</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-zinc-950 uppercase tracking-tight">Trusted by Resellers Nationwide</h2>
-            <p class="text-slate-500 text-sm sm:text-base leading-relaxed mt-4">Real feedback from buyers who trust our liquidation inventory, pricing, and service for resale, online stores, and local markets.</p>
+            <span class="text-zinc-500 text-xs font-extrabold uppercase tracking-widest block mb-2">Order Process</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-zinc-950 uppercase tracking-tight">How To Purchase & What to Expect</h2>
+            <p class="text-slate-500 text-sm mt-4">Buying liquidation lots is simple. Here is a clear breakdown of the purchasing path and shipping coordination.</p>
         </div>
 
-        <div class="grid gap-6 lg:grid-cols-3">
-            <article class="bg-zinc-950 text-white rounded-3xl p-6 shadow-xl border border-zinc-900/70">
-                <div class="flex items-center gap-4 mb-6">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Marcus Allen" class="h-16 w-16 rounded-full object-cover border-2 border-white shadow-inner">
-                    <div>
-                        <p class="text-sm font-bold uppercase tracking-widest text-zinc-300">Marcus Allen</p>
-                        <p class="text-xs text-zinc-400 uppercase tracking-wider">Owner, Midwest Resale Co.</p>
-                    </div>
-                </div>
-                <p class="text-sm leading-relaxed text-zinc-100 mb-6">“We’ve purchased over 150 pallets from APL, and every shipment has been exactly as described. The pricing is unbeatable and the turnaround time on fulfillment is fast. Our profit margins are better than ever.”</p>
-                <div class="flex items-center gap-1 text-xs uppercase tracking-widest text-amber-300 font-black">
-                    <span>★★★★★</span>
-                    <span class="text-zinc-400">Verified Buyer</span>
-                </div>
-            </article>
-
-            <article class="bg-white rounded-3xl p-6 shadow-md border border-gray-200">
-                <div class="flex items-center gap-4 mb-6">
-                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" alt="Samantha Park" class="h-16 w-16 rounded-full object-cover border border-gray-200 shadow-sm">
-                    <div>
-                        <p class="text-sm font-bold uppercase tracking-widest text-zinc-950">Samantha Park</p>
-                        <p class="text-xs text-zinc-500 uppercase tracking-wider">Flea Market Buyer</p>
-                    </div>
-                </div>
-                <p class="text-sm leading-relaxed text-zinc-700 mb-6">“The trucks arrive loaded with premium liquidation stock. The customer support team helps me select the best pallets for my market, and I’ve doubled my weekly sales since switching to APL.”</p>
-                <div class="flex items-center gap-1 text-xs uppercase tracking-widest text-emerald-600 font-black">
-                    <span>★★★★★</span>
-                    <span class="text-zinc-400">Satisfied Merchant</span>
-                </div>
-            </article>
-
-            <article class="bg-zinc-950 text-white rounded-3xl p-6 shadow-xl border border-zinc-900/70">
-                <div class="flex items-center gap-4 mb-6">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Diego Ramos" class="h-16 w-16 rounded-full object-cover border-2 border-white shadow-inner">
-                    <div>
-                        <p class="text-sm font-bold uppercase tracking-widest text-zinc-300">Diego Ramos</p>
-                        <p class="text-xs text-zinc-400 uppercase tracking-wider">eCommerce & Mobile Resale</p>
-                    </div>
-                </div>
-                <p class="text-sm leading-relaxed text-zinc-100 mb-6">“Shipping was seamless, and the quality was exceptional. I stock my online store with their liquidation pallets and sell out quickly. The images and product descriptions are honest and reliable.”</p>
-                <div class="flex items-center gap-1 text-xs uppercase tracking-widest text-cyan-300 font-black">
-                    <span>★★★★★</span>
-                    <span class="text-zinc-400">Repeat Customer</span>
-                </div>
-            </article>
+        <div class="max-w-5xl mx-auto grid gap-8 md:grid-cols-3">
+            <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl">
+                <span class="bg-zinc-950 text-white font-extrabold text-xs px-2.5 py-1 rounded">1. Select & Checkout</span>
+                <h3 class="font-extrabold text-zinc-950 uppercase mt-4 text-sm">Review Manifests & Details</h3>
+                <p class="text-slate-500 text-xs mt-2 leading-relaxed">Browse available pallets or truckloads. Check stock counts, dimensions, weights, and conditions. Add items to your cart and complete checkout using our secure payment options.</p>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl">
+                <span class="bg-zinc-950 text-white font-extrabold text-xs px-2.5 py-1 rounded">2. Choose Pickup or Freight</span>
+                <h3 class="font-extrabold text-zinc-950 uppercase mt-4 text-sm">Coordinate Shipping Details</h3>
+                <p class="text-slate-500 text-xs mt-2 leading-relaxed">After order placement, select between free local warehouse loading dock pickup in Jeffersonville, IN, or commercial freight carrier delivery. For shipping, our desk negotiates carrier rates to your destination ZIP code.</p>
+            </div>
+            <div class="bg-gray-50 border border-gray-200 p-6 rounded-2xl">
+                <span class="bg-zinc-950 text-white font-extrabold text-xs px-2.5 py-1 rounded">3. Order Fulfillment</span>
+                <h3 class="font-extrabold text-zinc-950 uppercase mt-4 text-sm">Fulfillment & Resell</h3>
+                <p class="text-slate-500 text-xs mt-2 leading-relaxed">Once payment is confirmed, we load your truck or dispatch the freight carrier. You will receive carrier tracking details or pickup appointment times immediately to process your merchandise and start selling.</p>
+            </div>
         </div>
     </section>
 
@@ -241,8 +211,8 @@
             <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm flex gap-5">
                 <span class="text-zinc-300 font-black text-5xl leading-none">02</span>
                 <div>
-                    <h3 class="text-lg font-extrabold text-zinc-950 uppercase tracking-tight mb-2">Louisville Pickup</h3>
-                    <p class="text-slate-500 text-sm leading-relaxed">Resellers are welcome to visit our Louisville, KY warehouse, view available stock in person, pay, and load their own trucks with no hidden pickup charges.</p>
+                    <h3 class="text-lg font-extrabold text-zinc-950 uppercase tracking-tight mb-2">Warehouse Pickup</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Resellers are welcome to visit our Jeffersonville, IN warehouse (directly across the river from Louisville, KY) to view stock, pay, and load their trucks with no pickup charges.</p>
                 </div>
             </div>
 

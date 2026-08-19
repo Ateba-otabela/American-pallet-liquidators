@@ -61,7 +61,7 @@ class DashboardController extends Controller
 
         // Send email to admin notifying about payment proof
         try {
-            $adminEmail = Setting::get('contact_email', 'americanpalletliquidators0@gmail.com');
+            $adminEmail = Setting::get('contact_email', 'sales@americanpalletliquidators.shop');
             Mail::to($adminEmail)->send(new AdminPaymentSubmittedMail($order));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Failed to send payment proof email to admin: ' . $e->getMessage());

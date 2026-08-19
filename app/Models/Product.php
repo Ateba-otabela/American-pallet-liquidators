@@ -19,7 +19,21 @@ class Product extends Model
         'badge',
         'category_id',
         'stock',
-        'images'
+        'images',
+        'condition',
+        'number_of_units',
+        'estimated_retail_value',
+        'manifest_url',
+        'dimensions',
+        'weight',
+        'damage_info',
+        'testing_info',
+        'pickup_location',
+        'shipping_info',
+        'estimated_shipping_cost',
+        'whats_included',
+        'whats_not_included',
+        'refund_conditions'
     ];
 
     protected $casts = [
@@ -27,6 +41,10 @@ class Product extends Model
         'original_price' => 'decimal:2',
         'images' => 'array',
         'stock' => 'integer',
+        'estimated_retail_value' => 'decimal:2',
+        'estimated_shipping_cost' => 'decimal:2',
+        'number_of_units' => 'integer',
+        'weight' => 'integer',
     ];
 
     /**

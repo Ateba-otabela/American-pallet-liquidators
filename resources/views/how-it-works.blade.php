@@ -86,7 +86,7 @@
     <section class="bg-zinc-950 text-white py-16 px-4 text-center">
         <div class="max-w-3xl mx-auto">
             <h2 class="text-2xl sm:text-3xl font-extrabold uppercase tracking-tight mb-4">Want To Inspect Inventory In Person?</h2>
-            <p class="text-zinc-400 text-sm sm:text-base leading-relaxed mb-8 max-w-xl mx-auto">Resellers and wholesale buyers are always welcome at our Louisville warehouse. Schedule a walkthrough, browse our aisles, and choose the exact pallets you want to buy.</p>
+            <p class="text-zinc-400 text-sm sm:text-base leading-relaxed mb-8 max-w-xl mx-auto">Resellers and wholesale buyers are always welcome at our Jeffersonville, IN warehouse. Schedule a walkthrough, browse our aisles, and choose the exact pallets you want to buy.</p>
             <a href="{{ route('contact') }}" class="bg-white text-zinc-950 font-extrabold px-8 py-3.5 rounded text-sm uppercase tracking-wider hover:bg-zinc-200 transition duration-150 shadow">Schedule Warehouse Visit</a>
         </div>
     </section>

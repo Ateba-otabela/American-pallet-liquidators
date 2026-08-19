@@ -134,11 +134,62 @@
                                 Add to Cart
                             </button>
                         </form>
+
+                        <!-- Freight Quote CTA -->
+                        <div class="pt-2">
+                            <a href="{{ route('freight-quote.show', ['product_id' => $product->id]) }}" 
+                               class="w-full text-center block bg-white border border-zinc-950 text-zinc-950 font-extrabold py-3 px-8 rounded text-sm uppercase tracking-wider hover:bg-zinc-50 transition duration-150 shadow-sm">
+                                Request a Freight Shipping Quote
+                            </a>
+                        </div>
                     @endif
                 </div>
 
+                <!-- Specifications Grid -->
+                <div class="mt-6 border border-gray-200 rounded-xl p-4 bg-gray-50 text-xs font-semibold text-zinc-700 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div>
+                        <span class="block text-[10px] text-zinc-400 uppercase tracking-wider">Condition</span>
+                        <span class="text-zinc-950 font-extrabold text-sm">{{ $product->condition ?? 'Raw Returns' }}</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-zinc-400 uppercase tracking-wider">Number of Units</span>
+                        <span class="text-zinc-950 font-extrabold text-sm">{{ $product->number_of_units ?? 'Mixed Lot' }} pcs</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-zinc-400 uppercase tracking-wider">Est. Retail MSRP</span>
+                        <span class="text-zinc-950 font-extrabold text-sm">
+                            {{ $product->estimated_retail_value ? '$' . number_format($product->estimated_retail_value) : 'Unvalued' }}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-zinc-400 uppercase tracking-wider">Dimensions</span>
+                        <span class="text-zinc-950 font-extrabold text-sm">{{ $product->dimensions ?? '48" x 40" x 72"' }}</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-zinc-400 uppercase tracking-wider">Est. Weight</span>
+                        <span class="text-zinc-950 font-extrabold text-sm">{{ $product->weight ? number_format($product->weight) . ' lbs' : 'Varies' }}</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-zinc-400 uppercase tracking-wider">Pickup Location</span>
+                        <span class="text-zinc-950 font-extrabold text-xs">251 A St, Jeffersonville, IN</span>
+                    </div>
+                </div>
+
+                @if($product->manifest_url)
+                    <div class="mt-4">
+                        <a href="{{ $product->manifest_url }}" class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-blue-600 hover:text-blue-800 transition" target="_blank">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <span>Download Pallet Manifest PDF/CSV</span>
+                        </a>
+                    </div>
+                @else
+                    <div class="mt-4 text-xs font-bold text-zinc-400 uppercase tracking-wider">
+                        <span>Manifest: Unavailable / Untouched Mixed Lot</span>
+                    </div>
+                @endif
+
                 <!-- Condition & Buying Warning Notices -->
-                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-md mt-8">
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-md mt-6">
                     <span class="block text-amber-800 text-xs font-black uppercase tracking-wider mb-1">Condition & Policy Notice</span>
                     <p class="text-amber-700 text-xs leading-relaxed">
                         This merchandise consists of raw, untouched wholesale liquidations and retail returns. All lots are sold <strong>AS-IS / WHERE-IS</strong> with no guarantees, returns, or refunds. Please read our <a href="{{ route('faq') }}" class="underline font-bold">FAQ</a> before completing your purchase.
@@ -158,18 +209,18 @@
                             <p class="whitespace-pre-line">{{ $product->description }}</p>
                         </div>
                         <div x-show="tab == 'shipping'" x-cloak class="space-y-3">
-                            <p><strong>Louisville Warehouse Pickup:</strong> Free of charge. Select "Cash on Pickup" or complete payment online and contact us to schedule your loading dock time. Forklift loading is provided free.</p>
-                            <p><strong>Freight Shipping:</strong> We arrange LTL and full truckload carrier shipments nationwide. Freight shipping costs are billed separately after checkout based on carrier rates to your zip code.</p>
+                            <p><strong>Warehouse Pickup:</strong> Free of charge. Select "Cash on Pickup" or complete payment online and schedule your loading dock reservation at our Jeffersonville, IN facility. Forklift loading is provided free.</p>
+                            <p><strong>Freight Shipping:</strong> We arrange LTL and full truckload carrier shipments nationwide. Freight shipping costs are billed separately after checkout based on carrier rates to your ZIP code.</p>
                         </div>
                         <div x-show="tab == 'payment'" x-cloak class="space-y-3">
-                            <p>We process payments securely via 8 options:</p>
+                            <p>We process payments securely via offline and online options:</p>
                             <ul class="list-disc pl-5 space-y-1 text-xs font-semibold text-zinc-700">
                                 <li>Secure Card Checkout (Stripe Elements)</li>
                                 <li>Bank Wire Transfer (Chase Bank)</li>
                                 <li>Cash App, Venmo, PayPal</li>
                                 <li>Zelle Business Pay</li>
                                 <li>USDT (TRC-20 / ERC-20 Cryptocurrency)</li>
-                                <li>Cash on Pickup (Louisville Warehouse)</li>
+                                <li>Cash on Pickup (Jeffersonville Warehouse)</li>
                             </ul>
                         </div>
                     </div>

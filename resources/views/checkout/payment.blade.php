@@ -104,7 +104,7 @@
                                 <input type="radio" name="method_selector" value="cash_on_pickup" x-model="paymentMethod" class="text-zinc-950 focus:ring-zinc-950 border-gray-300 mt-1" />
                                 <div>
                                     <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Cash on Pickup</span>
-                                    <span class="block text-slate-500 text-xs mt-1">Inspect and pay cash at our Louisville warehouse.</span>
+                                    <span class="block text-slate-500 text-xs mt-1">Inspect and pay cash at our Jeffersonville warehouse.</span>
                                 </div>
                             </label>
 
@@ -142,7 +142,62 @@
                                 </div>
                             </div>
 
-                            <!-- Offline payment info has been moved to the user dashboard -->
+                            <!-- Bank Wire Transfer -->
+                            <div x-show="paymentMethod === 'bank_wire'" class="space-y-2" style="display: none;">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Bank Wire Instructions</span>
+                                <div class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm space-y-2 text-xs font-semibold text-zinc-800">
+                                    <p>Wire funds to the following account details to complete your transaction:</p>
+                                    <ul class="space-y-1 pl-4 list-disc text-zinc-600">
+                                        <li>Bank Name: <strong class="text-zinc-950">{{ $settings['bank_name'] }}</strong></li>
+                                        <li>Account Name: <strong class="text-zinc-950">{{ $settings['bank_account_name'] }}</strong></li>
+                                        <li>Routing Number: <strong class="text-zinc-950">{{ $settings['bank_routing_number'] }}</strong></li>
+                                        <li>Account Number: <strong class="text-zinc-950">{{ $settings['bank_account_number'] }}</strong></li>
+                                    </ul>
+                                    <p class="text-slate-400 mt-2 text-[10px]">Note: Place order first. Send wire receipt screenshot to our email for verification.</p>
+                                </div>
+                            </div>
+
+                            <!-- Zelle -->
+                            <div x-show="paymentMethod === 'zelle'" class="space-y-2" style="display: none;">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Zelle Business Instructions</span>
+                                <div class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm text-xs font-semibold text-zinc-800">
+                                    <p>Send Zelle payment to: <strong class="text-zinc-950">{{ $settings['zelle_email'] }}</strong></p>
+                                    <p class="text-slate-400 mt-2 text-[10px]">Note: Complete Zelle transfer, then submit reference number on dashboard.</p>
+                                </div>
+                            </div>
+
+                            <!-- Cash App -->
+                            <div x-show="paymentMethod === 'cash_app'" class="space-y-2" style="display: none;">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Cash App Instructions</span>
+                                <div class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm text-xs font-semibold text-zinc-800">
+                                    <p>Send payment to our Cashtag: <strong class="text-zinc-950">{{ $settings['cash_app_cashtag'] }}</strong></p>
+                                </div>
+                            </div>
+
+                            <!-- Venmo -->
+                            <div x-show="paymentMethod === 'venmo'" class="space-y-2" style="display: none;">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Venmo Instructions</span>
+                                <div class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm text-xs font-semibold text-zinc-800">
+                                    <p>Send Venmo payment to handle: <strong class="text-zinc-950">{{ $settings['venmo_handle'] }}</strong></p>
+                                </div>
+                            </div>
+
+                            <!-- USDT Crypto -->
+                            <div x-show="paymentMethod === 'usdt'" class="space-y-2" style="display: none;">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Cryptocurrency USDT Instructions</span>
+                                <div class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm text-xs font-semibold text-zinc-800 break-all">
+                                    <p>Send USDT to Address (TRC-20 / ERC-20):</p>
+                                    <p class="font-mono text-zinc-950 bg-gray-50 p-2 border rounded mt-1">{{ $settings['USDT_address'] }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Cash on Pickup -->
+                            <div x-show="paymentMethod === 'cash_on_pickup'" class="space-y-2" style="display: none;">
+                                <span class="block font-extrabold text-zinc-950 uppercase tracking-wider text-xs">Cash on Pickup Details</span>
+                                <div class="bg-white border border-gray-300 rounded-lg p-4 shadow-sm text-xs font-semibold text-zinc-800">
+                                    <p>Pay cash in person at loading dock pickup. Coordinate loading dock pickup reservation at our Jeffersonville, IN warehouse.</p>
+                                </div>
+                            </div>
 
                         </div>
 

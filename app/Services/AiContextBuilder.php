@@ -10,8 +10,8 @@ class AiContextBuilder
 {
     public function buildWebsiteContext(ChatConversation $conversation, ?string $pageUrl = null, ?string $pageTitle = null): string
     {
-        $email = Setting::get('contact_email', 'americanpalletliquidators0@gmail.com');
-        $phone = Setting::get('contact_phone', '+44 7882 769759');
+        $email = Setting::get('contact_email', 'sales@americanpalletliquidators.shop');
+        $phone = Setting::get('contact_phone', '');
 
         $pageContext = '';
         if (!empty($pageTitle) || !empty($pageUrl)) {

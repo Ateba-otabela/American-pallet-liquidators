@@ -427,8 +427,8 @@ class AdminController extends Controller
             'paypal_email' => Setting::get('paypal_email', 'paypal@aplpallets.com'),
             'stripe_publishable_key' => Setting::get('stripe_publishable_key', 'pk_test_placeholder'),
             'stripe_secret_key' => Setting::get('stripe_secret_key', 'sk_test_placeholder'),
-            'contact_email' => Setting::get('contact_email', 'americanpalletliquidators0@gmail.com'),
-            'contact_phone' => Setting::get('contact_phone', '+44 7882 769759'),
+            'contact_email' => Setting::get('contact_email', 'sales@americanpalletliquidators.shop'),
+            'contact_phone' => Setting::get('contact_phone', ''),
         ];
 
         return view('admin.settings', compact('settings'));

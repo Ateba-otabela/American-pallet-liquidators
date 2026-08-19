@@ -60,7 +60,7 @@
 
         <div class="footer">
             You received this email because you subscribed to inventory updates from American Pallet Liquidators.<br>
-            Louisville, KY Facility &bull; <a href="{{ url('/') }}">Visit Our Storefront</a>
+            Jeffersonville, IN Facility &bull; <a href="{{ url('/') }}">Visit Our Storefront</a>
         </div>
     </div>
 </body>
