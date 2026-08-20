@@ -53,7 +53,7 @@
         </div>
 
         <div class="footer">
-            American Pallet Liquidators LLC &bull; Automated Accounting Alerts
+            {{ \App\Models\Setting::get('company_name', 'American Pallet Liquidators LLC') }} &bull; Automated Accounting Alerts
         </div>
     </div>
 </body>

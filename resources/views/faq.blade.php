@@ -67,7 +67,7 @@
                     <svg class="h-5 w-5 text-zinc-400 transform transition-transform duration-200" :class="active === 5 ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="active === 5" x-collapse class="border-t border-gray-100 p-6 text-sm text-slate-500 leading-relaxed" x-cloak>
-                    We support 8 payment methods to serve merchants of all scales. You can complete secure debit or credit card checkout using our integrated Stripe Elements. We also accept offline options: Chase Bank Wire Transfer, Zelle Business, Cash App, Venmo, PayPal, USDT crypto (TRC-20 / ERC-20), or Cash on Pickup at our warehouse facility. Complete payment details are shown on the checkout payment page and in your order email.
+                    We support 8 payment methods to serve merchants of all scales. You can complete secure debit or credit card checkout using our integrated Stripe Elements. We also accept offline options: {{ \App\Models\Setting::get('bank_name', 'Chase Bank') }} Wire Transfer, Zelle Business, Cash App, Venmo, PayPal, USDT crypto (TRC-20 / ERC-20), or Cash on Pickup at our warehouse facility. Complete payment details are shown on the checkout payment page and in your order email.
                 </div>
             </div>
 

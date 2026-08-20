@@ -80,7 +80,7 @@
         </div>
 
         <div class="footer">
-            American Pallet Liquidators LLC &bull; Admin Notifications
+            {{ \App\Models\Setting::get('company_name', 'American Pallet Liquidators LLC') }} &bull; Admin Notifications
         </div>
     </div>
 </body>

@@ -17,7 +17,22 @@
         <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-8 text-sm">
             @csrf
             
-            <!-- Section 1: Support Contact -->
+            <!-- Section 1: Company Info -->
+            <div class="space-y-4">
+                <h3 class="text-xs font-black uppercase tracking-widest text-zinc-900 border-b border-gray-100 pb-2">Company Information</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label for="company_name" class="block text-xs font-bold uppercase text-zinc-700 mb-1.5">Company Name</label>
+                        <input type="text" id="company_name" name="company_name" value="{{ $settings['company_name'] }}" class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
+                    </div>
+                    <div>
+                        <label for="business_address" class="block text-xs font-bold uppercase text-zinc-700 mb-1.5">Business Address</label>
+                        <input type="text" id="business_address" name="business_address" value="{{ $settings['business_address'] }}" class="w-full bg-gray-50 border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Support Contact -->
             <div class="space-y-4">
                 <h3 class="text-xs font-black uppercase tracking-widest text-zinc-900 border-b border-gray-100 pb-2">Support &amp; Contact Info</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">

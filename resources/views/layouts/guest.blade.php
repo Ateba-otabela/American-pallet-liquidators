@@ -26,7 +26,7 @@
         <!-- Brand Logo Header -->
         <div class="mb-8">
             <a href="/" class="flex items-center gap-2 group justify-center">
-                <span class="bg-zinc-950 text-white px-3 py-1.5 rounded font-black text-xl tracking-tight shadow">APL</span>
+                <img src="{{ asset('images/products/american_pallet_liquidators_logo_transparent.png') }}" alt="American Pallet Liquidators Logo" class="h-12 w-auto">
                 <div class="flex flex-col text-left">
                     <span class="text-zinc-900 font-extrabold text-lg leading-none tracking-tight">AMERICAN PALLET</span>
                     <span class="text-zinc-500 font-bold text-xs uppercase tracking-widest leading-none mt-0.5">LIQUIDATORS</span>

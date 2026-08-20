@@ -416,6 +416,8 @@ class AdminController extends Controller
     public function settings()
     {
         $settings = [
+            'company_name' => Setting::get('company_name', 'American Pallet Liquidators LLC'),
+            'business_address' => Setting::get('business_address', '251 A St, Jeffersonville, IN 47130'),
             'bank_name' => Setting::get('bank_name', 'Chase Bank'),
             'bank_account_name' => Setting::get('bank_account_name', 'American Pallet Liquidators LLC'),
             'bank_routing_number' => Setting::get('bank_routing_number', '123456789'),
@@ -440,6 +442,7 @@ class AdminController extends Controller
     public function updateSettings(Request $request)
     {
         $keys = [
+            'company_name', 'business_address',
             'bank_name', 'bank_account_name', 'bank_routing_number', 'bank_account_number',
             'cash_app_cashtag', 'zelle_email', 'USDT_address', 'venmo_handle', 'paypal_email',
             'stripe_publishable_key', 'stripe_secret_key', 'contact_email', 'contact_phone'
@@ -523,5 +526,37 @@ class AdminController extends Controller
     {
         $subscriber->delete();
         return back()->with('success', 'Subscriber removed successfully.');
+    }
+
+    /**
+     * List all freight quote requests.
+     */
+    public function freightQuotes()
+    {
+        $quotes = \App\Models\FreightQuote::with('product')->orderBy('created_at', 'desc')->paginate(20);
+        return view('admin.freight-quotes.index', compact('quotes'));
+    }
+
+    /**
+     * Update freight quote status.
+     */
+    public function updateFreightQuoteStatus(Request $request, \App\Models\FreightQuote $quote)
+    {
+        $request->validate([
+            'status' => 'required|string|in:pending,replied,completed,cancelled',
+        ]);
+
+        $quote->update(['status' => $request->status]);
+
+        return back()->with('success', 'Freight quote status updated successfully.');
+    }
+
+    /**
+     * Delete a freight quote.
+     */
+    public function destroyFreightQuote(\App\Models\FreightQuote $quote)
+    {
+        $quote->delete();
+        return back()->with('success', 'Freight quote deleted successfully.');
     }
 }

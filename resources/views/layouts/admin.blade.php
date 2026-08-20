@@ -42,7 +42,7 @@
         <div>
             <!-- Header Brand -->
             <div class="h-20 flex items-center px-6 border-b border-zinc-900 gap-2">
-                <span class="bg-white text-zinc-950 px-2.5 py-1 rounded font-black text-lg tracking-tight">APL</span>
+                <img src="{{ asset('images/products/american_pallet_liquidators_logo_transparent.png') }}" alt="APL" class="h-8 w-auto">
                 <div class="flex flex-col">
                     <span class="text-white font-extrabold text-sm leading-none tracking-tight">ADMIN PANEL</span>
                     <span class="text-zinc-600 font-bold text-[9px] uppercase tracking-widest leading-none mt-0.5">Control Center</span>
@@ -103,6 +103,12 @@
                     {{ request()->routeIs('admin.subscribers*') ? 'bg-zinc-900 text-white' : 'hover:bg-zinc-900 hover:text-white' }}">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     <span>Subscribers</span>
+                </a>
+
+                <a href="{{ route('admin.freight-quotes') }}" class="flex items-center gap-3 px-4 py-3 rounded transition-colors duration-150
+                    {{ request()->routeIs('admin.freight-quotes*') ? 'bg-zinc-900 text-white' : 'hover:bg-zinc-900 hover:text-white' }}">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                    <span>Freight Quotes</span>
                 </a>
             </nav>
         </div>

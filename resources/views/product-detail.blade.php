@@ -216,7 +216,7 @@
                             <p>We process payments securely via offline and online options:</p>
                             <ul class="list-disc pl-5 space-y-1 text-xs font-semibold text-zinc-700">
                                 <li>Secure Card Checkout (Stripe Elements)</li>
-                                <li>Bank Wire Transfer (Chase Bank)</li>
+                                <li>Bank Wire Transfer ({{ \App\Models\Setting::get('bank_name', 'Chase Bank') }})</li>
                                 <li>Cash App, Venmo, PayPal</li>
                                 <li>Zelle Business Pay</li>
                                 <li>USDT (TRC-20 / ERC-20 Cryptocurrency)</li>

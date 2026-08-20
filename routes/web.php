@@ -118,6 +118,11 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     Route::get('/subscribers', [AdminController::class, 'subscribers'])->name('subscribers');
     Route::delete('/subscribers/{subscriber}', [AdminController::class, 'destroySubscriber'])->name('subscribers.destroy');
 
+    // Freight Quotes Management
+    Route::get('/freight-quotes', [AdminController::class, 'freightQuotes'])->name('freight-quotes');
+    Route::post('/freight-quotes/{quote}/status', [AdminController::class, 'updateFreightQuoteStatus'])->name('freight-quotes.status');
+    Route::delete('/freight-quotes/{quote}', [AdminController::class, 'destroyFreightQuote'])->name('freight-quotes.destroy');
+
     // Support Center
     Route::get('/support', [\App\Http\Controllers\AdminSupportController::class, 'index'])->name('support.index');
     Route::get('/support/{conversation}', [\App\Http\Controllers\AdminSupportController::class, 'show'])->name('support.show');

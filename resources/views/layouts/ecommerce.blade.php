@@ -31,44 +31,40 @@
     </div>
 
     <!-- Main Navigation Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm" x-data="{ open: false }" x-init="$watch('open', value => document.body.style.overflow = value ? 'hidden' : '')" @keydown.escape.window="open = false">
+    <header class="bg-blue-600 border-b border-blue-700 sticky top-0 z-50 shadow-sm" x-data="{ open: false }" x-init="$watch('open', value => document.body.style.overflow = value ? 'hidden' : '')" @keydown.escape.window="open = false">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                
+
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2 group">
-                        <span class="bg-zinc-950 text-white px-3 py-1.5 rounded font-black text-xl tracking-tight shadow-md group-hover:scale-105 transition-transform duration-200">APL</span>
-                        <div class="flex flex-col">
-                            <span class="text-zinc-900 font-extrabold text-sm sm:text-lg leading-none tracking-tight">AMERICAN PALLET</span>
-                            <span class="text-zinc-500 font-bold text-[10px] sm:text-xs uppercase tracking-widest leading-none mt-0.5">LIQUIDATORS</span>
-                        </div>
+                    <a href="{{ route('home') }}" class="flex items-center group">
+                        <img src="{{ asset('images/products/american_pallet_liquidators_logo_transparent.png') }}" alt="American Pallet Liquidators Logo" class="h-10 w-auto group-hover:scale-105 transition-transform duration-200">
                     </a>
                 </div>
 
                 <!-- Desktop Navigation Menu -->
-                <nav class="hidden md:flex space-x-8 text-sm font-semibold tracking-wide text-zinc-600">
-                    <a href="{{ route('catalog') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('catalog') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">SHOP ALL</a>
-                    <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->filled('category') && request()->category == 'pallets' ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">PALLETS</a>
-                    <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->filled('category') && request()->category == 'truckloads' ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">TRUCKLOADS</a>
-                    <a href="{{ route('how-it-works') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('how-it-works') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">HOW IT WORKS</a>
-                    <a href="{{ route('freight-quote.show') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('freight-quote.show') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">FREIGHT QUOTE</a>
-                    <a href="{{ route('faq') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('faq') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">FAQ</a>
-                    <a href="{{ route('contact') }}" class="hover:text-zinc-950 transition duration-150 py-2 border-b-2 {{ request()->routeIs('contact') ? 'border-zinc-950 text-zinc-950' : 'border-transparent' }}">CONTACT</a>
+                <nav class="hidden md:flex space-x-8 text-sm font-semibold tracking-wide text-white">
+                    <a href="{{ route('catalog') }}" class="hover:text-blue-100 transition duration-150 py-2 border-b-2 {{ request()->routeIs('catalog') ? 'border-white text-white' : 'border-transparent' }}">SHOP ALL</a>
+                    <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="hover:text-blue-100 transition duration-150 py-2 border-b-2 {{ request()->filled('category') && request()->category == 'pallets' ? 'border-white text-white' : 'border-transparent' }}">PALLETS</a>
+                    <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="hover:text-blue-100 transition duration-150 py-2 border-b-2 {{ request()->filled('category') && request()->category == 'truckloads' ? 'border-white text-white' : 'border-transparent' }}">TRUCKLOADS</a>
+                    <a href="{{ route('how-it-works') }}" class="hover:text-blue-100 transition duration-150 py-2 border-b-2 {{ request()->routeIs('how-it-works') ? 'border-white text-white' : 'border-transparent' }}">HOW IT WORKS</a>
+                    <a href="{{ route('freight-quote.show') }}" class="hover:text-blue-100 transition duration-150 py-2 border-b-2 {{ request()->routeIs('freight-quote.show') ? 'border-white text-white' : 'border-transparent' }}">FREIGHT QUOTE</a>
+                    <a href="{{ route('faq') }}" class="hover:text-blue-100 transition duration-150 py-2 border-b-2 {{ request()->routeIs('faq') ? 'border-white text-white' : 'border-transparent' }}">FAQ</a>
+                    <a href="{{ route('contact') }}" class="hover:text-blue-100 transition duration-150 py-2 border-b-2 {{ request()->routeIs('contact') ? 'border-white text-white' : 'border-transparent' }}">CONTACT</a>
                 </nav>
 
                 <!-- Header Actions -->
                 <div class="flex items-center space-x-3 sm:space-x-6">
-                    
+
                     <!-- Search Icon Button -->
-                    <a href="{{ route('catalog') }}" class="text-zinc-500 hover:text-zinc-950 transition-colors duration-150 hidden sm:block">
+                    <a href="{{ route('catalog') }}" class="text-white hover:text-blue-100 transition-colors duration-150 hidden sm:block">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </a>
 
                     <!-- User Account / Login -->
                     @auth
                         <div class="relative" x-data="{ open: false }">
-                            <button @click="open = !open" class="flex items-center text-sm font-semibold text-zinc-700 hover:text-zinc-950 transition focus:outline-none">
+                            <button @click="open = !open" class="flex items-center text-sm font-semibold text-white hover:text-blue-100 transition focus:outline-none">
                                 <span>Hi, {{ explode(' ', auth()->user()->name)[0] }}</span>
                                 <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                             </button>
@@ -88,16 +84,12 @@
                             </div>
                         </div>
                     @else
-                        <div class="hidden sm:flex items-center gap-2">
-                            <a href="{{ route('login') }}" class="text-sm font-semibold tracking-wide text-zinc-600 hover:text-zinc-950 transition duration-150">SIGN IN</a>
-                        </div>
+                        <a href="{{ route('login') }}" class="text-sm font-semibold text-white hover:text-blue-100 transition">Log In</a>
                     @endauth
 
-                    <!-- Cart Icon with badge count -->
-                    <a href="{{ route('cart.index') }}" class="relative text-zinc-600 hover:text-zinc-950 transition-colors duration-150">
-                        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                        </svg>
+                    <!-- Cart Icon with Badge -->
+                    <a href="{{ route('cart.index') }}" class="relative text-white hover:text-blue-100 transition-colors duration-150">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                         @php
                             $cartCount = 0;
                             $cart = session()->get('cart', []);
@@ -106,14 +98,12 @@
                             }
                         @endphp
                         @if($cartCount > 0)
-                            <span class="absolute -top-1 -right-1 bg-zinc-950 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white animate-pulse">
-                                {{ $cartCount }}
-                            </span>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">{{ $cartCount }}</span>
                         @endif
                     </a>
 
                     <!-- Mobile Menu Button -->
-                    <button @click="open = !open" class="md:hidden text-zinc-600 hover:text-zinc-950 focus:outline-none">
+                    <button @click="open = !open" class="md:hidden text-white hover:text-blue-100 focus:outline-none">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
                         </svg>
@@ -135,42 +125,42 @@
              x-cloak></div>
 
         <!-- Mobile Navigation Menu Panel -->
-        <div x-show="open" 
+        <div x-show="open"
              x-transition:enter="transition ease-out duration-300 transform"
              x-transition:enter-start="-translate-y-full"
              x-transition:enter-end="translate-y-0"
              x-transition:leave="transition ease-in duration-200 transform"
              x-transition:leave-start="translate-y-0"
              x-transition:leave-end="-translate-y-full"
-             class="absolute top-full left-0 w-full bg-white border-t border-gray-200 shadow-xl z-50 md:hidden flex flex-col" 
+             class="absolute top-full left-0 w-full bg-blue-600 border-t border-blue-700 shadow-xl z-50 md:hidden flex flex-col"
              x-cloak>
             <div class="px-4 py-4 space-y-2 overflow-y-auto max-h-[70vh]">
-                <a href="{{ route('catalog') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">SHOP ALL</a>
-                <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">PALLETS</a>
-                <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">TRUCKLOADS</a>
-                <a href="{{ route('how-it-works') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">HOW IT WORKS</a>
-                <a href="{{ route('freight-quote.show') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">FREIGHT QUOTE</a>
-                <a href="{{ route('faq') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">FAQ</a>
-                <a href="{{ route('contact') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">CONTACT</a>
+                <a href="{{ route('catalog') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">SHOP ALL</a>
+                <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">PALLETS</a>
+                <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">TRUCKLOADS</a>
+                <a href="{{ route('how-it-works') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">HOW IT WORKS</a>
+                <a href="{{ route('freight-quote.show') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">FREIGHT QUOTE</a>
+                <a href="{{ route('faq') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">FAQ</a>
+                <a href="{{ route('contact') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">CONTACT</a>
                 
-                <hr class="border-gray-200 my-2">
-                
+                <hr class="border-blue-500 my-2">
+
                 @auth
                     <div class="px-3 py-2">
-                        <span class="text-xs font-bold text-zinc-500 uppercase tracking-widest">Account</span>
+                        <span class="text-xs font-bold text-blue-200 uppercase tracking-widest">Account</span>
                     </div>
                     @if(auth()->user()->is_admin)
-                        <a href="{{ route('admin.dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 transition-colors">Admin Panel</a>
+                        <a href="{{ route('admin.dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">Admin Panel</a>
                     @else
-                        <a href="{{ route('dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 transition-colors">My Dashboard</a>
+                        <a href="{{ route('dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">My Dashboard</a>
                     @endif
-                    <a href="{{ route('profile.edit') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 transition-colors">Profile Settings</a>
+                    <a href="{{ route('profile.edit') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">Profile Settings</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="block w-full text-left px-3 py-3 rounded-md text-base font-bold text-red-600 hover:bg-gray-100 transition-colors">Sign Out</button>
+                        <button type="submit" class="block w-full text-left px-3 py-3 rounded-md text-base font-bold text-red-300 hover:bg-blue-700 transition-colors">Sign Out</button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="block px-3 py-3 rounded-md text-base font-bold text-zinc-800 hover:bg-gray-100 hover:text-zinc-950 transition-colors">SIGN IN</a>
+                    <a href="{{ route('login') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">SIGN IN</a>
                 @endauth
             </div>
         </div>
@@ -205,25 +195,24 @@
     </section>
 
     <!-- Footer Area -->
-    <footer class="bg-zinc-950 text-zinc-400 border-t border-zinc-900 py-16 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 sm:gap-8 mb-12">
-            
+    <footer class="bg-slate-900 text-gray-400 border-t border-slate-800 py-12 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+
             <!-- Column 1: Brand details -->
             <div class="flex flex-col space-y-4">
                 <a href="{{ route('home') }}" class="flex items-center gap-2 group">
-                    <span class="bg-white text-zinc-950 px-3 py-1.5 rounded font-black text-xl tracking-tight shadow">APL</span>
-                    <span class="text-white font-extrabold text-lg tracking-tight">AMERICAN PALLET</span>
+                    <img src="{{ asset('images/products/american_pallet_liquidators_logo_transparent.png') }}" alt="American Pallet Liquidators Logo" class="h-8 w-auto">
                 </a>
-                <p class="text-xs leading-relaxed text-zinc-500">America's premier high-volume wholesale liquidation supplier. Providing resellers, store owners, and discount merchants with unmatched return loads, overstock pallets, and bulk liquidations.</p>
-                <div class="text-xs text-zinc-500 font-semibold">
+                <p class="text-sm leading-relaxed text-gray-500">America's premier high-volume wholesale liquidation supplier. Providing resellers, store owners, and discount merchants with unmatched return loads, overstock pallets, and bulk liquidations.</p>
+                <div class="text-sm text-gray-500">
                     <span>Warehouse Address:</span>
-                    <address class="not-italic text-zinc-400 mt-1">251 A St, Jeffersonville, IN 47130</address>
+                    <address class="not-italic text-gray-400 mt-1">251 A St, Jeffersonville, IN 47130</address>
                 </div>
             </div>
 
             <!-- Column 2: Quick Links -->
             <div>
-                <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-4">Quick Links</h4>
+                <h4 class="text-white text-sm font-bold uppercase tracking-wider mb-4">Quick Links</h4>
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ route('catalog') }}" class="hover:text-white transition">Shop All Merchandise</a></li>
                     <li><a href="{{ route('catalog', ['category' => 'pallets']) }}" class="hover:text-white transition">Liquidation Pallets</a></li>
@@ -234,7 +223,7 @@
 
             <!-- Column 3: Customer Care -->
             <div>
-                <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-4">Customer Care</h4>
+                <h4 class="text-white text-sm font-bold uppercase tracking-wider mb-4">Customer Care</h4>
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ route('how-it-works') }}" class="hover:text-white transition">How To Purchase</a></li>
                     <li><a href="{{ route('faq') }}" class="hover:text-white transition">Frequently Asked Questions</a></li>
@@ -245,30 +234,60 @@
 
             <!-- Column 4: Contact Information -->
             <div>
-                <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-4">Contact Information</h4>
+                <h4 class="text-white text-sm font-bold uppercase tracking-wider mb-4">Contact Information</h4>
                 <ul class="space-y-3 text-sm">
                     <li class="flex items-center gap-2">
-                        <svg class="h-4 w-4 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        <a href="mailto:sales@americanpalletliquidators.shop" class="text-zinc-300 hover:text-white transition">sales@americanpalletliquidators.shop</a>
+                        <svg class="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <a href="mailto:{{ \App\Models\Setting::get('contact_email', 'sales@americanpalletliquidators.shop') }}" class="text-gray-300 hover:text-white transition">{{ \App\Models\Setting::get('contact_email', 'sales@americanpalletliquidators.shop') }}</a>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto border-t border-zinc-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="max-w-7xl mx-auto border-t border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
             <!-- Copyright -->
-            <p class="text-xs text-zinc-600">&copy; {{ date('Y') }} American Pallet Liquidators. All Rights Reserved. Built for Design Study.</p>
-            
+            <p class="text-sm text-gray-500">&copy; {{ date('Y') }} American Pallet Liquidators. All Rights Reserved.</p>
+
             <!-- Payment Icons Grid -->
-            <div class="flex flex-wrap justify-center gap-2">
-                <span class="bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-500 font-bold px-2 py-1 rounded" title="Stripe Cards">Stripe Elements</span>
-                <span class="bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-500 font-bold px-2 py-1 rounded" title="Zelle">Zelle</span>
-                <span class="bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-500 font-bold px-2 py-1 rounded" title="Cash App">Cash App</span>
-                <span class="bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-500 font-bold px-2 py-1 rounded" title="Venmo">Venmo</span>
-                <span class="bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-500 font-bold px-2 py-1 rounded" title="USDT">USDT (Crypto)</span>
-                <span class="bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-500 font-bold px-2 py-1 rounded" title="Bank Wire">Bank Wire</span>
-                <span class="bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-500 font-bold px-2 py-1 rounded" title="PayPal">PayPal</span>
-                <span class="bg-zinc-900 border border-zinc-800 text-[10px] text-zinc-500 font-bold px-2 py-1 rounded" title="Cash on Pickup">Cash pickup</span>
+            <div class="flex flex-wrap justify-center gap-3">
+                <!-- Stripe -->
+                <div class="flex items-center gap-1 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                        <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 4.515.858l.653-4.032S16.012 1.5 12.421 1.5c-4.332 0-7.372 2.331-7.372 5.658 0 2.478 2.054 3.912 4.611 4.965 2.038.844 2.715 1.508 2.715 2.478 0 1.012-.872 1.536-2.154 1.536-2.187 0-4.938-1.089-4.938-1.089l-.688 4.152s2.637 1.2 6.093 1.2c4.611 0 7.632-2.276 7.632-5.844 0-2.528-2.12-3.96-4.844-5.006z" fill="#635BFF"/>
+                    </svg>
+                    <span class="text-xs text-gray-400 font-medium">Stripe</span>
+                </div>
+                <!-- PayPal -->
+                <div class="flex items-center gap-1 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                        <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" fill="#003087"/>
+                        <path d="M21.982 7.231c-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106h-4.606a.641.641 0 0 1-.633-.74L6.944.901C7.026.382 7.474 0 7.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287z" fill="#009CDE"/>
+                        <path d="M9.98 7.231h4.688c2.617 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106h-4.606a.641.641 0 0 1-.633-.74L6.944.901C7.026.382 7.474 0 7.998 0h7.46c2.57 0 4.578.543 5.69 1.81z" fill="#003087"/>
+                        <path d="M14.668 7.231c-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106h-4.606a.641.641 0 0 1-.633-.74L6.944.901C7.026.382 7.474 0 7.998 0h7.46c2.57 0 4.578.543 5.69 1.81z" fill="#009CDE"/>
+                    </svg>
+                    <span class="text-xs text-gray-400 font-medium">PayPal</span>
+                </div>
+                <!-- Zelle -->
+                <div class="flex items-center gap-1 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="#6B21A8"/>
+                    </svg>
+                    <span class="text-xs text-gray-400 font-medium">Zelle</span>
+                </div>
+                <!-- Cash App -->
+                <div class="flex items-center gap-1 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#00D632"/>
+                    </svg>
+                    <span class="text-xs text-gray-400 font-medium">Cash App</span>
+                </div>
+                <!-- Venmo -->
+                <div class="flex items-center gap-1 bg-slate-800 border border-slate-700 px-3 py-1.5 rounded">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="#008CFF"/>
+                    </svg>
+                    <span class="text-xs text-gray-400 font-medium">Venmo</span>
+                </div>
             </div>
         </div>
     </footer>
@@ -286,8 +305,8 @@
             <!-- Header -->
             <div class="bg-zinc-950 text-white p-4 flex justify-between items-center shadow-md z-10 shrink-0">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-700">
-                        <span class="font-black text-xs uppercase">APL</span>
+                    <div class="w-10 h-10 bg-zinc-800 rounded-full flex items-center justify-center border border-zinc-700 overflow-hidden">
+                        <img src="{{ asset('images/products/american_pallet_liquidators_logo_transparent.png') }}" alt="APL" class="w-8 h-8 object-contain">
                     </div>
                     <div>
                         <h4 class="font-extrabold text-sm uppercase tracking-tight">Support Specialist</h4>
@@ -459,6 +478,23 @@
                     if (!this.name.trim() || !this.email.trim()) return;
                     this.showProfileForm = false;
                     this.profileSubmitted = true;
+                    
+                    // Add authenticated message
+                    this.messages.push({
+                        id: 'auth-' + Date.now(),
+                        sender_type: 'ai',
+                        message: "✓ Authenticated! You can now send your message.",
+                        created_at: new Date().toISOString(),
+                        is_seen: true
+                    });
+                    this.scrollToBottom();
+                    
+                    // Auto-send pending message if exists
+                    if (this.pendingMessage) {
+                        this.newMessage = this.pendingMessage;
+                        this.pendingMessage = '';
+                        setTimeout(() => this.sendMessage(), 500);
+                    }
                 },
 
                 sendMessage() {

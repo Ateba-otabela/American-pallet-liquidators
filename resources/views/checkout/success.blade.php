@@ -28,7 +28,7 @@
                     <span class="block font-black uppercase tracking-wider text-xs mb-1.5 text-amber-950">Order Placed — Payment Required</span>
                     <p class="leading-relaxed text-xs mb-4">
                         We have successfully received your wholesale order! However, it is currently pending payment. <br><br>
-                        <strong>You will receive an email shortly with the payment details for your selected method. Please complete the payment, then submit your proof of payment either by emailing it to sales@americanpalletliquidators.shop or by creating an account and submitting it through your dashboard.</strong> Once verified, your order will be shipped.
+                        <strong>You will receive an email shortly with the payment details for your selected method. Please complete the payment, then submit your proof of payment either by emailing it to {{ \App\Models\Setting::get('contact_email', 'sales@americanpalletliquidators.shop') }} or by creating an account and submitting it through your dashboard.</strong> Once verified, your order will be shipped.
                     </p>
                     
                     <a href="{{ route('dashboard') }}" class="inline-block bg-zinc-950 text-white font-bold px-6 py-2.5 rounded text-xs uppercase tracking-widest hover:bg-zinc-800 transition shadow">
@@ -42,7 +42,7 @@
                 <a href="{{ route('catalog') }}" class="bg-zinc-950 text-white font-extrabold px-8 py-3.5 rounded text-xs uppercase tracking-widest hover:bg-zinc-800 transition duration-150 shadow">
                     Continue Shopping
                 </a>
-                <a href="mailto:sales@americanpalletliquidators.shop" class="bg-white border border-gray-300 text-zinc-950 font-extrabold px-8 py-3.5 rounded text-xs uppercase tracking-widest hover:bg-gray-100 transition duration-150">
+                <a href="mailto:{{ \App\Models\Setting::get('contact_email', 'sales@americanpalletliquidators.shop') }}" class="bg-white border border-gray-300 text-zinc-950 font-extrabold px-8 py-3.5 rounded text-xs uppercase tracking-widest hover:bg-gray-100 transition duration-150">
                     Email Logistics Support
                 </a>
             </div>
@@ -84,7 +84,7 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Order Placed Successfully!',
-                text: 'You will receive an email with the payment details. Please complete the payment, then submit your proof of payment either to sales@americanpalletliquidators.shop or create an account and submit it on your dashboard.',
+                text: 'You will receive an email with the payment details. Please complete the payment, then submit your proof of payment either to {{ \App\Models\Setting::get('contact_email', 'sales@americanpalletliquidators.shop') }} or create an account and submit it on your dashboard.',
                 confirmButtonText: 'Understood',
                 confirmButtonColor: '#18181b',
                 allowOutsideClick: false

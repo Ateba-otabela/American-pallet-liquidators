@@ -27,7 +27,7 @@
                             </span>
                             <div class="min-w-0">
                                 <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">General &amp; Sales Email</span>
-                                <a href="mailto:sales@americanpalletliquidators.shop" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline break-all">sales@americanpalletliquidators.shop</a>
+                                <a href="mailto:{{ \App\Models\Setting::get('contact_email', 'sales@americanpalletliquidators.shop') }}" class="text-zinc-950 font-extrabold text-lg sm:text-xl hover:underline break-all">{{ \App\Models\Setting::get('contact_email', 'sales@americanpalletliquidators.shop') }}</a>
                             </div>
                         </li>
                         <li class="flex items-start gap-4">
@@ -48,7 +48,7 @@
                             <div>
                                 <span class="block text-xs font-black uppercase tracking-wider text-zinc-400">Business Registration</span>
                                 <p class="text-zinc-950 font-extrabold text-lg leading-snug">
-                                    American Pallet Liquidators LLC<br>
+                                    {{ \App\Models\Setting::get('company_name', 'American Pallet Liquidators LLC') }}<br>
                                     Kentucky Secretary of State ID: 0637756<br>
                                     Wholesale Distributor / Resale License
                                 </p>
