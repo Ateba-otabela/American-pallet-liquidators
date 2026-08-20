@@ -12,19 +12,17 @@ class AdminSupportController extends Controller
 {
     public function index()
     {
-        $conversations = ChatConversation::with(['messages' => function($q) {
-            $q->latest()->limit(1);
-        }])->orderBy('last_activity', 'desc')->paginate(20);
-        
+        $conversations = ChatConversation::with('messages')->orderBy('last_activity', 'desc')->paginate(20);
+
         return view('admin.support.index', compact('conversations'));
     }
 
     public function show(ChatConversation $conversation)
     {
-        // When admin opens, mark AI as inactive if they want to take over? 
+        // When admin opens, mark AI as inactive if they want to take over?
         // We'll let them click a 'Take Over' button to be explicit, but opening marks messages as seen.
-        $conversation->messages()->where('sender_type', 'customer')->update(['is_seen' => true]);
-        
+        $conversation->messages()->where('sender_type', 'customer')->update(['is_seen' => true, 'status' => 'read']);
+
         return view('admin.support.show', compact('conversation'));
     }
 

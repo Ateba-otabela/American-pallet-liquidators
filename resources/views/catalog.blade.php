@@ -3,6 +3,7 @@
 @section('title', 'Shop Wholesale Liquidation Pallets & Truckloads')
 
 @section('content')
+    <div x-data="{ mobileFiltersOpen: false }">
     <!-- Catalog Header -->
     <section class="bg-white border-b border-gray-200 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left">
@@ -14,9 +15,72 @@
     <!-- Catalog Content -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="flex flex-col lg:flex-row gap-10">
-            
+
+            <!-- Mobile Filter Button -->
+            <button @click="mobileFiltersOpen = !mobileFiltersOpen" class="lg:hidden flex items-center justify-between w-full bg-white border border-gray-200 rounded-lg p-4 shadow-sm mb-4">
+                <span class="font-semibold text-zinc-900">Filters & Sort</span>
+                <svg class="h-5 w-5 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+            </button>
+
+            <!-- Mobile Filters Panel -->
+            <div x-show="mobileFiltersOpen" x-transition class="lg:hidden mb-4">
+                <form action="{{ route('catalog') }}" method="GET" class="space-y-6 bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-zinc-900">Filters</span>
+                        <button type="button" @click="mobileFiltersOpen = false" class="text-zinc-500 hover:text-zinc-900">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Search -->
+                    <div>
+                        <label for="mobile_search" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-2">Search Products</label>
+                        <input type="text" id="mobile_search" name="search" value="{{ request('search') }}" placeholder="Keyword..." class="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800" />
+                    </div>
+
+                    <!-- Categories Filter -->
+                    <div>
+                        <span class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-2">Categories</span>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 text-sm font-semibold text-zinc-700 hover:text-zinc-950 cursor-pointer">
+                                <input type="radio" name="category" value="" {{ !request('category') ? 'checked' : '' }} class="text-zinc-900 focus:ring-zinc-900 border-gray-300" />
+                                <span>All Merchandise</span>
+                            </label>
+                            @foreach($categories as $cat)
+                                <label class="flex items-center gap-2 text-sm font-semibold text-zinc-700 hover:text-zinc-950 cursor-pointer">
+                                    <input type="radio" name="category" value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'checked' : '' }} class="text-zinc-900 focus:ring-zinc-900 border-gray-300" />
+                                    <span>{{ $cat->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Sorting -->
+                    <div>
+                        <label for="mobile_sort" class="block text-xs font-black uppercase tracking-wider text-zinc-900 mb-2">Sort By</label>
+                        <select id="mobile_sort" name="sort" class="w-full bg-gray-50 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-zinc-500 text-zinc-800 font-semibold">
+                            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest Arrivals</option>
+                            <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
+                            <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
+                            <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Name: A to Z</option>
+                            <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Name: Z to A</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full bg-zinc-950 text-white font-extrabold py-2.5 rounded text-xs uppercase tracking-widest hover:bg-zinc-800 transition duration-150">
+                        Apply Filters
+                    </button>
+
+                    @if(request()->anyFilled(['search', 'category', 'sort']))
+                        <a href="{{ route('catalog') }}" class="block text-center text-xs font-bold text-zinc-500 hover:text-zinc-900 transition mt-2">
+                            Reset All Filters
+                        </a>
+                    @endif
+                </form>
+            </div>
+
             <!-- Filters Sidebar (Desktop) -->
-            <aside class="w-full lg:w-64 flex-shrink-0">
+            <aside class="hidden lg:block w-full lg:w-64 flex-shrink-0">
                 <form action="{{ route('catalog') }}" method="GET" class="space-y-8 bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                     
                     <!-- Search -->
@@ -141,4 +205,5 @@
 
         </div>
     </section>
+    </div>
 @endsection

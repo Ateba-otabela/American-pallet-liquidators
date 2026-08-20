@@ -67,6 +67,7 @@ class ChatController extends Controller
             'sender_type' => 'customer',
             'sender_id' => auth()->check() ? auth()->id() : null,
             'message' => $request->message,
+            'status' => 'sent',
         ]);
 
         $adminEmails = User::where('is_admin', true)
@@ -103,6 +104,9 @@ class ChatController extends Controller
         }
 
         $conversation->update(['last_activity' => now()]);
+
+        // Mark message as delivered after broadcasting
+        $customerMessage->update(['status' => 'delivered']);
 
         try {
             broadcast(new MessageSent($customerMessage))->toOthers();

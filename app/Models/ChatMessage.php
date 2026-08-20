@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class ChatMessage extends Model
 {
     protected $fillable = [
-        'chat_conversation_id', 'sender_type', 'sender_id', 'message', 'is_seen'
+        'chat_conversation_id', 'sender_type', 'sender_id', 'message', 'is_seen', 'status'
     ];
 
     protected $casts = [
         'is_seen' => 'boolean',
+        'status' => 'string',
     ];
 
     public function conversation()

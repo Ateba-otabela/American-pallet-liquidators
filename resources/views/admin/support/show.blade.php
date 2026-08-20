@@ -38,7 +38,29 @@
                     <div class="flex justify-start">
                         <div class="bg-gray-100 text-zinc-800 rounded-2xl rounded-tl-sm px-4 py-2 max-w-[80%] text-sm shadow-sm relative">
                             {{ $msg->message }}
-                            <span class="text-[9px] text-zinc-400 block mt-1 text-right">{{ $msg->created_at->format('H:i') }}</span>
+                            <div class="flex items-center justify-end gap-1 mt-1">
+                                <span class="text-[9px] text-zinc-400">{{ $msg->created_at->format('H:i') }}</span>
+                                <div class="flex items-center gap-0.5">
+                                    <!-- 1 tick: sent -->
+                                    @if(!$msg->status || $msg->status === 'sent')
+                                        <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    @endif
+                                    <!-- 2 white ticks: delivered -->
+                                    @if($msg->status === 'delivered')
+                                        <div class="flex gap-0.5">
+                                            <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        </div>
+                                    @endif
+                                    <!-- 2 blue ticks: read -->
+                                    @if($msg->status === 'read')
+                                        <div class="flex gap-0.5">
+                                            <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 @else

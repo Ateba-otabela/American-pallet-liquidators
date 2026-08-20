@@ -13,6 +13,7 @@
                         <tr class="bg-gray-50 text-[10px] font-black uppercase tracking-wider text-zinc-400 border-b border-gray-100">
                             <th class="p-4">Customer</th>
                             <th class="p-4">Status</th>
+                            <th class="p-4">Messages</th>
                             <th class="p-4">AI Active</th>
                             <th class="p-4">Last Activity</th>
                             <th class="p-4">Action</th>
@@ -36,6 +37,16 @@
                                     ">{{ $conv->status }}</span>
                                 </td>
                                 <td class="p-4">
+                                    @php
+                                        $unreadCount = $conv->messages()->where('sender_type', 'customer')->where('is_seen', false)->count();
+                                    @endphp
+                                    @if($unreadCount > 0)
+                                        <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full">{{ $unreadCount }}</span>
+                                    @else
+                                        <span class="text-zinc-400 text-xs">{{ $conv->messages()->count() }}</span>
+                                    @endif
+                                </td>
+                                <td class="p-4">
                                     @if($conv->ai_active)
                                         <span class="text-emerald-500 font-bold flex items-center gap-1 text-[11px] uppercase"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Active</span>
                                     @else
@@ -51,7 +62,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="p-8 text-center text-zinc-400 font-bold">No active conversations found.</td>
+                                <td colspan="6" class="p-8 text-center text-zinc-400 font-bold">No active conversations found.</td>
                             </tr>
                         @endforelse
                     </tbody>

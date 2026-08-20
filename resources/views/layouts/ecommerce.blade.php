@@ -132,35 +132,67 @@
              x-transition:leave="transition ease-in duration-200 transform"
              x-transition:leave-start="translate-y-0"
              x-transition:leave-end="-translate-y-full"
-             class="absolute top-full left-0 w-full bg-blue-600 border-t border-blue-700 shadow-xl z-50 md:hidden flex flex-col"
+             class="absolute top-full left-0 w-full bg-blue-600 border-t border-blue-700 shadow-xl z-50 md:hidden flex flex-col max-h-[calc(100vh-5rem)]"
              x-cloak>
-            <div class="px-4 py-4 space-y-2 overflow-y-auto max-h-[70vh]">
-                <a href="{{ route('catalog') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">SHOP ALL</a>
-                <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">PALLETS</a>
-                <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">TRUCKLOADS</a>
-                <a href="{{ route('how-it-works') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">HOW IT WORKS</a>
-                <a href="{{ route('freight-quote.show') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">FREIGHT QUOTE</a>
-                <a href="{{ route('faq') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">FAQ</a>
-                <a href="{{ route('contact') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">CONTACT</a>
-                
-                <hr class="border-blue-500 my-2">
+            <!-- Mobile Menu Header -->
+            <div class="flex items-center justify-between px-4 py-3 border-b border-blue-700">
+                <span class="text-white font-bold text-sm uppercase tracking-wider">Menu</span>
+                <button @click="open = false" class="text-white hover:text-blue-100 transition p-1">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="px-4 py-4 space-y-2 overflow-y-auto flex-grow">
+                <a href="{{ route('catalog') }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">SHOP ALL</a>
+                <a href="{{ route('catalog', ['category' => 'pallets']) }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">PALLETS</a>
+                <a href="{{ route('catalog', ['category' => 'truckloads']) }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">TRUCKLOADS</a>
+                <a href="{{ route('how-it-works') }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">HOW IT WORKS</a>
+                <a href="{{ route('freight-quote.show') }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">FREIGHT QUOTE</a>
+                <a href="{{ route('faq') }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">FAQ</a>
+                <a href="{{ route('contact') }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">CONTACT</a>
+
+                <hr class="border-blue-500 my-4">
+
+                <!-- Mobile Search -->
+                <a href="{{ route('catalog') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <span>Search Products</span>
+                </a>
+
+                <!-- Mobile Cart -->
+                <a href="{{ route('cart.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                    <span>Shopping Cart</span>
+                    @php
+                        $cartCountMobile = 0;
+                        $cartMobile = session()->get('cart', []);
+                        foreach ($cartMobile as $item) {
+                            $cartCountMobile += $item['quantity'];
+                        }
+                    @endphp
+                    @if($cartCountMobile > 0)
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $cartCountMobile }}</span>
+                    @endif
+                </a>
+
+                <hr class="border-blue-500 my-4">
 
                 @auth
-                    <div class="px-3 py-2">
+                    <div class="px-4 py-2">
                         <span class="text-xs font-bold text-blue-200 uppercase tracking-widest">Account</span>
                     </div>
                     @if(auth()->user()->is_admin)
-                        <a href="{{ route('admin.dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">Admin Panel</a>
+                        <a href="{{ route('admin.dashboard') }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">Admin Panel</a>
                     @else
-                        <a href="{{ route('dashboard') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">My Dashboard</a>
+                        <a href="{{ route('dashboard') }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">My Dashboard</a>
                     @endif
-                    <a href="{{ route('profile.edit') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">Profile Settings</a>
+                    <a href="{{ route('profile.edit') }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">Profile Settings</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="block w-full text-left px-3 py-3 rounded-md text-base font-bold text-red-300 hover:bg-blue-700 transition-colors">Sign Out</button>
+                        <button type="submit" class="block w-full text-left px-4 py-3 rounded-lg text-base font-semibold text-red-300 hover:bg-blue-700 transition-colors">Sign Out</button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="block px-3 py-3 rounded-md text-base font-bold text-white hover:bg-blue-700 transition-colors">SIGN IN</a>
+                    <a href="{{ route('login') }}" class="block px-4 py-3 rounded-lg text-base font-semibold text-white hover:bg-blue-700 transition-colors">SIGN IN</a>
                 @endauth
             </div>
         </div>
@@ -333,11 +365,30 @@
                             </template>
 
                             <div x-html="msg.message.replace(/\n/g, '<br>')"></div>
-                            
+
                             <div class="flex items-center justify-end gap-1 mt-1 text-[9px] opacity-70">
                                 <span x-text="new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})"></span>
-                                <template x-if="msg.sender_type === 'customer' && msg.is_seen">
-                                    <svg class="w-3 h-3 text-emerald-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <template x-if="msg.sender_type === 'customer'">
+                                    <div class="flex items-center gap-0.5 ml-1">
+                                        <!-- 1 tick: sent -->
+                                        <template x-if="!msg.status || msg.status === 'sent'">
+                                            <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        </template>
+                                        <!-- 2 white ticks: delivered -->
+                                        <template x-if="msg.status === 'delivered'">
+                                            <div class="flex gap-0.5">
+                                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            </div>
+                                        </template>
+                                        <!-- 2 blue ticks: read -->
+                                        <template x-if="msg.status === 'read'">
+                                            <div class="flex gap-0.5">
+                                                <svg class="w-3 h-3 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                                <svg class="w-3 h-3 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                            </div>
+                                        </template>
+                                    </div>
                                 </template>
                             </div>
                         </div>
@@ -435,18 +486,7 @@
                             this.name = data.conversation.customer_name && data.conversation.customer_name !== 'Guest' ? data.conversation.customer_name : '';
                             this.email = data.conversation.customer_email || '';
                         }
-                        
-                        // If no messages exist yet, add a friendly AI greeting
-                        if (this.messages.length === 0) {
-                            this.messages.push({
-                                id: 'welcome',
-                                sender_type: 'ai',
-                                message: "Hello! Welcome to American Pallet Liquidators. How can I help you today? Ask me about our liquidation pallets, warehouse locations, shipping rates, or return policies!",
-                                created_at: new Date().toISOString(),
-                                is_seen: true
-                            });
-                        }
-                        
+
                         this.scrollToBottom();
                         
                         // Setup Echo Listeners if Echo is available
