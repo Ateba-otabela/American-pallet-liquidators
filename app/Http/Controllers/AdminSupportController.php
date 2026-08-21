@@ -19,9 +19,8 @@ class AdminSupportController extends Controller
 
     public function show(ChatConversation $conversation)
     {
-        // When admin opens, mark AI as inactive if they want to take over?
-        // We'll let them click a 'Take Over' button to be explicit, but opening marks messages as seen.
-        $conversation->messages()->where('sender_type', 'customer')->update(['is_seen' => true, 'status' => 'read']);
+        // When admin opens, mark customer messages as seen (for unread count)
+        $conversation->messages()->where('sender_type', 'customer')->update(['is_seen' => true]);
 
         return view('admin.support.show', compact('conversation'));
     }

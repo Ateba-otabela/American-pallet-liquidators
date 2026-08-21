@@ -32,13 +32,13 @@
 
     <!-- Main Navigation Header -->
     <header class="bg-blue-600 border-b border-blue-700 sticky top-0 z-50 shadow-sm" x-data="{ open: false }" x-init="$watch('open', value => document.body.style.overflow = value ? 'hidden' : '')" @keydown.escape.window="open = false">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-20">
 
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center group">
-                        <img src="{{ asset('images/products/american_pallet_liquidators_logo_transparent.png') }}" alt="American Pallet Liquidators Logo" class="h-10 w-auto group-hover:scale-105 transition-transform duration-200">
+                        <img src="{{ asset('images/products/american_pallet_liquidators_logo_transparent.png') }}" alt="American Pallet Liquidators Logo" class="h-7 w-auto sm:h-10 group-hover:scale-105 transition-transform duration-200">
                     </a>
                 </div>
 
@@ -54,7 +54,7 @@
                 </nav>
 
                 <!-- Header Actions -->
-                <div class="flex items-center space-x-3 sm:space-x-6">
+                <div class="flex items-center space-x-2 sm:space-x-6">
 
                     <!-- Search Icon Button -->
                     <a href="{{ route('catalog') }}" class="text-white hover:text-blue-100 transition-colors duration-150 hidden sm:block">
@@ -63,7 +63,7 @@
 
                     <!-- User Account / Login -->
                     @auth
-                        <div class="relative" x-data="{ open: false }">
+                        <div class="relative hidden sm:block" x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center text-sm font-semibold text-white hover:text-blue-100 transition focus:outline-none">
                                 <span>Hi, {{ explode(' ', auth()->user()->name)[0] }}</span>
                                 <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -84,12 +84,12 @@
                             </div>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="text-sm font-semibold text-white hover:text-blue-100 transition">Log In</a>
+                        <a href="{{ route('login') }}" class="text-sm font-semibold text-white hover:text-blue-100 transition hidden sm:block">Log In</a>
                     @endauth
 
                     <!-- Cart Icon with Badge -->
                     <a href="{{ route('cart.index') }}" class="relative text-white hover:text-blue-100 transition-colors duration-150">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                        <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
                         @php
                             $cartCount = 0;
                             $cart = session()->get('cart', []);
@@ -325,10 +325,10 @@
     </footer>
 
     <!-- AI Customer Support Chat Widget -->
-    <div x-data="chatWidget()" x-init="initChat()" class="fixed bottom-6 right-6 z-50 font-sans">
+    <div x-data="chatWidget()" x-init="initChat()" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 font-sans">
         <!-- Chat Button -->
-        <button @click="toggleChat()" x-show="!isOpen" x-transition class="bg-zinc-950 text-white p-4 rounded-full shadow-2xl hover:scale-105 transition-transform flex items-center justify-center focus:outline-none">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        <button @click="toggleChat()" x-show="!isOpen" x-transition class="bg-zinc-950 text-white p-3 sm:p-4 rounded-full shadow-2xl hover:scale-105 transition-transform flex items-center justify-center focus:outline-none">
+            <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
         </button>
 
         <!-- Chat Window -->
@@ -374,11 +374,11 @@
                                         <template x-if="!msg.status || msg.status === 'sent'">
                                             <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                         </template>
-                                        <!-- 2 white ticks: delivered -->
+                                        <!-- 2 gray ticks: delivered -->
                                         <template x-if="msg.status === 'delivered'">
                                             <div class="flex gap-0.5">
-                                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                                <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                                             </div>
                                         </template>
                                         <!-- 2 blue ticks: read -->
@@ -481,11 +481,14 @@
                         this.messages = data.conversation.messages || [];
                         this.aiActive = data.conversation.ai_active;
                         this.requiresProfile = !data.conversation.customer_email || !data.conversation.customer_name || data.conversation.customer_name === 'Guest';
-                        
+
                         if (this.requiresProfile) {
                             this.name = data.conversation.customer_name && data.conversation.customer_name !== 'Guest' ? data.conversation.customer_name : '';
                             this.email = data.conversation.customer_email || '';
                         }
+
+                        // Mark admin messages as read when client opens chat
+                        this.markAdminMessagesAsRead();
 
                         this.scrollToBottom();
                         
@@ -535,6 +538,31 @@
                         this.pendingMessage = '';
                         setTimeout(() => this.sendMessage(), 500);
                     }
+                },
+
+                markAdminMessagesAsRead() {
+                    // Mark all admin/AI messages as read when client opens chat
+                    const adminMessages = this.messages.filter(msg => msg.sender_type === 'admin' || msg.sender_type === 'ai');
+                    adminMessages.forEach(msg => {
+                        if (!msg.is_seen) {
+                            msg.is_seen = true;
+                            msg.status = 'read';
+                            // Send update to server
+                            fetch('{{ url('/chat/mark-read') }}', {
+                                method: 'POST',
+                                credentials: 'same-origin',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    session_id: this.sessionId,
+                                    message_id: msg.id
+                                })
+                            }).catch(err => console.error('Failed to mark as read:', err));
+                        }
+                    });
                 },
 
                 sendMessage() {

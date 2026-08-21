@@ -137,5 +137,6 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
 // Chat API Routes
 Route::match(['get', 'post'], '/chat/init', [\App\Http\Controllers\ChatController::class, 'initConversation'])->name('chat.init');
 Route::post('/chat/send', [\App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.send');
+Route::post('/chat/mark-read', [\App\Http\Controllers\ChatController::class, 'markAsRead'])->name('chat.mark-read');
 
 require __DIR__.'/auth.php';

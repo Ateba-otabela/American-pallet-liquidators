@@ -15,10 +15,10 @@ class GoogleController extends Controller
     
     public function redirect(): RedirectResponse
     {
-     
+
         $this->ensureGoogleConfig();
 
-         Socialite::driver('google')->stateless()->redirect();
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
     public function callback(Request $request): RedirectResponse
