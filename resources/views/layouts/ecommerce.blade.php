@@ -325,14 +325,14 @@
     </footer>
 
     <!-- AI Customer Support Chat Widget -->
-    <div x-data="chatWidget()" x-init="initChat()" class="fixed bottom-6 right-6 z-50 font-sans">
+    <div x-data="chatWidget()" x-init="initChat()" class="fixed top-24 right-6 z-50 font-sans">
         <!-- Chat Button -->
         <button @click="toggleChat()" x-show="!isOpen" x-transition class="bg-zinc-950 text-white p-4 rounded-full shadow-2xl hover:scale-105 transition-transform flex items-center justify-center focus:outline-none">
             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
         </button>
 
         <!-- Chat Window -->
-        <div x-show="isOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-10 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 translate-y-10 scale-95" class="bg-white w-96 rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-200 fixed bottom-20 right-0 h-[600px] max-h-screen z-50" x-cloak>
+        <div x-show="isOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-10 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0 scale-100" x-transition:leave-end="opacity-0 translate-y-10 scale-95" class="bg-white w-96 rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-gray-200 fixed top-16 right-0 h-[600px] max-h-screen z-50" x-cloak>
             
             <!-- Header -->
             <div class="bg-zinc-950 text-white p-4 flex justify-between items-center shadow-md z-10 shrink-0">
@@ -487,9 +487,6 @@
                             this.email = data.conversation.customer_email || '';
                         }
 
-                        // Mark admin messages as read when client opens chat
-                        this.markAdminMessagesAsRead();
-
                         this.scrollToBottom();
                         
                         // Setup Echo Listeners if Echo is available
@@ -538,31 +535,6 @@
                         this.pendingMessage = '';
                         setTimeout(() => this.sendMessage(), 500);
                     }
-                },
-
-                markAdminMessagesAsRead() {
-                    // Mark all admin/AI messages as read when client opens chat
-                    const adminMessages = this.messages.filter(msg => msg.sender_type === 'admin' || msg.sender_type === 'ai');
-                    adminMessages.forEach(msg => {
-                        if (!msg.is_seen) {
-                            msg.is_seen = true;
-                            msg.status = 'read';
-                            // Send update to server
-                            fetch('{{ url('/chat/mark-read') }}', {
-                                method: 'POST',
-                                credentials: 'same-origin',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    session_id: this.sessionId,
-                                    message_id: msg.id
-                                })
-                            }).catch(err => console.error('Failed to mark as read:', err));
-                        }
-                    });
                 },
 
                 sendMessage() {

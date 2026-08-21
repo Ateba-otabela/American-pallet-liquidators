@@ -174,30 +174,9 @@ class ChatController extends Controller
             }
             
             return response()->json([
-                'status' => 'waiting'
+                'status' => 'waiting',
+                'message' => 'Your message has been received and is being reviewed by our team.'
             ]);
         }
-    }
-
-    public function markAsRead(Request $request)
-    {
-        $request->validate([
-            'session_id' => 'required|string',
-            'message_id' => 'required|integer',
-        ]);
-
-        $conversation = ChatConversation::where('session_id', $request->session_id)->firstOrFail();
-
-        // Mark the specific message as read if it's from admin/AI
-        $message = ChatMessage::where('id', $request->message_id)
-            ->where('chat_conversation_id', $conversation->id)
-            ->whereIn('sender_type', ['admin', 'ai'])
-            ->first();
-
-        if ($message) {
-            $message->update(['is_seen' => true, 'status' => 'read']);
-        }
-
-        return response()->json(['success' => true]);
     }
 }
